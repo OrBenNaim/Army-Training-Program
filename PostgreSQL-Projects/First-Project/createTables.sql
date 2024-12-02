@@ -1,3 +1,12 @@
+-- Create the 'authors' table
+CREATE TABLE authors (
+    id SERIAL PRIMARY KEY,      -- Auto-incrementing primary key
+    name VARCHAR(255) NOT NULL, -- Name of the author
+    bio TEXT                    -- Short biography of the author
+);
+
+
+
 -- Create the 'books' table
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,             -- Auto-incrementing primary key
@@ -9,11 +18,6 @@ CREATE TABLE books (
     ON DELETE CASCADE                  -- If an author is deleted, delete their books too
 );
 
--- Create the 'authors' table
-CREATE TABLE authors (
-    id SERIAL PRIMARY KEY,      -- Auto-incrementing primary key
-    name VARCHAR(255) NOT NULL, -- Name of the author
-    bio TEXT                    -- Short biography of the author
-);
+
 
 
