@@ -25,5 +25,6 @@ INSERT INTO borrowers (name, email) VALUES
 -- Insert data into the 'loans' table
 INSERT INTO loans (book_id, borrower_id, loan_date, return_date) VALUES
     (1, 1, '2024-01-01', '2024-01-10'),
-    (4, 2, '2024-02-15', '2024-02-25'),
+	(1, 3, '2024-02-13', '2024-03-09'),
+    (4, 2, '2024-02-15', '2025-02-25'),
     (6, 3, '2024-03-05', NULL); -- NULL return_date means the book has not been returned yet

@@ -1,4 +1,4 @@
 --SELECT * FROM authors;
-SELECT * FROM books;
+--SELECT * FROM books;
 --SELECT * FROM borrowers;
---SELECT * FROM loans;
+SELECT * FROM loans;

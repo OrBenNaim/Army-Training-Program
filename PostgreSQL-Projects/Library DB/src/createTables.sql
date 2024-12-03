@@ -39,6 +39,3 @@ CREATE TABLE loans (
     CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id),	
 	CONSTRAINT fk_borrowers FOREIGN KEY (borrower_id) REFERENCES borrowers(id)  
 );
-
--- drop table authors cascade;
--- drop table books;
