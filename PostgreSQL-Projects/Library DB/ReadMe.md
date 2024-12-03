@@ -10,7 +10,7 @@ Library-DB is a PostgreSQL-based database project designed to manage a library s
 - **Loan Management**: Record book loans, including loan and return dates.
 Cascade Deletion: Automatically delete associated records (e.g., loans) when an author or book is removed.
 - **Query Examples**:
-- List all books by a specific author.
-- Find borrowers of a specific book.
-- Identify overdue loans.
-- Track all books currently on loan.
+    - List all books by a specific author.
+    - Find borrowers of a specific book.
+    - Identify overdue loans.
+    - Track all books currently on loan.
