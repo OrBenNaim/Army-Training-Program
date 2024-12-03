@@ -27,10 +27,10 @@ To-Do-List-App-v2 is an enhanced React-based to-do list application. It allows u
 ## Setup and Installation
 Follow these steps to set up the project locally:
 1. Clone the repository: 
-    git clone https://github.com/OrBenNaim/React-Projects.git
+    git clone https://github.com/OrBenNaim/Army-Training-Program.git/React-Projects.git
 
 2. Navigate to the Tic-Tac-Toe directory:
-    cd React-Projects/To-Do-List-App-v2
+    cd To-Do-List-App-v2
 
 3. Install the dependencies:
     npm install
