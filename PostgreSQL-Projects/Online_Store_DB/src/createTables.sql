@@ -1,41 +1,49 @@
--- Create the 'authors' table
-CREATE TABLE authors (
-    id SERIAL PRIMARY KEY,      -- Auto-incrementing primary key
-    name VARCHAR(255) NOT NULL, -- Name of the author
-    bio TEXT                    -- Short biography of the author
+-- Create the 'products' table
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
+    category VARCHAR(50) NOT NULL,
+
+	CONSTRAINT unique_product_name UNIQUE (name)
 );
 
 
 
--- Create the 'books' table
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,             -- Auto-incrementing primary key
-    title VARCHAR(255) NOT NULL,       -- Title of the book
-    author_id INT NOT NULL,            -- Foreign key to 'authors.id'
-    publisher VARCHAR(255),            -- Publisher name
-    publisher_date DATE,               -- Date of publication
+-- Create the 'customers' table
+CREATE TABLE customers (
+    id SERIAL PRIMARY KEY,             
+    name VARCHAR(100) NOT NULL, 
+	email VARCHAR(255) NOT NULL UNIQUE,
+	password CHAR(32) NOT NULL
+);
+
+
+-- Create the 'orders' table
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    customer_id INT NOT NULL REFERENCES customers(id),
+    order_date DATE DEFAULT CURRENT_DATE,
+    total_cost NUMERIC(10, 2) NOT NULL CHECK (total_cost >= 0)
+);
+
 	
-    CONSTRAINT fk_author FOREIGN KEY (author_id) REFERENCES authors(id)
-    ON DELETE CASCADE                  -- If an author is deleted, delete their books too
+
+-- Create the 'order_items' table
+CREATE TABLE order_items (
+    id SERIAL PRIMARY KEY,		
+    order_id INT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id INT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    subtotal NUMERIC(10, 2) NOT NULL CHECK (subtotal >= 0)
 );
 
 
--- Create the 'borrowers' table
-CREATE TABLE borrowers (
-    id SERIAL PRIMARY KEY,      	-- Auto-incrementing primary key
-    name VARCHAR(255) NOT NULL, 	-- Name of the borrow
-    email VARCHAR(255) NOT NULL 	-- Email of the borrow
+-- Create the 'inventory' table
+CREATE TABLE inventory (
+    id SERIAL PRIMARY KEY,
+    product_id INT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    quantity INT NOT NULL CHECK (quantity >= 0)
 );
 
-
--- Create the 'loans' table
-CREATE TABLE loans (
-    id SERIAL PRIMARY KEY,        	-- Auto-incrementing primary key
-    book_id INT NOT NULL,        	-- Foreign key to 'book.id'
-	borrower_id INT NOT NULL,     	-- Foreign key to 'borrowers.id'
-    loan_date DATE,     			-- Date of loan
-    return_date DATE,           	-- Date of return
-	
-    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id),	
-	CONSTRAINT fk_borrowers FOREIGN KEY (borrower_id) REFERENCES borrowers(id)  
-);

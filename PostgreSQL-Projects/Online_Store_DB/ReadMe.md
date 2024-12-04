@@ -1,7 +1,7 @@
-# Library DB - PostgreSQL Project
+# Online Store DB - PostgreSQL Project
 
 ## Description
-Library-DB is a PostgreSQL-based database project designed to manage a library system. The project includes comprehensive tables and queries for handling books, authors, borrowers, and loans. Key features include tracking book loans, managing borrower information, and identifying overdue or currently loaned books.
+Online-Store-DB is a PostgreSQL-based database project designed to manage a library system. The project includes comprehensive tables and queries for handling books, authors, borrowers, and loans. Key features include tracking book loans, managing borrower information, and identifying overdue or currently loaned books.
 
 
 ## Features
@@ -34,7 +34,7 @@ Follow these steps to set up the database:
     git clone https://github.com/OrBenNaim/Army-Training-Program/PostgreSQL-Projects.git
 
 2. Navigate to the project directory:
-    cd Library_DB
+    cd Online_Store_DB
 
 3. Launch pgAdmin or your preferred PostgreSQL tool.
 
