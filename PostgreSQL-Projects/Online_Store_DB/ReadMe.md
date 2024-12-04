@@ -108,7 +108,7 @@ To see the data in tables itself, open the file 'showTables.sql' from the src fo
 ![Order Items Table](screenShots/DB_Tables/order_items_table.png)
 
 ### Inventory Table
-![Inventory Table](screenShots/DB_Tables/inventory_table.png.png)
+![Inventory Table](screenShots/DB_Tables/inventory_table.png)
 
 ### Orders By Specific Customer
 ![Orders By Specific Customer](screenShots/DB_Tables/all_orders_by_specific_customer.png)
