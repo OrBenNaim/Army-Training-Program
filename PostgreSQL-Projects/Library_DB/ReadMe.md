@@ -91,6 +91,9 @@ To see the data in tables itself, open the file 'showTables.sql' from the src fo
 
 
 ## Screenshots
+### DB Diagram
+![DB Diagram](screenShots/DB_diagram.png)
+
 ### Authors Table
 ![Authors Table](screenShots/DB_Tables/authors_table.png)
 
