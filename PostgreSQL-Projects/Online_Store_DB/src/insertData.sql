@@ -1,30 +1,63 @@
--- Insert data into the 'authors' table
-INSERT INTO authors (name, bio) VALUES 
-    ('J.K. Rowling', 'British author, best known for the Harry Potter series.'),
-    ('George R.R. Martin', 'American novelist and short story writer, author of A Song of Ice and Fire.'),
-    ('J.R.R. Tolkien', 'English writer, poet, and author of The Lord of the Rings.');
+-- Insert data into the 'customers' table
+INSERT INTO customers (name, email, password)
+VALUES
+    ('John Doe', 'johndoe@example.com', MD5('1234')), 			-- MD5 hash for '1234'
+    ('Jane Smith', 'janesmith@gmail.com', MD5('5555')), 		-- MD5 hash for '5555'
+    ('Yuval Dan', 'yuvalDan@gmail.com', MD5('9513'));			-- MD5 hash for '9513'
 
 
--- Insert data into the 'books' table
-INSERT INTO books (title, author_id, publisher, publisher_date) VALUES
-    ('Harry Potter and the Sorcerer''s Stone', 1, 'Bloomsbury', '1997-06-26'),
-    ('Harry Potter and the Chamber of Secrets', 1, 'Bloomsbury', '1998-07-02'),
-    ('A Game of Thrones', 2, 'Bantam Spectra', '1996-08-06'),
-    ('A Clash of Kings', 2, 'Bantam Spectra', '1998-11-16'),
-    ('The Hobbit', 3, 'George Allen & Unwin', '1937-09-21'),
-    ('The Fellowship of the Ring', 3, 'George Allen & Unwin', '1954-07-29');
 
 
--- Insert data into the 'borrowers' table
-INSERT INTO borrowers (name, email) VALUES
-    ('Alice Smith', 'alice.smith@example.com'),
-    ('Bob Johnson', 'bob.johnson@example.com'),
-    ('Charlie Brown', 'charlie.brown@example.com');
+-- Insert data into the 'products' table
+INSERT INTO products (name, description, price, category)
+VALUES
+    ('Smartphone', 'Latest model smartphone with all the features', 699.99, 'Electronics'),
+    ('T-Shirt', 'Cotton t-shirt available in various sizes', 19.99, 'Clothing'),
+    ('Laptop', 'High-performance laptop for work and play', 999.99, 'Electronics'),
+    ('Jeans', 'Denim jeans with a comfortable fit', 49.99, 'Clothing'),
+    ('Apple Watch','45-mm screen, Model 7', 1500, 'Electronics');
 
 
--- Insert data into the 'loans' table
-INSERT INTO loans (book_id, borrower_id, loan_date, return_date) VALUES
-    (1, 1, '2024-01-01', '2024-01-10'),
-	(1, 3, '2024-02-13', '2024-03-09'),
-    (4, 2, '2024-02-15', '2025-02-25'),
-    (6, 3, '2024-03-05', NULL); -- NULL return_date means the book has not been returned yet
+
+
+-- Insert placeholder rows into the 'orders' table
+INSERT INTO orders (customer_id, order_date, total_cost)
+VALUES
+    (1, '2024-12-01', 0),   -- Placeholder total_cost for John Doe's order
+    (2, '2024-11-05', 0),   -- Placeholder total_cost for Jane Smith's order
+    (3, CURRENT_DATE, 0);  -- Placeholder total_cost for Yuval Dan's order
+
+
+
+
+-- Insert data into the 'order_items' table
+INSERT INTO order_items (order_id, product_id, quantity, subtotal)
+VALUES
+    (1, 1, 1, 699.99),  	-- John Doe's Smartphone
+    (1, 2, 1, 19.99),   	-- John Doe's T-Shirt
+    (2, 3, 1, 999.99),  	-- Jane Smith's Laptop
+    (2, 4, 1, 49.99),   	-- Jane Smith's Jeans
+    (3, 2, 2, 39.98);		-- Yuval Dan's T-Shirts
+
+
+
+
+-- Update the 'total_cost' column in the 'orders' table based on 'order_items'
+UPDATE orders
+SET total_cost = (
+    SELECT SUM(subtotal)
+    FROM order_items
+    WHERE order_items.order_id = orders.id
+);
+
+
+
+
+-- Insert data into the 'inventory' table
+INSERT INTO inventory (product_id, quantity)
+VALUES
+    (1, 100),  	-- 100 Smartphones in stock
+    (2, 200),  	-- 200 T-Shirts in stock
+    (3, 50),   	-- 50 Laptops in stock
+    (4, 150),  	-- 150 Jeans in stock
+    (5, 0);		-- Apple Watch out of stock

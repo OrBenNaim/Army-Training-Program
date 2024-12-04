@@ -40,6 +40,7 @@ CREATE TABLE order_items (
 );
 
 
+
 -- Create the 'inventory' table
 CREATE TABLE inventory (
     id SERIAL PRIMARY KEY,

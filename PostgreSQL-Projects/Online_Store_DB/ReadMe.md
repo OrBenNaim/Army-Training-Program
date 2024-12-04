@@ -1,20 +1,20 @@
 # Online Store DB - PostgreSQL Project
 
 ## Description
-Online-Store-DB is a PostgreSQL-based database project designed to manage a library system. The project includes comprehensive tables and queries for handling books, authors, borrowers, and loans. Key features include tracking book loans, managing borrower information, and identifying overdue or currently loaned books.
+The Online Store DB is a PostgreSQL-based database project designed to manage an online store. The project includes comprehensive tables and queries for handling products, customers, orders, inventory, and order items. Key features include tracking customer orders, managing product inventory, and ensuring smooth sales operations.
 
 
 ## Features
-- **Authors Management**: Store details about authors, including their name and biography.
-- **Books Management**: Track book titles, their authors, publishers, and publication dates.
-- **Borrower Management**: Maintain a list of library borrowers with their names and contact details.
-- **Loan Management**: Record book loans, including loan and return dates.
-Cascade Deletion: Automatically delete associated records (e.g., loans) when an author or book is removed.
+- **Customer  Management**: Store details about customers, including their name, email, and password.
+- **Product  Management**: Track products, their descriptions, prices, and categories.
+- **Order Items Management**: Keep track of items within each order, including quantity and subtotal.
+- **Inventory  Management**: Monitor product stock levels and manage inventory accordingly.
+Cascade Deletion: Automatically delete associated records (e.g., order items) when an order or product is removed.
 - **Query Examples**:
-    - List all books by a specific author.
-    - Find borrowers of a specific book.
-    - Identify overdue loans.
-    - Track all books currently on loan.
+    - List all orders placed by a specific customer.
+    - Identify out-of-stock products.
+    - Calculate total revenue from all orders.
+    - Track all products currently out of stock.
 
 
 ## Table of Contents
@@ -70,11 +70,12 @@ To see the data in tables itself, open the file 'showTables.sql' from the src fo
 
 ## Usage
 1. Run Queries: Use the provided queries in queries.sql to perform tasks such as:
-    - List books by an author.
-    - Find overdue loans.
-    - Track currently loaned books.
-2. Insert Data: Add new authors, books, borrowers, and loans using custom INSERT statements.
-3. Update Data: Modify existing records with UPDATE commands for scenarios like changing borrower details.
+    - List orders by a specific customer.
+    - Find out-of-stock products.
+    - Calculate the total revenue.
+    - Track orders by date.
+2. Insert Data: Add new customers, products, and orders using custom INSERT statements.
+3. Update Data: Modify existing records with UPDATE commands for scenarios like changing customer details or updating product prices.
 4. Delete Data: Remove records using DELETE commands while maintaining referential integrity.
 
 
@@ -85,38 +86,45 @@ To see the data in tables itself, open the file 'showTables.sql' from the src fo
 
 
 ## Future Improvements
-- Advanced Search: Add advanced filters for books (e.g., by genre or year).
-- Overdue Notifications: Integrate email notifications for overdue loans.
-- Analytics: Generate reports for popular books or active borrowe
+- Advanced Search: Add advanced filters for products, such as by category or price range.
+- Overdue Notifications: Integrate email notifications for new orders or inventory updates.
+- Analytics: Generate reports on sales trends or customer purchasing behaviors.
 
 
 ## Screenshots
 ### DB Diagram
 ![DB Diagram](screenShots/DB_diagram.png)
 
-### Authors Table
-![Authors Table](screenShots/DB_Tables/authors_table.png)
+### Products Table
+![Products Table](screenShots/DB_Tables/products_table.png)
 
-### Books Table
-![Books Table](screenShots/DB_Tables/books_table.png)
+### Customers Table
+![Customers Table](screenShots/DB_Tables/customers_table.png)
 
-### Borrowers Table
-![Borrowers Table](screenShots/DB_Tables/borrowers_table.png)
+### Orders Table
+![Orders Table](screenShots/DB_Tables/orders_table.png)
 
-### Loans Table
-![Loans Table](screenShots/DB_Tables/loans_table.png)
+### Order Items Table
+![Order Items Table](screenShots/DB_Tables/order_items_table.png)
 
-### By Specific Author
-![By Specific Author](screenShots/DB_Tables/all_books_written_by_specific_author.png)
+### Inventory Table
+![Inventory Table](screenShots/DB_Tables/inventory_table.png.png)
 
-### Brrowers By Specific Book
-![Brrowers By Specific Book](screenShots/DB_Tables/all_brrowers_who_have_borrowed_specific_book.png)
+### Orders By Specific Customer
+![Orders By Specific Customer](screenShots/DB_Tables/all_orders_by_specific_customer.png)
 
-### Books That Currently On Loan
-![Books That Currently On Loan](screenShots/DB_Tables/all_books_that_currently_on_loan.png)
+### Products By Specific Category
+![Products By Specific Category](screenShots/DB_Tables/all_products_by_specific_category.png)
 
-### Books That Are Overdue
-![Books That Are Overdue](screenShots/DB_Tables/all_books_that_are_overdue.png)
+### Products That Are Currently Out Of Stock
+![Products That Are Currently Out Of Stock](screenShots/DB_Tables/all_products_that_out_of_stock.png)
+
+### Total Reveneu By The Online Store
+![Total Reveneu By The Online Store](screenShots/DB_Tables/total_reveneu_by_the_online_store.png)
+
+### Average Order Value
+![Average Order Value](screenShots/DB_Tables/average_order_value.png)
+
 
 
 ## Contact Information
