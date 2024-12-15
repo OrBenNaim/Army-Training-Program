@@ -84,16 +84,16 @@ Follow these steps to set up the project locally:
 
 ## Screenshots
 ### Post Blog
-![Post Request](src/assets/screenShots/post_blog_example.png)
+![Post Request](src/assests/screenShots/post_blog_example.png)
 
 ### Get All Blogs
-![Get All Blogs](src/assets/screenShots/get_all_blogs_example.png)
+![Get All Blogs](src/assests/screenShots/get_all_blogs_example.png)
 
 ### Get Specific Blog By Id
-![Get Specific Blog By Id](src/assets/screenShots/get_specific_blog_by_ID.png)
+![Get Specific Blog By Id](src/assests/screenShots/get_specific_blog_by_ID.png)
 
 ### Get Joke
-![Get Joke](src/assets/screenShots/get_joke.png)
+![Get Joke](src/assests/screenShots/get_joke.png)
 
 
 ## Contact Information
