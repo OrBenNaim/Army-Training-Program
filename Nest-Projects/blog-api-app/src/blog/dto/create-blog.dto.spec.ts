@@ -1,4 +1,4 @@
-import { CreateBlogDtoTs } from './create-blog.dto.ts';
+import { CreateBlogDtoTs } from './create-blog.dto.js';
 
 describe('CreateBlogDtoTs', () => {
   it('should be defined', () => {
