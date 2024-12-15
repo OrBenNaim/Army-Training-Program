@@ -26,8 +26,10 @@ export class BlogController {
         return this.blogService.findOne(id);
     }
 
-    // Endpoint: GET /Boblil jokes
-    @Get()
-    getJoke(): 
+    // Endpoint: GET /blog/bublilJokes
+    @Get('jokes/bublil')    // Define a static, unique route
+    async getJoke(): Promise<string>{
+        return this.blogService.findJoke('https://api.chucknorris.io/jokes/random')
+    } 
 
 }

@@ -39,14 +39,16 @@ export class BlogService {
 
     }
 
-    async findJoke(): Promise<void>{
+     // Method to fetch a joke
+    async findJoke(url: string): Promise<string> {
         try {
-            const response = await axios.get('https://api.chucknorris.io/jokes/random');
-            console.log(response.data.value.replace('Chuck Norris', 'Bublil')); // Print the response data
-        }
-         
+            const response = await axios.get(url);
+            const modifiedJoke = response.data.value.replace('Chuck Norris', 'Bublil');
+            return modifiedJoke;        // Return the modified joke
+        } 
         catch (error) {
-            console.error('Error fetching data:', error.message);
+            console.error('Error fetching joke:', error.message);
+            throw new Error('Unable to fetch the joke at the moment.');      // Return user-friendly error
         }
-    } 
+    }
 }
