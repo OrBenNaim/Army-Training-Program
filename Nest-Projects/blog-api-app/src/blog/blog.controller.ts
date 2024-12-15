@@ -22,8 +22,12 @@ export class BlogController {
 
     // Endpoint: GET /blog/id
     @Get(':id')
-    GetBlogById(@Param('id', ParseIntPipe) id: number): Blog{
+    getBlogById(@Param('id', ParseIntPipe) id: number): Blog{
         return this.blogService.findOne(id);
     }
+
+    // Endpoint: GET /Boblil jokes
+    @Get()
+    getJoke(): 
 
 }
