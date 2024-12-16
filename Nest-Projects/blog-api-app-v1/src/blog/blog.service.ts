@@ -1,13 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Blog } from './entity/blog.entity';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 
 @Injectable()
 export class BlogService {
     private blogs: Blog[];      // Temporary in-memory storage
     private idCounter = 1;
-    constructor(){
+    constructor(
+        private readonly configService: ConfigService,
+        
+    ){
         this.blogs = []
     }
 
@@ -39,9 +43,16 @@ export class BlogService {
 
     }
 
-     // Method to fetch a joke
-    async findJoke(url: string): Promise<string> {
+    // Method to fetch a joke
+    async findJoke(): Promise<string> {
         try {
+            const url: string = this.configService.get<string>('JOKE_URL');
+            if (!url) {
+                throw new Error('JOKE_URL is not defined in the environment variables');
+            }
+
+            console.log('Fetched URL from environment:', url); // Debug log
+            
             const response = await axios.get(url);
             const modifiedJoke = response.data.value.replace('Chuck Norris', 'Bublil');
             return modifiedJoke;        // Return the modified joke
