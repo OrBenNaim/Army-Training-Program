@@ -8,10 +8,7 @@ import axios from 'axios';
 export class BlogService {
     private blogs: Blog[];      // Temporary in-memory storage
     private idCounter = 1;
-    constructor(
-        private readonly configService: ConfigService,
-        
-    ){
+    constructor(private readonly configService: ConfigService){
         this.blogs = []
     }
 
