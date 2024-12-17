@@ -1,4 +1,4 @@
-# Blog-API-App
+# Blog-API-App-V1
 
 ## Description
 Blog-API-App is a NestJS-based RESTful API for managing a blog. The application allows users to create, retrieve, update, and delete blog posts. It also integrates with external APIs using Axios to enhance functionality, such as fetching Chuck Norris jokes and customizing them. This project is designed with modularity and scalability in mind, making it a great foundation for learning and building server-side applications.
