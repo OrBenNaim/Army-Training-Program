@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { BlogService } from './blog.service';
 import { ConfigService } from '@nestjs/config';
@@ -26,9 +26,17 @@ export class BlogController {
 
     // Endpoint: GET /blog/id
     // @Get(':id')
-    // getBlogById(@Param('id', ParseIntPipe) id: number): Blog{
-    //     return this.blogService.findOne(id);
+    // async getBlogById(@Param('id', ParseIntPipe) id: number) {
+    //     return this.blogService.getBlogsById(id);
     // }
+
+
+    // Endpoint: DELETE /blog/id
+    @Delete(':id')
+    async deleteBlogById(@Param('id', ParseIntPipe) id: number) {
+        return this.blogService.deleteBlogById(id);
+    }
+
 
     // Endpoint: GET /blog/jokes/bublil
     @Get('jokes/bublil')    // Define a static, unique route

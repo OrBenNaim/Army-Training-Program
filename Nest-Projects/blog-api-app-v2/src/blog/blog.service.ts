@@ -5,7 +5,9 @@ import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from 'drizzle/schema'
+import * as schema from 'src/database/schema';
+import { eq } from 'drizzle-orm';
+
 
 
 @Injectable()
@@ -29,15 +31,11 @@ export class BlogService {
 
 
     // Method to retrieve all blogs
-    async getBlogs() {
-        // console.log(this.database.query);
-        // return this.database.query.blogs.findMany();
-
-
-        console.log(this.database.query)
+    async getBlogs(): Promise<Blog[]>{
         try {
-            return this.database.query.blogs.findMany();
+            const blogs = await this.database.query.blogs.findMany();
             console.log('\nGet request successfully made');
+            return blogs as Blog[]; // Cast the result to the Blog type
         }
         catch (error) {
             console.log(error)
@@ -45,6 +43,48 @@ export class BlogService {
         }
 
     }
+
+    // Method to retrieve specific blog by ID
+    async getBlogById(ID: number): Promise<Blog> {
+        try {
+            const blog = await this.database.query.blogs.findFirst({
+                where: eq(schema.blogs.id, ID),
+            });
+
+            if (!blog) {
+                throw new NotFoundException(`\nBlog with ID ${ID} not found\n`);
+            }
+            
+            console.log('\nGet request by ID is successfully made');
+            return blog as Blog;
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(`\nUnable to retrieve blog with ID=${ID} at the moment.\n`);
+        }
+    }
+
+
+    // Method to delete a blog by ID
+    async deleteBlogById(ID: number): Promise<Blog>{
+        try{
+            const blog = await this.database.query.blogs.findFirst({
+                where: eq(schema.blogs.id, ID),
+            });
+    
+            if (!blog) {
+                throw new Error(`\nBlog with ID ${ID} not found\n`);
+            }
+            
+            await this.database.delete(schema.blogs).where(eq(schema.blogs.id, ID));
+            console.log('\nDELETE request by id successfully made\n');
+            return blog;
+        }
+        catch(error){
+            throw new Error(error.message || '\nUnable to delete the specific blog at the moment.\n');
+        }
+    }
+
 
 
     // Method to fetch a joke
