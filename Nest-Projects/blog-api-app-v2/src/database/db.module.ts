@@ -3,7 +3,9 @@ import { DATABASE_CONNECTION } from './db-connection';
 import { ConfigService } from '@nestjs/config';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { blogs as blogsSchema } from '../blog/schema';
+import * as schema from 'drizzle/schema'
+
+
 
 @Module({
     providers: [
@@ -14,9 +16,7 @@ import { blogs as blogsSchema } from '../blog/schema';
                     connectionString: configService.getOrThrow('DATABASE_URL'),
                 });
                 return drizzle(pool, {
-                    schema: {
-                        ...blogsSchema,
-                    },
+                    schema
                 });
             },
             inject: [ConfigService],
@@ -24,4 +24,4 @@ import { blogs as blogsSchema } from '../blog/schema';
     ],
     exports: [DATABASE_CONNECTION],
 })
-export class DbModule {}
+export class DbModule { }

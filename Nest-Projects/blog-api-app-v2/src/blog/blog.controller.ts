@@ -21,7 +21,7 @@ export class BlogController {
     // Endpoint: GET /blog
     @Get()
     async getBlogs(){
-        return this.blogService.getBlogs();
+        return this.blogService.getBlogs();     // Return all the existing blogs
     }
 
     // Endpoint: GET /blog/id
