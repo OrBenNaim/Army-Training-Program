@@ -15,7 +15,7 @@ export class BlogController {
     // Endpoint: POST /blog
     @Post()     // Handles Get Requests to /blog
     createBlog(@Body() createBlogDto: CreateBlogDto){
-        return this.blogService.createBlog(createBlogDto);
+        return this.blogService.createBlog(createBlogDto); 
     }
 
     // Endpoint: GET /blog
