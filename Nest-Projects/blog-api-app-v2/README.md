@@ -92,6 +92,12 @@ Follow these steps to set up the project locally:
 ### Get Specific Blog By Id
 ![Get Specific Blog By Id](src/assests/screenShots/get_specific_blog_by_ID.png)
 
+### Delete Specific Blog By Id
+![Delete Specific Blog By Id](src/assests/screenShots/delete_blog_by_id.png)
+
+### Delete Specific Blog By Unexistable Id
+![Delete Specific Blog By Unexistable Id](src/assests/screenShots/delete_blog_by_unexistable_id.png)
+
 ### Get Joke
 ![Get Joke](src/assests/screenShots/get_joke.png)
 
