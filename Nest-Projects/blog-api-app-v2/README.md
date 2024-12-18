@@ -1,12 +1,16 @@
 # Blog-API-App-V2
 
 ## Description
-Blog-API-App is a NestJS-based RESTful API for managing a blog. The application allows users to create, retrieve, update, and delete blog posts. It also integrates with external APIs using Axios to enhance functionality, such as fetching Chuck Norris jokes and customizing them. This project is designed with modularity and scalability in mind, making it a great foundation for learning and building server-side applications.
+Blog-API-App-V2 is a backend application built with NestJS, focused on efficient interaction with PostgreSQL databases using Drizzle ORM. The project demonstrates how to build a scalable and modular RESTful API with a clean codebase. It includes CRUD operations for managing blog posts and showcases robust database integration using PostgreSQL and Drizzle ORM. This application serves as an excellent starting point for developers seeking to work with relational databases in a TypeScript-based server environment.
 
 ## Features
+- **Database Integration**: Utilizes PostgreSQL for persistent data storage.
+- **Drizzle ORM**: Simplifies database queries and operations with a lightweight and type-safe ORM.
 - **Create Blog Post**: Add new blog entries with a title and content.
 - **Retrieve All Blog Posts**: Get a list of all blog entries.
 - **Retrieve Specific Blog Post**:  Fetch a specific blog by its ID.
+- **Update Blog Post**: Edit existing blog entries.
+- **Delete Blog Post**: Remove specific blog entries from the database.
 - **Fetch and Customize Jokes**: Fetch Chuck Norris jokes from an external API and replace "Chuck Norris" with "Bublil".
 - **Validation**: Uses class-validator to ensure input data integrity.
 
@@ -26,15 +30,28 @@ Follow these steps to set up the project locally:
     git clone https://github.com/OrBenNaim/Army-Training-Program.git
 
 2. Navigate to the Blog-API-App directory:
-    cd Army-Training-Program/Nest-Projects/blog-api-app
+    cd Army-Training-Program/Nest-Projects/blog-api-app-v2
 
 3. Install the dependencies:
     npm install
 
-4. Start the development server:
+4. Set up the database:
+    - Ensure PostgreSQL is installed and running.
+    - Create a database named blog_db.
+    - Update the .env file with the database connection details:
+      DATABASE_HOST=localhost
+      DATABASE_PORT=5432
+      DATABASE_USER=your_username
+      DATABASE_PASSWORD=your_password
+      DATABASE_NAME=blog_db
+
+5. Run database migrations:
+    npm run migrate
+
+6. Start the development server:
     npm run start:dev
 
-5. Open your browser or Postman and interact with the API endpoints at:
+7. Open your browser or Postman and interact with the API endpoints at:
     http://localhost:3000
 
 
@@ -57,13 +74,22 @@ Follow these steps to set up the project locally:
   - Example: GET /blog/1
   - Response: Returns the blog entry with the specified ID.
 
-4. Fetch Customized Jokes
+4. Delete Blog Post
+  - Endpoint: DELETE /blogs/:id
+  - Example: DELETE /blogs/1
+  - Response: Confirms the deletion.
+
+5. Fetch Customized Jokes
   - Endpoint: GET /blog/jokes/bublil
   - Response: Logs a joke with "Chuck Norris" replaced by "Bublil".
 
 
 ## Technologies Used
 - NestJS: A progressive Node.js framework for building efficient server-side applications.
+
+- Drizzle ORM: A lightweight TypeScript ORM for clean and type-safe interaction with PostgreSQL.
+
+- PostgreSQL: A robust and reliable relational database system.
 
 - Axios: A promise-based HTTP client for making external API requests.
 
@@ -73,7 +99,7 @@ Follow these steps to set up the project locally:
 
 
 ## Future Improvements
-- Database Integration: Replace in-memory storage with a database like PostgreSQL or MongoDB.
+- Advanced Querying: Add support for complex queries, such as filtering and sorting.
 
 - Authentication and Authorization: Add user authentication and role-based access control.
 
