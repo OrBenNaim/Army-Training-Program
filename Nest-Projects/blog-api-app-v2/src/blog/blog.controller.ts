@@ -25,10 +25,10 @@ export class BlogController {
     }
 
     // Endpoint: GET /blog/id
-    // @Get(':id')
-    // async getBlogById(@Param('id', ParseIntPipe) id: number) {
-    //     return this.blogService.getBlogsById(id);
-    // }
+    @Get(':id')
+    async getBlogById(@Param('id', ParseIntPipe) id: number) {
+        return this.blogService.getBlogById(id);
+    }
 
 
     // Endpoint: DELETE /blog/id

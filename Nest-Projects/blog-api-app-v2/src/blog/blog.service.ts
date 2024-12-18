@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Blog } from './entity/blog.entity';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { ConfigService } from '@nestjs/config';
@@ -44,47 +44,38 @@ export class BlogService {
 
     }
 
+
     // Method to retrieve specific blog by ID
     async getBlogById(ID: number): Promise<Blog> {
-        try {
-            const blog = await this.database.query.blogs.findFirst({
-                where: eq(schema.blogs.id, ID),
-            });
+        
+        const blog = await this.database.query.blogs.findFirst({
+            where: eq(schema.blogs.id, ID),
+        });
 
-            if (!blog) {
-                throw new NotFoundException(`\nBlog with ID ${ID} not found\n`);
-            }
-            
-            console.log('\nGet request by ID is successfully made');
-            return blog as Blog;
-
-        } catch (error) {
-            console.error(error);
-            throw new Error(`\nUnable to retrieve blog with ID=${ID} at the moment.\n`);
+        if (!blog) {
+            throw new NotFoundException(`Blog with ID=${ID} not found`);
         }
+        
+        console.log('\nGet request by ID is successfully made');
+        return blog //as Blog;
     }
 
 
     // Method to delete a blog by ID
     async deleteBlogById(ID: number): Promise<Blog>{
-        try{
-            const blog = await this.database.query.blogs.findFirst({
+
+        const blog = await this.database.query.blogs.findFirst({
                 where: eq(schema.blogs.id, ID),
             });
     
             if (!blog) {
-                throw new Error(`\nBlog with ID ${ID} not found\n`);
+                throw new NotFoundException(`Blog with ID=${ID} not found`);
             }
             
             await this.database.delete(schema.blogs).where(eq(schema.blogs.id, ID));
             console.log('\nDELETE request by id successfully made\n');
             return blog;
-        }
-        catch(error){
-            throw new Error(error.message || '\nUnable to delete the specific blog at the moment.\n');
-        }
     }
-
 
 
     // Method to fetch a joke
