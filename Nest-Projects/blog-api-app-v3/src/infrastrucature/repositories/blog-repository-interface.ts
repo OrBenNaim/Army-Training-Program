@@ -1,13 +1,13 @@
 import { Blog } from '../../domain/entities/blog.entity';
 
 export interface BlogRepository {
-  async createBlog(blog: Blog): Promise<void>;
+  createBlog(blog: Blog): Promise<void>;
     
-  async findById(id: number): Promise<Blog | null>;
+  findById(id: number): Promise<Blog | null>;
   
-  async getBlogs(): Promise<Blog[]>;
+  getBlogs(): Promise<Blog[]>;
 
-  async getBlogsById(): Promise<Blog>;
+  getBlogsById(): Promise<Blog>;
   
-  async deleteById(id: number): Promise<void>;
+  deleteById(id: number): Promise<void>;
 }

@@ -2,6 +2,9 @@ import { Controller, Post, Body, Get } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBlogCommand } from '../application/commands/create-blog.command';
 import { GetAllBlogsQuery } from '../application/queries/get-all-blogs.query';
+import { DeleteBlogCommand } from '../application/commands/delete-blog.command';
+
+
 
 @Controller('blogs')
 export class BlogController {
@@ -16,5 +19,10 @@ export class BlogController {
   @Get()
   async getAllBlogs(): Promise<any> {
     return await this.queryBus.execute(new GetAllBlogsQuery());
+  }
+
+  @Delete(':id')
+  async deleteBlog(@Param('id') id: number): Promise<void> {
+    await this.commandBus.execute(new DeleteBlogCommand(Number(id)));
   }
 }

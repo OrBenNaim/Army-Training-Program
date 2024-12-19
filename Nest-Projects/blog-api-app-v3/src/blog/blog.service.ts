@@ -3,9 +3,9 @@ import { Blog } from './entity/blog.entity';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { DATABASE_CONNECTION } from 'src/database/db-connection';
+import { DATABASE_CONNECTION } from 'src/infrastrucature/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from 'src/database/schema';
+import * as schema from 'src/infrastrucature/database/schema';
 import { eq } from 'drizzle-orm';
 
 

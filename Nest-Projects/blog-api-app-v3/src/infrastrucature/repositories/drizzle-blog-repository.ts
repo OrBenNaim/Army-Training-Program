@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { BlogRepository } from '../../domain/repositories/blog-repository.interface';
+import { BlogRepository } from './blog-repository-interface';
 import { Blog } from '../../domain/entities/blog.entity';
-import { blogs } from './drizzle-config';
+import { blogs } from '../database/schema';
 import { drizzle, PgDatabase } from 'drizzle-orm/node-postgres';
 
 @Injectable()

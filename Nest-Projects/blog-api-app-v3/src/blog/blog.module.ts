@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { BlogController } from './blog.controller';
 import { BlogService } from './blog.service';
 import { ConfigModule } from '@nestjs/config';
-import { DbModule } from 'src/database/db.module'; 
+import { DbModule } from 'src/infrastrucature/database/db.module'; 
 
 
 @Module({
