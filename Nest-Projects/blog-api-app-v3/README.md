@@ -30,7 +30,7 @@ Follow these steps to set up the project locally:
     git clone https://github.com/OrBenNaim/Army-Training-Program.git
 
 2. Navigate to the Blog-API-App directory:
-    cd Army-Training-Program/Nest-Projects/blog-api-app-v2
+    cd Army-Training-Program/Nest-Projects/blog-api-app-v3
 
 3. Install the dependencies:
     npm install

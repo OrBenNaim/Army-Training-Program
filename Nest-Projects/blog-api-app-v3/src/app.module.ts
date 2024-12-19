@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { BlogModule } from './blog/blog.module';
-import { ConfigModule } from '@nestjs/config';
-import { DbModule } from './database/db.module';
+import { CqrsModule } from '@nestjs/cqrs';
+import { BlogController } from './api/blog.controller';
+import { CreateBlogHandler } from './application/handlers/create-blog.handler';
+import { GetAllBlogsHandler } from './application/handlers/get-all-blogs.handler';
+import { DrizzleBlogRepository } from './infrastructure/repositories/drizzle-blog-repository';
+import { DatabaseModule } from './infrastructure/database.module';
 
 @Module({
-  imports: [
-    BlogModule,
-    ConfigModule.forRoot({ isGlobal: true}),  // Makes ConfigModule available globally
-    DbModule,
-  ]
+  imports: [CqrsModule, DatabaseModule],
+  controllers: [BlogController],
+  providers: [DrizzleBlogRepository, CreateBlogHandler, GetAllBlogsHandler],
 })
 export class AppModule {}
