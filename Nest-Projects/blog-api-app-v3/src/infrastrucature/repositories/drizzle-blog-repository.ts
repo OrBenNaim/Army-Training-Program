@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BlogRepository } from './blog-repository-interface';
 import { Blog } from '../../domain/entities/blog.entity';
 import { blogs } from '../database/schema';
-import { db } from 'src/infrastrucature/database/db.module'; // Import the configured Drizzle instance
+import { db } from '../database/database-config'; // Import the configured Drizzle instance
 
 @Injectable()
 export class DrizzleBlogRepository implements BlogRepository {
