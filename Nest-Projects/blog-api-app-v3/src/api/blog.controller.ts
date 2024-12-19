@@ -1,8 +1,8 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBlogCommand } from '../application/commands/create-blog.command';
-import { GetAllBlogsQuery } from '../application/queries/get-all-blogs.query';
-import { DeleteBlogCommand } from '../application/commands/delete-blog.command';
+import { GetAllBlogsQuery } from 'src//application/queries/get-all-blogs.query';
+import { DeleteBlogCommand } from 'src/application/commands/delete-blog.command';
 
 
 
