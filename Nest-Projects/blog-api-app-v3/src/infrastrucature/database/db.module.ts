@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { DATABASE_CONNECTION } from './db-connection';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigModule } from '@nestjs/config';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from 'src/infrastrucature/database/schema'
 
 
 @Module({
+    imports: [ ConfigModule ],
     providers: [
         {
             provide: DATABASE_CONNECTION,

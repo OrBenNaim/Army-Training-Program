@@ -20,7 +20,8 @@ export class DrizzleBlogRepository implements BlogRepository {
   async createBlog(blog: Blog): Promise<void> {
     if (blog.id) {
       await this.database.update(blogs).set({ title: blog.title, content: blog.content }).where(eq(blogs.id, blog.id)).execute();
-    } else {
+    } 
+    else {
       await this.database.insert(blogs).values({ title: blog.title, content: blog.content }).execute();
     }
   }
