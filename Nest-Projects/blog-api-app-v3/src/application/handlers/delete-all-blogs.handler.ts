@@ -1,15 +1,15 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { DeleteBlogByIdCommand } from '../commands/delete-blog-by-id.command';
+import { DeleteAllBlogsCommand } from '../commands/delete-all-blogs.command';
 import { BlogRepository, BLOG_REPOSITORY } from 'src/infrastrucature/repositories/blog-repository-interface';
 import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
 
 
-@CommandHandler(DeleteBlogByIdCommand)
-export class DeleteBlogByIdHandler implements ICommandHandler<DeleteBlogByIdCommand> {
+@CommandHandler(DeleteAllBlogsCommand)
+export class DeleteAllBlogHandler implements ICommandHandler<DeleteAllBlogsCommand> {
   constructor(@Inject(BLOG_REPOSITORY) private readonly blogRepository: BlogRepository) {}
 
-  async execute(command: DeleteBlogByIdCommand): Promise<void> {
-    await this.blogRepository.deleteBlogById(command.id);
+  async execute(command: DeleteAllBlogsCommand): Promise<void> {
+    await this.blogRepository.deleteAllBlogs();
   }
 }

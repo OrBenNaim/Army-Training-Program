@@ -9,6 +9,9 @@ import { DrizzleBlogRepository } from 'src/infrastrucature/repositories/drizzle-
 import { DatabaseModule } from 'src/infrastrucature/database/db.module';
 import { BLOG_REPOSITORY } from 'src/infrastrucature/repositories/blog-repository-interface';
 import { GetJokeHandler } from './application/handlers/get-joke.handler';
+import { DeleteBlogByIdHandler } from './application/handlers/delete-blog.handler';
+import { DeleteAllBlogHandler } from './application/handlers/delete-all-blogs.handler';
+
 
 @Module({
   imports: [
@@ -24,7 +27,9 @@ import { GetJokeHandler } from './application/handlers/get-joke.handler';
     CreateBlogHandler,
     GetAllBlogsHandler,
     GetBlogByIdHandler,
-    GetJokeHandler
+    GetJokeHandler,
+    DeleteBlogByIdHandler,
+    DeleteAllBlogHandler
   ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { Blog } from 'src/domain/entities/blog.entity';
 import { GetBlogByIdQuery } from 'src/application/queries/get-blog-by-id.query';
 import { BlogRepository, BLOG_REPOSITORY} from 'src/infrastrucature/repositories/blog-repository-interface';
@@ -10,6 +10,6 @@ export class GetBlogByIdHandler implements IQueryHandler<GetBlogByIdQuery> {
 
   async execute(query: GetBlogByIdQuery): Promise<Blog> {
     const {id} = query;
-    return await this.blogRepository.getBlogById(id);
+    return this.blogRepository.getBlogById(id);
   }
 }

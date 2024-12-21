@@ -11,5 +11,7 @@ export interface BlogRepository {
 
   getJoke(): Promise<string>;
   
+  deleteAllBlogs(): Promise<void>;
+
   deleteBlogById(id: number): Promise<void>;
 }

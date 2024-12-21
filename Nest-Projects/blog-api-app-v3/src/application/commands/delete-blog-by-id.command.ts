@@ -1,4 +1,4 @@
-export class DeleteBlogCommand {
+export class DeleteBlogByIdCommand {
     constructor(public readonly id: number) {}
   }
   

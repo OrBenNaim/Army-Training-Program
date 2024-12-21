@@ -3,7 +3,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBlogCommand } from '../application/commands/create-blog.command';
 import { GetAllBlogsQuery } from 'src/application/queries/get-all-blogs.query';
 import { GetBlogByIdQuery } from 'src/application/queries/get-blog-by-id.query';
-import { DeleteBlogCommand } from 'src/application/commands/delete-blog.command';
+import { DeleteAllBlogsCommand } from 'src/application/commands/delete-all-blogs.command';
+import { DeleteBlogByIdCommand } from 'src/application/commands/delete-blog-by-id.command';
 import { CreateBlogDto } from 'src/application/dto/create-blog.dto';
 import { Blog } from 'src/domain/entities/blog.entity';
 import { GetJokeQuery } from 'src/application/queries/get-joke.query';
@@ -32,9 +33,15 @@ export class BlogController {
   }
 
 
+  @Delete()
+  async deleteAllBlogs(): Promise<void> {
+    await this.commandBus.execute(new DeleteAllBlogsCommand());
+  }
+
+
   @Delete(':id')
   async deleteBlog(@Param('id') id: number): Promise<void> {
-    await this.commandBus.execute(new DeleteBlogCommand(Number(id)));
+    await this.commandBus.execute(new DeleteBlogByIdCommand(Number(id)));
   }
 
   @Get('jokes/bublil')
