@@ -1,22 +1,53 @@
 # Blog-API-App-V3
 
 ## Description
-Blog-API-App-V2 is a backend application built with NestJS, focused on efficient interaction with PostgreSQL databases using Drizzle ORM. The project demonstrates how to build a scalable and modular RESTful API with a clean codebase. It includes CRUD operations for managing blog posts and showcases robust database integration using PostgreSQL and Drizzle ORM. This application serves as an excellent starting point for developers seeking to work with relational databases in a TypeScript-based server environment.
+Blog-API-App-v3 is a backend application built with NestJS, implementing CQRS and DDD principles for scalability, maintainability, and modularity. The project interacts with a PostgreSQL database using Drizzle ORM and provides a structured approach to building RESTful APIs with a clean separation of concerns. It supports CRUD operations for managing blog posts and demonstrates how to design an application with modern architectural patterns like CQRS and DDD.
 
 ## Features
+- **CQRS Implementation**: Separates read and write operations with Commands, Queries, and their respective Handlers.
+- ***DDD Principles***: Implements domain-driven design with clear domain logic, repository patterns, and separation of concerns.
 - **Database Integration**: Utilizes PostgreSQL for persistent data storage.
 - **Drizzle ORM**: Simplifies database queries and operations with a lightweight and type-safe ORM.
 - **Create Blog Post**: Add new blog entries with a title and content.
 - **Retrieve All Blog Posts**: Get a list of all blog entries.
 - **Retrieve Specific Blog Post**:  Fetch a specific blog by its ID.
-- **Update Blog Post**: Edit existing blog entries.
 - **Delete Blog Post**: Remove specific blog entries from the database.
 - **Fetch and Customize Jokes**: Fetch Chuck Norris jokes from an external API and replace "Chuck Norris" with "Bublil".
 - **Validation**: Uses class-validator to ensure input data integrity.
 
 
+## CQRS and DDD Principles
+### Command Query Responsibility Segregation (CQRS)
+  1. Commands:
+    - Responsible for state-changing operations.
+    - Example: CreateBlogCommand is used to add a new blog post.
+
+  2. Queries:
+    - Handle read-only operations.
+    - Example: GetAllBlogsQuery fetches all blog entries.
+
+  3. Handlers:
+    - Separate command and query logic to simplify workflows and improve scalability.
+    - Example: CreateBlogHandler processes the CreateBlogCommand by interacting with the domain and repository layers.
+
+### Domain-Driven Design (DDD)
+  1. Domain Layer:
+    - Encapsulates business rules and logic.
+    - Example: The Blog entity defines the core attributes and behaviors of a blog post.
+
+  2. Repository Pattern:
+    - Abstracts data persistence logic.
+    - Example: DrizzleBlogRepository interacts with the database and implements the BlogRepository interface.
+
+  3. Separation of Concerns:
+    - Divides the application into distinct layers (API, Application, Domain, and Infrastructure) to ensure maintainability and scalability.
+
+  4. Ubiquitous Language:
+    - Defines a shared language for domain concepts (e.g., Blog, Command, Query), ensuring clarity across teams.
+
 ## Table of Contents
 - [Features](#features)
+- [CQRS and DDD Principles](#CQRS-and-DDD-Principles)
 - [Setup and Installation](#setup-and-installation)
 - [Usage](#usage)
 - [Technologies Used](#technologies-used)
@@ -75,11 +106,16 @@ Follow these steps to set up the project locally:
   - Response: Returns the blog entry with the specified ID.
 
 4. Delete Blog Post
-  - Endpoint: DELETE /blogs/:id
-  - Example: DELETE /blogs/1
+  - Endpoint: DELETE /blog/:id
+  - Example: DELETE /blog/1
   - Response: Confirms the deletion.
 
-5. Fetch Customized Jokes
+5. Delete All Blogs
+  - Endpoint: DELETE /blog
+  - Example: DELETE /blog
+  - Response: Confirms the deletion.
+
+6. Fetch Customized Jokes
   - Endpoint: GET /blog/jokes/bublil
   - Response: Logs a joke with "Chuck Norris" replaced by "Bublil".
 
@@ -88,6 +124,8 @@ Follow these steps to set up the project locally:
 - NestJS: A progressive Node.js framework for building efficient server-side applications.
 
 - Drizzle ORM: A lightweight TypeScript ORM for clean and type-safe interaction with PostgreSQL.
+
+- CQRS Module: Segregates commands and queries for better scalability.
 
 - PostgreSQL: A robust and reliable relational database system.
 
