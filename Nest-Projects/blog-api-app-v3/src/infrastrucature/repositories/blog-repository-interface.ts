@@ -8,6 +8,8 @@ export interface BlogRepository {
   getBlogs(): Promise<Blog[]>;
 
   getBlogById(id: number): Promise<Blog>;
+
+  getJoke(): Promise<string>;
   
   deleteBlogById(id: number): Promise<void>;
 }

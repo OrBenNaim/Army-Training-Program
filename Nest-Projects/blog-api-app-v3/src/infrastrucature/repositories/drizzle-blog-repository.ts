@@ -8,6 +8,7 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../database/schema';
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
 
 
 @Injectable()
@@ -36,7 +37,30 @@ export class DrizzleBlogRepository implements BlogRepository {
     return results.map(row => new Blog(row.id, row.title, row.content));
   }
 
+
+  // Method to fetch a joke
+  async getJoke(): Promise<string> {
+    try {
+        const url: string = this.configService.get<string>('JOKE_URL');
+        if (!url) {
+            throw new Error('JOKE_URL is not defined in the environment variables');
+        }
+
+        console.log('Fetched URL from environment:', url); // Debug log
+
+        const response = await axios.get(url);
+        const modifiedJoke = response.data.value.replace('Chuck Norris', 'Bublil');
+        return modifiedJoke;        // Return the modified joke
+    }
+    catch (error) {
+        console.error('\nError fetching joke:', error.message);
+        throw new Error('\nUnable to fetch the joke at the moment.');      // Return user-friendly error
+    }
+  }
+
+
   async deleteBlogById(id: number): Promise<void> {
     await this.database.delete(blogs).where(eq(blogs.id, id)).execute();
   }
+
 }

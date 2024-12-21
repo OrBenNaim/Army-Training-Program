@@ -35,4 +35,9 @@ export class BlogController {
   async deleteBlog(@Param('id') id: number): Promise<void> {
     await this.commandBus.execute(new DeleteBlogCommand(Number(id)));
   }
+
+  @Get('jokes/bublil')
+  async getJoke(): Promise<string> {
+    return await this.queryBus.execute({name: 'getJoke'});
+  }
 }
