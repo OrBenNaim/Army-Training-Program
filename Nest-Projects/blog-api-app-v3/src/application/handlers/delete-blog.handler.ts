@@ -8,10 +8,10 @@ export class DeleteBlogHandler implements ICommandHandler<DeleteBlogCommand> {
   constructor(private readonly blogRepository: BlogRepository) {}
 
   async execute(command: DeleteBlogCommand): Promise<void> {
-    const blog = await this.blogRepository.findById(command.id);
+    const blog = await this.blogRepository.getBlogById(command.id);
     if (!blog) {
       throw new NotFoundException(`Blog with ID ${command.id} not found.`);
     }
-    await this.blogRepository.deleteById(command.id);
+    await this.blogRepository.deleteBlogById(command.id);
   }
 }
