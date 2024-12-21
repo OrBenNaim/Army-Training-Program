@@ -6,6 +6,7 @@ import { GetBlogByIdQuery } from 'src/application/queries/get-blog-by-id.query';
 import { DeleteBlogCommand } from 'src/application/commands/delete-blog.command';
 import { CreateBlogDto } from 'src/application/dto/create-blog.dto';
 import { Blog } from 'src/domain/entities/blog.entity';
+import { GetJokeQuery } from 'src/application/queries/get-joke.query';
 
 
 @Controller('blog')
@@ -38,6 +39,6 @@ export class BlogController {
 
   @Get('jokes/bublil')
   async getJoke(): Promise<string> {
-    return await this.queryBus.execute({name: 'getJoke'});
+    return await this.queryBus.execute(new GetJokeQuery());
   }
 }
