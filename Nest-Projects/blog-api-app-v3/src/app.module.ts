@@ -10,17 +10,17 @@ import { BLOG_REPOSITORY } from 'src/infrastrucature/repositories/blog-repositor
 
 @Module({
   imports: [
-    CqrsModule,
-    ConfigModule.forRoot({
+    CqrsModule,             // Enables CQRS (Command Query Responsibility Segregation) pattern
+    ConfigModule.forRoot({  // Loads environment variables from a .env file into process.env
       isGlobal: true,
     }),
-    DatabaseModule,
+    DatabaseModule,         // Imports the DatabaseModule which sets up the database connection
   ],
-  controllers: [BlogController],
+  controllers: [BlogController],  // Registers the BlogController to handle incoming HTTP requests
   providers: [
     { provide: BLOG_REPOSITORY, useClass: DrizzleBlogRepository },
-    ...CommandHandlers,
-    ...QueryHandlers,
+    ...CommandHandlers,         // Registers all command handlers
+    ...QueryHandlers,          // Registers all query handlers
   ],
 })
 export class AppModule {}
