@@ -1,0 +1,14 @@
+services:
+  web:
+    image: my-web-server
+    build: .
+    ports:
+      - "8000:8000"
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
