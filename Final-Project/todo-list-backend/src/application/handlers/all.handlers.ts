@@ -1,21 +1,21 @@
-import { CreateBlogHandler } from 'src/application/handlers/create-blog.handler';
+import { CreateToDoListHandler } from 'src/application/handlers/create-ToDoList.handler';
 
-import { GetAllBlogsHandler } from 'src/application/handlers/get-all-blogs.handler';
+import { GetAllToDoListsHandler } from 'src/application/handlers/get-all-ToDoLists.handler';
 
-import { GetBlogByIdHandler } from 'src/application/handlers/get-blog-by-id.handler';
+import { GetToDoListByIdHandler } from 'src/application/handlers/get-ToDoList-by-id.handler';
 
-import { DeleteBlogByIdHandler } from 'src/application/handlers/delete-blog-by-id.handler';
+import { DeleteToDoListByIdHandler } from 'src/application/handlers/delete-ToDoList-by-id.handler';
 
-import { DeleteAllBlogHandler } from 'src/application/handlers/delete-all-blogs.handler';
+import { DeleteAllToDoListsHandler } from 'src/application/handlers/delete-all-ToDoLists.handler';
 
 
 export const CommandHandlers = [
-    CreateBlogHandler,
-    DeleteBlogByIdHandler,
-    DeleteAllBlogHandler,
+    CreateToDoListHandler,
+    DeleteToDoListByIdHandler,
+    DeleteAllToDoListsHandler,
   ];
   
   export const QueryHandlers = [
-    GetAllBlogsHandler,
-    GetBlogByIdHandler,
+    GetAllToDoListsHandler,
+    GetToDoListByIdHandler,
   ];

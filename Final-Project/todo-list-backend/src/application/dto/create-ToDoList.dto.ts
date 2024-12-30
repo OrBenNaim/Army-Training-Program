@@ -1,6 +1,6 @@
 import { IsString, IsEmail, IsNotEmpty, Length } from 'class-validator';
 
-export class CreateBlogDto {
+export class CreateToDoListDto {
     @IsString()
     @IsNotEmpty()
     title: string;

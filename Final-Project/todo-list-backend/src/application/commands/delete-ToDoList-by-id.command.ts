@@ -1,3 +1,4 @@
-export class GetBlogByIdQuery {
+export class DeleteToDoListByIdCommand {
     constructor(public readonly id: number) {}
   }
+  
