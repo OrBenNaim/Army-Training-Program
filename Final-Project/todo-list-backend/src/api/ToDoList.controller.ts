@@ -39,7 +39,7 @@ export class ToDoListController {
 
 
   @Delete(':id')
-  async deleteBlog(@Param('id') id: number): Promise<void> {
+  async deleteToDoList(@Param('id') id: number): Promise<void> {
     await this.commandBus.execute(new DeleteToDoListByIdCommand(Number(id)));
   }
 

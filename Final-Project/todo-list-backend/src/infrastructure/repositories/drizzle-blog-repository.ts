@@ -32,7 +32,7 @@ export class DrizzleToDoListRepository implements ToDoListsRepository {
   // Method to retrieve all ToDoLists
   async getToDoLists(): Promise<ToDoListEntity[]> {
       const results = await this.database.select().from(toDoListSchema).execute();
-      return results.map(row => new ToDoList(row.id, row.title, row.content));
+      return results.map(row => new ToDoListEntity(row.id, row.title, row.content));
   }
 
 
