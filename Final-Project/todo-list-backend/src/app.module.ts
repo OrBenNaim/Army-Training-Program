@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { ToDoListController } from './api/ToDoList.controller';
 import { CommandHandlers, QueryHandlers } from 'src/application/handlers/all.handlers';
-import { DrizzleToDoListRepository } from 'src/infrastructure/repositories/drizzle-blog-repository';
+import { DrizzleToDoListRepository } from 'src/infrastructure/repositories/drizzle-ToDoList-repository';
 import { DatabaseModule } from 'src/infrastructure/database/db.module';
 import { TODOLIST_REPOSITORY } from 'src/infrastructure/repositories/ToDoList-repository-interface';
 

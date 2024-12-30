@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty, Length } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, Length, IsBoolean } from 'class-validator';
 
 export class CreateToDoListDto {
     @IsString()
@@ -6,6 +6,8 @@ export class CreateToDoListDto {
     title: string;
 
     @IsString()
-    @IsNotEmpty()
-    content: string;
+    description: string;
+
+    @IsBoolean()
+    completed: boolean;
 }

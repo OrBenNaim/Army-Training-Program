@@ -2,7 +2,7 @@ import { ToDoListEntity } from '../../domain/entities/ToDoList.entity';
 
 export const TODOLIST_REPOSITORY = 'TODOLIST_REPOSITORY';
 
-export interface ToDoListsRepository {
+export interface ToDoListRepository {
   createToDoList(toDoList: ToDoListEntity): Promise<void>;
   
   getToDoLists(): Promise<ToDoListEntity[]>;

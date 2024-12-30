@@ -1,5 +1,5 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import { ToDoListsRepository } from './ToDoList-repository-interface';
+import { ToDoListRepository } from './ToDoList-repository-interface';
 import { ToDoListEntity } from '../../domain/entities/ToDoList.entity';
 import { toDoListSchema } from '../database/schema';
 import { DATABASE_CONNECTION } from '../database/db-connection';
@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
-export class DrizzleToDoListRepository implements ToDoListsRepository {
+export class DrizzleToDoListRepository implements ToDoListRepository {
   constructor(
     @Inject(DATABASE_CONNECTION) private readonly database: NodePgDatabase<typeof schema>,
         private readonly configService: ConfigService
@@ -21,10 +21,10 @@ export class DrizzleToDoListRepository implements ToDoListsRepository {
   // Method to create a new ToDoList
   async createToDoList(toDoList: ToDoListEntity): Promise<void> {
     if (toDoList.id) {
-      await this.database.update(toDoListSchema).set({ title: toDoList.title, content: toDoList.content }).where(eq(toDoListSchema.id, toDoListSchema.id)).execute();
+      await this.database.update(toDoListSchema).set({ title: toDoList.title, description: toDoList.description }).where(eq(toDoListSchema.id, toDoListSchema.id)).execute();
     } 
     else {
-      await this.database.insert(toDoListSchema).values({ title: toDoList.title, content: toDoList.content }).execute();
+      await this.database.insert(toDoListSchema).values({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed }).execute();
     }
   }
 
@@ -32,7 +32,7 @@ export class DrizzleToDoListRepository implements ToDoListsRepository {
   // Method to retrieve all ToDoLists
   async getToDoLists(): Promise<ToDoListEntity[]> {
       const results = await this.database.select().from(toDoListSchema).execute();
-      return results.map(row => new ToDoListEntity(row.id, row.title, row.content));
+      return results.map(row => new ToDoListEntity(row.id, row.title, row.description, row.completed));
   }
 
 
@@ -40,7 +40,7 @@ export class DrizzleToDoListRepository implements ToDoListsRepository {
   async getToDoListById(id: number): Promise<ToDoListEntity> {
     const result = await this.database.select().from(toDoListSchema).where(eq(toDoListSchema.id, id)).execute();
     
-    const todoList = result.length ? new ToDoListEntity(result[0].id, result[0].title, result[0].content) : null;
+    const todoList = result.length ? new ToDoListEntity(result[0].id, result[0].title, result[0].description, result[0].completed) : null;
 
     if(!todoList) {
       throw new NotFoundException(`Blog with ID ${id} not found.`);

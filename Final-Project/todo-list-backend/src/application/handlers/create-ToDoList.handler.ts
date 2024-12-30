@@ -7,11 +7,11 @@ import { CreateToDoListCommand } from '../commands/create-ToDoList.command';
 @CommandHandler(CreateToDoListCommand)
 export class CreateToDoListHandler implements ICommandHandler<CreateToDoListCommand> {
   constructor(
-    @Inject(TODOLIST_REPOSITORY) private readonly blogRepository: ToDoListsRepository,
+    @Inject(TODOLIST_REPOSITORY) private readonly toDoListsRepository: ToDoListsRepository,
   ) {}
 
   async execute(command: CreateToDoListCommand): Promise<void> {
     const { toDoList } = command;
-    await this.blogRepository.createToDoList(toDoList);
+    await this.toDoListsRepository.createToDoList(toDoList);
   }
 }

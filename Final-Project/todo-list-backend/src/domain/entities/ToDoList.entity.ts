@@ -2,7 +2,8 @@ export class ToDoListEntity {
     constructor(
         public readonly id: number,
         public title: string,
-        public content: string
+        public description: string,
+        public completed: boolean
     ){}
 
     updateTitle(newTitle: string): void {
@@ -12,10 +13,11 @@ export class ToDoListEntity {
         this.title = newTitle;
     }
 
-    updateContent(newContent: string): void {
-        if (!newContent || newContent.trim().length === 0) {
-          throw new Error('Content cannot be empty');
-        }
-        this.content = newContent;
-      }
+    updateDescription(newDescription: string): void {
+        this.description = newDescription;
+    }
+
+    toggleCompleted(): void {
+        this.completed = !this.completed;
+    }
 } 
