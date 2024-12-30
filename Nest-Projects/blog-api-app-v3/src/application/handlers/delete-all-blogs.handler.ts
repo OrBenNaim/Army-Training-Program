@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { DeleteAllBlogsCommand } from '../commands/delete-all-blogs.command';
-import { BlogRepository, BLOG_REPOSITORY } from 'src/infrastrucature/repositories/blog-repository-interface';
+import { BlogRepository, BLOG_REPOSITORY } from 'src/infrastructure/repositories/blog-repository-interface';
 import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
 
 

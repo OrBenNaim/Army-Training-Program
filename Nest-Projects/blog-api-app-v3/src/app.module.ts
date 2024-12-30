@@ -3,9 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { BlogController } from './api/blog.controller';
 import { CommandHandlers, QueryHandlers } from 'src/application/handlers/all.handlers';
-import { DrizzleBlogRepository } from 'src/infrastrucature/repositories/drizzle-blog-repository';
-import { DatabaseModule } from 'src/infrastrucature/database/db.module';
-import { BLOG_REPOSITORY } from 'src/infrastrucature/repositories/blog-repository-interface';
+import { DrizzleBlogRepository } from 'src/infrastructure/repositories/drizzle-blog-repository';
+import { DatabaseModule } from 'src/infrastructure/database/db.module';
+import { BLOG_REPOSITORY } from 'src/infrastructure/repositories/blog-repository-interface';
 
 
 @Module({

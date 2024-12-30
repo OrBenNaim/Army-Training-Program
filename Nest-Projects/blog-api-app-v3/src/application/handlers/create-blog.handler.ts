@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { BlogRepository, BLOG_REPOSITORY } from 'src/infrastrucature/repositories/blog-repository-interface';
+import { BlogRepository, BLOG_REPOSITORY } from 'src/infrastructure/repositories/blog-repository-interface';
 import { CreateBlogCommand } from '../commands/create-blog.command';
 
 

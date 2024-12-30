@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { Blog } from 'src/domain/entities/blog.entity';
 import { GetAllBlogsQuery } from 'src/application/queries/get-all-blogs.query';
-import { BlogRepository, BLOG_REPOSITORY} from 'src/infrastrucature/repositories/blog-repository-interface';
+import { BlogRepository, BLOG_REPOSITORY} from 'src/infrastructure/repositories/blog-repository-interface';
 
 @QueryHandler(GetAllBlogsQuery)
 export class GetAllBlogsHandler implements IQueryHandler<GetAllBlogsQuery> {
