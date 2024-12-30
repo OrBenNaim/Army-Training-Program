@@ -1,10 +1,11 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { ToDoListRepository } from './ToDoList-repository-interface';
 import { ToDoListEntity } from '../../domain/entities/ToDoList.entity';
-import { ToDoListSchema } from '../database/schema';
+import * as schema from 'src/infrastructure/database/schema';
+import { ToDoListSchema } from 'src/infrastructure/database/schema';
 import { DATABASE_CONNECTION } from '../database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from '../database/schema';
+
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 
@@ -21,10 +22,15 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
   // Method to create a new ToDoList
   async createToDoList(toDoList: ToDoListEntity): Promise<void> {
     if (toDoList.id) {
-      await this.database.update(ToDoListSchema).set({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed }).where(eq(ToDoListSchema.id, toDoList.id)).execute();
+      await this.database.update(schema.ToDoListSchema)
+      .set({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed })
+      .where(eq(ToDoListSchema.id, toDoList.id))
+      .execute();
     } 
     else {
-      await this.database.insert(ToDoListSchema).values({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed }).execute();
+      await this.database.insert(ToDoListSchema)
+      .values({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed })
+      .execute();
     }
   }
 

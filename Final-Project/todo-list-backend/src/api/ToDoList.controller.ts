@@ -14,8 +14,8 @@ export class ToDoListController {
   constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
   @Post()
-  async createToDoList(@Body() createBlogDto: CreateToDoListDto): Promise<void> {
-    const { title, description, completed } = createBlogDto;
+  async createToDoList(@Body() createToDoListDto: CreateToDoListDto): Promise<void> {
+    const { title, description, completed } = createToDoListDto;
     const toDoList = new ToDoListEntity(null, title, description, completed);    // Assuming id is generated later
     await this.commandBus.execute(new CreateToDoListCommand(toDoList));
   }
