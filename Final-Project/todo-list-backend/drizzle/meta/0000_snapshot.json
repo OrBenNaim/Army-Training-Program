@@ -1,11 +1,11 @@
 {
-  "id": "e9b7f120-7aac-48be-83b7-5d1ba0c356b0",
+  "id": "ae7a3437-5cfb-4466-bb8f-b7c862db5c86",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.toDoLists": {
-      "name": "toDoLists",
+    "public.ToDoLists": {
+      "name": "ToDoLists",
       "schema": "",
       "columns": {
         "id": {
@@ -20,11 +20,18 @@
           "primaryKey": false,
           "notNull": true
         },
-        "content": {
-          "name": "content",
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "completed": {
+          "name": "completed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         }
       },
       "indexes": {},
