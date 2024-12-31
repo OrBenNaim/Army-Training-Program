@@ -10,8 +10,8 @@ export class CreateToDoListHandler implements ICommandHandler<CreateToDoListComm
     @Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepository,
   ) {}
 
-  async execute(command: CreateToDoListCommand): Promise<void> {
+  async execute(command: CreateToDoListCommand): Promise<string> {
     const { toDoList } = command;
-    await this.toDoListRepository.createToDoList(toDoList);
+    return await this.toDoListRepository.createToDoList(toDoList);
   }
 }

@@ -9,7 +9,7 @@ import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
 export class DeleteAllToDoListsHandler implements ICommandHandler<DeleteAllToDoListsCommand> {
   constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepository) {}
 
-  async execute(command: DeleteAllToDoListsCommand): Promise<void> {
-    await this.toDoListRepository.deleteAllToDoLists();
+  async execute(command: DeleteAllToDoListsCommand): Promise<string> {
+    return await this.toDoListRepository.deleteAllToDoLists();
   }
 }

@@ -3,7 +3,7 @@ export class ToDoListEntity {
         public readonly id: number,
         public title: string,
         public description: string,
-        public completed: boolean
+        public completed: boolean   // Default value for completed is false when ToDoList is created
     ){}
 
     updateTitle(newTitle: string): void {
