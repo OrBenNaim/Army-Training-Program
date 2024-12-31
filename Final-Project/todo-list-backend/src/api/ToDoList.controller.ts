@@ -18,7 +18,6 @@ export class ToDoListController {
   @Post()
   async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<string> {
 
-    // const title = createToDoItemDto.title;
     const description = createToDoItemDto.description === undefined ? "" : createToDoItemDto.description;   // Default value for description is "" when ToDoList is created
     const completed = createToDoItemDto.completed === undefined ? false : createToDoItemDto.completed;        // Default value for completed is false when ToDoList is created
 
@@ -39,8 +38,8 @@ export class ToDoListController {
 
 
   @Put(':id')
-  async updateToDoListById(@Param('id') id: number, @Body() updatetoDoListDto: UpdateToDoItemDto): Promise<string> {
-    const { title, description, completed } = updatetoDoListDto;
+  async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<string> {
+    const { title, description, completed } = updateToDoItemDto;
     return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));
   }
 

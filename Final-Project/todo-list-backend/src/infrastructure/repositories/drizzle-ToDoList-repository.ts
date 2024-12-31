@@ -20,11 +20,6 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
   // Method to create a new ToDoItem
   async createToDoItem(toDoItem: ToDoItemEntity): Promise<string> {
-    
-    // If the title is null, throw a ConflictException
-    // if (toDoItem.title === null || toDoItem.title.trim() === '') {
-    //   throw new ConflictException("Title is required.");
-    // }
 
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
@@ -77,7 +72,6 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
   // Method to update a ToDoItem by ID
   async updateToDoItemById(id: number, title: string | null, description: string | null, completed: boolean | null): Promise<string> {
-    console.log("\ntitle: \n", title);  
     
     const todoItem = await this.getToDoItemById(id);
     
@@ -96,9 +90,9 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
     }
 
     // Update only if the new value is not null
-    const updatedTitle = title !== null ? title : todoItem.title;
-    const updatedDescription = description !== null ? description : todoItem.description;
-    const updatedCompleted = completed !== null ? completed : todoItem.completed;
+    const updatedTitle = title !== undefined ? title : todoItem.title;
+    const updatedDescription = description !== undefined ? description : todoItem.description;
+    const updatedCompleted = completed !== undefined ? completed : todoItem.completed;
 
 
     await this.database.update(ToDoItemSchema)
