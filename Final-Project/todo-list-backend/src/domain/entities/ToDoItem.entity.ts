@@ -1,4 +1,4 @@
-export class ToDoListEntity {
+export class ToDoItemEntity {
     constructor(
         public readonly id: number,
         public title: string,

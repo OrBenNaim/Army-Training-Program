@@ -1,11 +1,10 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { ToDoListRepository } from './ToDoList-repository-interface';
-import { ToDoListEntity } from '../../domain/entities/ToDoList.entity';
+import { ToDoItemEntity } from '../../domain/entities/ToDoItem.entity';
 import * as schema from 'src/infrastructure/database/schema';
 import { ToDoListSchema } from 'src/infrastructure/database/schema';
 import { DATABASE_CONNECTION } from '../database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 
@@ -20,7 +19,7 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
 
   // Method to create a new ToDoList
-  async createToDoList(toDoList: ToDoListEntity): Promise<string> {
+  async createToDoItem(toDoList: ToDoItemEntity): Promise<string> {
     if (toDoList.id) {
       await this.database.update(ToDoListSchema)
       .set({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed})
@@ -38,22 +37,22 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
 
   // Method to retrieve all ToDoLists
-  async getToDoLists(): Promise<ToDoListEntity[]> {
+  async getAllToDoItems(): Promise<ToDoItemEntity[]> {
       const results = await this.database.select().from(ToDoListSchema).execute();
       
       if(!results.length) {
         throw new NotFoundException("There are no existing ToDo Lists yet.");
       }
       
-      return results.map(row => new ToDoListEntity(row.id, row.title, row.description, row.completed));
+      return results.map(row => new ToDoItemEntity(row.id, row.title, row.description, row.completed));
   }
 
 
   // Method to retrieve specific ToDoList by ID
-  async getToDoListById(id: number): Promise<ToDoListEntity> {
+  async getToDoItemById(id: number): Promise<ToDoItemEntity> {
     const result = await this.database.select().from(ToDoListSchema).where(eq(ToDoListSchema.id, id)).execute();
     
-    const todoList = result.length ? new ToDoListEntity(result[0].id, result[0].title, result[0].description, result[0].completed) : null;
+    const todoList = result.length ? new ToDoItemEntity(result[0].id, result[0].title, result[0].description, result[0].completed) : null;
 
     if(!todoList) {
       throw new NotFoundException(`ToDoList with ID ${id} not found.`);
@@ -64,17 +63,26 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
 
   // Method to update a ToDoList by ID
-  async updateToDoListById(id: number, title: string, description: string): Promise<string> {
-    const todoList = await this.getToDoListById(id);
+  async updateToDoItemById(id: number, title: string | null, description: string | null): Promise<string> {
+    const todoList = await this.getToDoItemById(id);
     
     if (!todoList) {
       throw new NotFoundException(`ToDoList with ID ${id} not found.`);
     }
+
+    // Update only if the new value is not null
+    const updatedTitle = title !== null ? title : todoList.title;
+    const updatedDescription = description !== null ? description : todoList.description;
     
-    await this.database.update(ToDoListSchema)
-    .set({ title: title, description: description })
-    .where(eq(ToDoListSchema.id, id))
-    .execute();
+    try {
+      await this.database.update(ToDoListSchema)
+      .set({ title: updatedTitle, description: updatedDescription })
+      .where(eq(ToDoListSchema.id, id))
+      .execute();
+    } 
+    catch (error) {
+      throw new Error("An error occurred while updating the ToDoList.");
+    } 
 
     return `ToDoList with ID ${id} updated successfully.`;
 
@@ -82,15 +90,15 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
 
   // Method to delete all ToDoLists
-  async deleteAllToDoLists(): Promise<string> {
+  async deleteAllToDoItems(): Promise<string> {
     await this.database.delete(ToDoListSchema).execute();
     return "All ToDoLists deleted successfully.";
   }
 
 
   // Method to delete a ToDoList by ID
-  async deleteToDoListById(id: number): Promise<string> {
-    const todoList = await this.getToDoListById(id);
+  async deleteToDoItemById(id: number): Promise<string> {
+    const todoList = await this.getToDoItemById(id);
     
     if (!todoList) {
           throw new NotFoundException(`ToDoList with ID ${id} not found.`);

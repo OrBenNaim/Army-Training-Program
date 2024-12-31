@@ -1,4 +1,4 @@
-export class DeleteToDoListByIdCommand {
+export class DeleteToDoItemByIdCommand {
     constructor(public readonly id: number) {}
   }
   

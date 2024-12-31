@@ -1,21 +1,24 @@
-import { CreateToDoListHandler } from 'src/application/handlers/create-ToDoList.handler';
+import { CreateToDoItemHandler } from 'src/application/handlers/create-ToDoList.handler';
 
-import { GetAllToDoListsHandler } from 'src/application/handlers/get-all-ToDoLists.handler';
+import { GetAllToDoItemsHandler } from 'src/application/handlers/get-all-ToDo-items.handler';
 
-import { GetToDoListByIdHandler } from 'src/application/handlers/get-ToDoList-by-id.handler';
+import { GetToDoItemByIdHandler } from 'src/application/handlers/get-ToDo-item-by-id.handler';
 
-import { DeleteToDoListByIdHandler } from 'src/application/handlers/delete-ToDoList-by-id.handler';
+import { UpdateToDoListByIdHandler } from 'src/application/handlers/update-ToDo-item-by-id.handler';
 
-import { DeleteAllToDoListsHandler } from 'src/application/handlers/delete-all-ToDoLists.handler';
+import { DeleteToDoItemByIdHandler } from 'src/application/handlers/delete-ToDo-item-by-id.handler';
+
+import { DeleteAllToDoItemsHandler } from 'src/application/handlers/delete-all-ToDoLists.handler';
 
 
 export const CommandHandlers = [
-    CreateToDoListHandler,
-    DeleteToDoListByIdHandler,
-    DeleteAllToDoListsHandler,
+    CreateToDoItemHandler,
+    UpdateToDoListByIdHandler,
+    DeleteToDoItemByIdHandler,
+    DeleteAllToDoItemsHandler,
   ];
   
   export const QueryHandlers = [
-    GetAllToDoListsHandler,
-    GetToDoListByIdHandler,
+    GetAllToDoItemsHandler,
+    GetToDoItemByIdHandler,
   ];

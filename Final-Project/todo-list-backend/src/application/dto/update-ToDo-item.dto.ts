@@ -1,8 +1,7 @@
 import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
 
-export class ToDoListDto {
+export class UpdateToDoItemDto {
     @IsString()
-    @IsNotEmpty()
     title: string;
 
     @IsString()

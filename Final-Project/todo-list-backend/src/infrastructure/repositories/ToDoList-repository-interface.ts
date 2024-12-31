@@ -1,17 +1,17 @@
-import { ToDoListEntity } from '../../domain/entities/ToDoList.entity';
+import { ToDoItemEntity } from '../../domain/entities/ToDoItem.entity';
 
 export const TODOLIST_REPOSITORY = 'TODOLIST_REPOSITORY';
 
 export interface ToDoListRepository {
-  createToDoList(toDoList: ToDoListEntity): Promise<string>;
+  createToDoItem(toDoList: ToDoItemEntity): Promise<string>;
   
-  getToDoLists(): Promise<ToDoListEntity[]>;
+  getAllToDoItems(): Promise<ToDoItemEntity[]>;
 
-  getToDoListById(id: number): Promise<ToDoListEntity>;
+  getToDoItemById(id: number): Promise<ToDoItemEntity>;
 
-  updateToDoListById(id: number, title: string, description: string): Promise<string>;
+  updateToDoItemById(id: number, title: string, description: string): Promise<string>;
   
-  deleteAllToDoLists(): Promise<string>;
+  deleteAllToDoItems(): Promise<string>;
 
-  deleteToDoListById(id: number): Promise<string>;
+  deleteToDoItemById(id: number): Promise<string>;
 }
