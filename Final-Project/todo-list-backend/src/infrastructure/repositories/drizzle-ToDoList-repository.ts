@@ -1,11 +1,11 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
 import { ToDoListRepository } from './ToDoList-repository-interface';
 import { ToDoItemEntity } from '../../domain/entities/ToDoItem.entity';
 import * as schema from 'src/infrastructure/database/schema';
-import { ToDoListSchema } from 'src/infrastructure/database/schema';
+import { ToDoItemSchema } from 'src/infrastructure/database/schema';
 import { DATABASE_CONNECTION } from '../database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { eq } from 'drizzle-orm';
+import { eq, not, and } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 
 
@@ -18,95 +18,114 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
   ) {}
 
 
-  // Method to create a new ToDoList
-  async createToDoItem(toDoList: ToDoItemEntity): Promise<string> {
-    if (toDoList.id) {
-      await this.database.update(ToDoListSchema)
-      .set({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed})
-      .where(eq(ToDoListSchema.id, toDoList.id))
-      .execute();
-    } 
-    else {
-      await this.database.insert(ToDoListSchema)
-      .values({ title: toDoList.title, description: toDoList.description, completed: toDoList.completed })
-      .execute();
+  // Method to create a new ToDoItem
+  async createToDoItem(toDoItem: ToDoItemEntity): Promise<string> {
+    
+    // If the title is null, throw a ConflictException
+    if (toDoItem.title === null || toDoItem.title.trim() === '') {
+      throw new ConflictException("Title is required.");
     }
 
-    return "ToDoList created successfully.";
+    // Check if the new title already exists in the database in another ToDoItem
+    const result = await this.database
+    .select()
+    .from(ToDoItemSchema)
+    .where(eq(ToDoItemSchema.title, toDoItem.title)).execute();
+
+    if (result.length) {
+      throw new ConflictException(`ToDo Item with title '${toDoItem.title}' is already exists.`);
+    }
+      
+    const temp_description = toDoItem.description !== null ? toDoItem.description : null;
+
+    await this.database.insert(ToDoItemSchema)
+    .values({ 
+      title: toDoItem.title, 
+      description: temp_description, 
+      completed: toDoItem.completed 
+    })
+    .execute();
+
+    return "ToDo Item created successfully.";
   }
 
 
-  // Method to retrieve all ToDoLists
+  // Method to retrieve all ToDoItems
   async getAllToDoItems(): Promise<ToDoItemEntity[]> {
-      const results = await this.database.select().from(ToDoListSchema).execute();
+      const results = await this.database.select().from(ToDoItemSchema).execute();
       
       if(!results.length) {
-        throw new NotFoundException("There are no existing ToDo Lists yet.");
+        throw new NotFoundException("There are no existing ToDo Items yet.");
       }
       
       return results.map(row => new ToDoItemEntity(row.id, row.title, row.description, row.completed));
   }
 
 
-  // Method to retrieve specific ToDoList by ID
+  // Method to retrieve specific ToDoItem by ID
   async getToDoItemById(id: number): Promise<ToDoItemEntity> {
-    const result = await this.database.select().from(ToDoListSchema).where(eq(ToDoListSchema.id, id)).execute();
+    const result = await this.database.select().from(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
     
-    const todoList = result.length ? new ToDoItemEntity(result[0].id, result[0].title, result[0].description, result[0].completed) : null;
+    const todoItem = result.length ? new ToDoItemEntity(result[0].id, result[0].title, result[0].description, result[0].completed) : null;
 
-    if(!todoList) {
-      throw new NotFoundException(`ToDoList with ID ${id} not found.`);
+    if(!todoItem) {
+      throw new NotFoundException(`ToDo Item with ID ${id} not found.`);
     }
 
-    return todoList;
+    return todoItem;
   }
 
 
-  // Method to update a ToDoList by ID
+  // Method to update a ToDoItem by ID
   async updateToDoItemById(id: number, title: string | null, description: string | null): Promise<string> {
-    const todoList = await this.getToDoItemById(id);
+    const todoItem = await this.getToDoItemById(id);
     
-    if (!todoList) {
-      throw new NotFoundException(`ToDoList with ID ${id} not found.`);
+    if (!todoItem) {
+      throw new NotFoundException(`ToDo Item with ID ${id} not found.`);
+    }
+
+    // Check if the new title already exists in the database in another ToDoItem
+    const result = await this.database
+    .select()
+    .from(ToDoItemSchema)
+    .where(and(eq(ToDoItemSchema.title, title), not(eq(ToDoItemSchema.id, id)))).execute();
+
+    if (result.length) {
+      throw new ConflictException(`ToDo Item with title '${title}' is already exists.`);
     }
 
     // Update only if the new value is not null
-    const updatedTitle = title !== null ? title : todoList.title;
-    const updatedDescription = description !== null ? description : todoList.description;
-    
-    try {
-      await this.database.update(ToDoListSchema)
-      .set({ title: updatedTitle, description: updatedDescription })
-      .where(eq(ToDoListSchema.id, id))
-      .execute();
-    } 
-    catch (error) {
-      throw new Error("An error occurred while updating the ToDoList.");
-    } 
+    const updatedTitle = title !== null ? title : todoItem.title;
+    const updatedDescription = description !== null ? description : todoItem.description;
 
-    return `ToDoList with ID ${id} updated successfully.`;
 
+    await this.database.update(ToDoItemSchema)
+    .set({ title: updatedTitle, description: updatedDescription })
+    .where(eq(ToDoItemSchema.id, id))
+    .execute();
+   
+    return `ToDo Item with ID ${id} updated successfully.`;
   }
 
 
-  // Method to delete all ToDoLists
+  // Method to delete all ToDoItems
   async deleteAllToDoItems(): Promise<string> {
-    await this.database.delete(ToDoListSchema).execute();
-    return "All ToDoLists deleted successfully.";
+    await this.database.delete(ToDoItemSchema).execute();
+    return "All ToDo Items deleted successfully.";
   }
 
 
-  // Method to delete a ToDoList by ID
+  // Method to delete a ToDoItem by ID
   async deleteToDoItemById(id: number): Promise<string> {
-    const todoList = await this.getToDoItemById(id);
+    const todoItem = await this.getToDoItemById(id);
     
-    if (!todoList) {
+    if (!todoItem) {
           throw new NotFoundException(`ToDoList with ID ${id} not found.`);
     }
     
-    await this.database.delete(ToDoListSchema).where(eq(ToDoListSchema.id, id)).execute();
+    await this.database.delete(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
 
-    return `ToDoList with ID ${id} deleted successfully.`;
+    return `ToDo Item with ID ${id} deleted successfully.`;
   }
 
 }

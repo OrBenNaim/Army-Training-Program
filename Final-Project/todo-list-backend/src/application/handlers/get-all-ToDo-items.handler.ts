@@ -9,6 +9,6 @@ export class GetAllToDoItemsHandler implements IQueryHandler<GetAllToDoItemsQuer
   constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepository) {}
 
   async execute(): Promise<ToDoItemEntity[]> {
-    return await this.toDoListRepository.getToDoLists();
+    return await this.toDoListRepository.getAllToDoItems();
   }
 }

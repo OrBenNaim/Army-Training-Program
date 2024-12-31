@@ -10,6 +10,6 @@ export class DeleteAllToDoItemsHandler implements ICommandHandler<DeleteAllToDoI
   constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepository) {}
 
   async execute(command: DeleteAllToDoItemsCommand): Promise<string> {
-    return await this.toDoListRepository.deleteAllToDoLists();
+    return await this.toDoListRepository.deleteAllToDoItems();
   }
 }

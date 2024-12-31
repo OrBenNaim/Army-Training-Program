@@ -12,6 +12,6 @@ export class CreateToDoItemHandler implements ICommandHandler<CreateToDoItemComm
 
   async execute(command: CreateToDoItemCommand): Promise<string> {
     const { toDoItem } = command;
-    return await this.toDoListRepository.createToDoList(toDoItem);
+    return await this.toDoListRepository.createToDoItem(toDoItem);
   }
 }

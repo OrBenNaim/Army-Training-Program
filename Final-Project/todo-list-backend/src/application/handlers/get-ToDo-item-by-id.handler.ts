@@ -10,6 +10,6 @@ export class GetToDoItemByIdHandler implements IQueryHandler<GetToDoItemByIdQuer
 
   async execute(query: GetToDoItemByIdQuery): Promise<ToDoItemEntity> {
     const {id} = query;
-    return this.toDoListRepository.getToDoListById(id);
+    return this.toDoListRepository.getToDoItemById(id);
   }
 }
