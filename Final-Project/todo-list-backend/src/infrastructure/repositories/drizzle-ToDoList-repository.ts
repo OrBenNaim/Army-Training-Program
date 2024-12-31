@@ -22,9 +22,9 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
   async createToDoItem(toDoItem: ToDoItemEntity): Promise<string> {
     
     // If the title is null, throw a ConflictException
-    if (toDoItem.title === null || toDoItem.title.trim() === '') {
-      throw new ConflictException("Title is required.");
-    }
+    // if (toDoItem.title === null || toDoItem.title.trim() === '') {
+    //   throw new ConflictException("Title is required.");
+    // }
 
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
@@ -36,12 +36,11 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
       throw new ConflictException(`ToDo Item with title '${toDoItem.title}' is already exists.`);
     }
       
-    const temp_description = toDoItem.description !== null ? toDoItem.description : null;
 
     await this.database.insert(ToDoItemSchema)
     .values({ 
       title: toDoItem.title, 
-      description: temp_description, 
+      description: toDoItem.description, 
       completed: toDoItem.completed 
     })
     .execute();
@@ -77,7 +76,9 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
 
   // Method to update a ToDoItem by ID
-  async updateToDoItemById(id: number, title: string | null, description: string | null): Promise<string> {
+  async updateToDoItemById(id: number, title: string | null, description: string | null, completed: boolean | null): Promise<string> {
+    console.log("\ntitle: \n", title);  
+    
     const todoItem = await this.getToDoItemById(id);
     
     if (!todoItem) {
@@ -97,10 +98,11 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
     // Update only if the new value is not null
     const updatedTitle = title !== null ? title : todoItem.title;
     const updatedDescription = description !== null ? description : todoItem.description;
+    const updatedCompleted = completed !== null ? completed : todoItem.completed;
 
 
     await this.database.update(ToDoItemSchema)
-    .set({ title: updatedTitle, description: updatedDescription })
+    .set({ title: updatedTitle, description: updatedDescription, completed: updatedCompleted })
     .where(eq(ToDoItemSchema.id, id))
     .execute();
    

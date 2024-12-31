@@ -1,5 +1,5 @@
 {
-  "id": "b7290c9e-4f40-46bf-8011-b62eb48ae069",
+  "id": "55164cb2-88df-45eb-bd40-e66a370a0e2b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -24,7 +24,7 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "completed": {
           "name": "completed",

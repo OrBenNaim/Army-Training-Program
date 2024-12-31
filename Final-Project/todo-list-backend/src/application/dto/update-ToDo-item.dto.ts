@@ -2,8 +2,11 @@ import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
 
 export class UpdateToDoItemDto {
     @IsString()
-    title: string;
+    title?: string;
 
     @IsString()
-    description: string;
+    description?: string;
+
+    @IsBoolean()
+    completed?: boolean;
 }

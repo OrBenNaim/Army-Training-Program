@@ -9,7 +9,7 @@ export interface ToDoListRepository {
 
   getToDoItemById(id: number): Promise<ToDoItemEntity>;
 
-  updateToDoItemById(id: number, title: string, description: string): Promise<string>;
+  updateToDoItemById(id: number, title: string, description: string, completed: boolean | null): Promise<string>;
   
   deleteAllToDoItems(): Promise<string>;
 

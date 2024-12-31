@@ -1,9 +1,10 @@
 export class ToDoItemEntity {
+    
     constructor(
         public readonly id: number,
         public title: string,
-        public description: string,
-        public completed: boolean   // Default value for completed is false when ToDoList is created
+        public description: string,  // Default value for description is "" when ToDoList is created
+        public completed: boolean           // Default value for completed is false when ToDoList is created
     ){}
 
     updateTitle(newTitle: string): void {

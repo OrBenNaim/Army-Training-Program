@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param, Put, ValidationPipe } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateToDoItemCommand } from '../application/commands/create-ToDo-item.command';
 import { GetAllToDoItemsQuery } from 'src/application/queries/get-all-ToDo-items.query';
@@ -17,8 +17,12 @@ export class ToDoListController {
 
   @Post()
   async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<string> {
-    const { title, description } = createToDoItemDto;
-    const toDoList = new ToDoItemEntity(null, title, description, false);    // Assuming id is generated later and completed is false by default
+
+    // const title = createToDoItemDto.title;
+    const description = createToDoItemDto.description === undefined ? "" : createToDoItemDto.description;   // Default value for description is "" when ToDoList is created
+    const completed = createToDoItemDto.completed === undefined ? false : createToDoItemDto.completed;        // Default value for completed is false when ToDoList is created
+
+    const toDoList = new ToDoItemEntity(null, createToDoItemDto.title, description, completed);    // Assuming id is generated later in the database
     return await this.commandBus.execute(new CreateToDoItemCommand(toDoList));
   }
 
@@ -36,8 +40,8 @@ export class ToDoListController {
 
   @Put(':id')
   async updateToDoListById(@Param('id') id: number, @Body() updatetoDoListDto: UpdateToDoItemDto): Promise<string> {
-    const { title, description } = updatetoDoListDto;
-    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description));
+    const { title, description, completed } = updatetoDoListDto;
+    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));
   }
 
 
