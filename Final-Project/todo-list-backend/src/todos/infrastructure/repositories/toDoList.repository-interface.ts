@@ -13,7 +13,7 @@ export interface ToDoListRepositoryInterface {
 
   updateToDoItemById(id: number, title: string, description: string, completed: boolean ): Promise<ToDoItemEntity>;
   
-  // deleteAllToDoItems(): Promise<ToDoDbType[]>;
+  deleteAllToDoItems(): Promise<void>;
 
-  // deleteToDoItemById(id: number): Promise<string>;
+  deleteToDoItemById(id: number): Promise<void>;
 }

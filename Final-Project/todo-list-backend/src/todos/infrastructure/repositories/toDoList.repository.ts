@@ -22,7 +22,6 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
   // Method to create a new ToDoItem
   async createToDoItem(createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
 
-    
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
     .select()
@@ -30,7 +29,6 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
     .where(eq(ToDoItemSchema.title, createToDoItemDto.title)).execute();
 
     if (result.length) {
-      
       throw new ConflictException(`ToDo Item with title '${createToDoItemDto.title}' is already exists.`);
     }
       
@@ -89,9 +87,9 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
     }
 
     // Update only if the new value is not null
-    const updatedTitle = title !== undefined ? title : todoItem.title;
-    const updatedDescription = description !== undefined ? description : todoItem.description;
-    const updatedCompleted = completed !== undefined ? completed : todoItem.completed;
+    const updatedTitle = title !== null ? title : todoItem.title;
+    const updatedDescription = description !== null ? description : todoItem.description;
+    const updatedCompleted = completed !== null ? completed : todoItem.completed;
 
 
     const updatedToDoItem = await this.database.update(ToDoItemSchema)
@@ -108,24 +106,16 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
   }
 
 
-  // // Method to delete all ToDoItems
-  // async deleteAllToDoItems(): Promise<ToDoDbType[]> {
-  //   return await this.database.delete(ToDoItemSchema).returning().execute();
-  //   //return "All ToDo Items deleted successfully.";
-  // }
+  // Method to delete all ToDoItems
+  async deleteAllToDoItems(): Promise<void> {
+    await this.database.delete(ToDoItemSchema).execute();
+  }
 
 
-  // // Method to delete a ToDoItem by ID
-  // async deleteToDoItemById(id: number): Promise<string> {
-  //   const todoItem = await this.getToDoItemById(id);
-    
-  //   if (!todoItem) {
-  //     throw new NotFoundException(`ToDoList with ID ${id} not found.`);
-  //   }
-    
-  //   await this.database.delete(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
-
-  //   return `ToDo Item with ID ${id} deleted successfully.`;
-  // }
+  // Method to delete a ToDoItem by ID
+  async deleteToDoItemById(id: number): Promise<void> {
+    const todoItem = await this.getToDoItemById(id);
+    await this.database.delete(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
+  }
 
 }

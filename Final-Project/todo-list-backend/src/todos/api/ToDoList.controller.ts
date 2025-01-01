@@ -18,10 +18,9 @@ export class ToDoListController {
 
   @Post()
   async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
-  
+    
     try {
       return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto));
-      
     } 
     catch (error) {
       console.log(error);
@@ -48,15 +47,15 @@ export class ToDoListController {
   }
 
 
-  // @Delete()
-  // async deleteAllToDoLists(): Promise<ToDoDbType[]> {
-  //   return await this.commandBus.execute(new DeleteAllToDoItemsCommand());
-  // }
+  @Delete()
+  async deleteAllToDoLists(): Promise<void> {
+    await this.commandBus.execute(new DeleteAllToDoItemsCommand());
+  }
 
 
-  // @Delete(':id')
-  // async deleteToDoList(@Param('id') id: number): Promise<string> {
-  //   return await this.commandBus.execute(new DeleteToDoItemByIdCommand(Number(id)));
-  // }
+  @Delete(':id')
+  async deleteToDoList(@Param('id') id: number): Promise<void> {
+    await this.commandBus.execute(new DeleteToDoItemByIdCommand(id));
+  }
 
 }

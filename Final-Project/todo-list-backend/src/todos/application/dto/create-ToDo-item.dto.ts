@@ -8,9 +8,11 @@ export class CreateToDoItemDto {
 
     @IsOptional()
     @IsString()
-    description: string = "";       // Default value for description is "" when ToDoList is created
+    @Transform(({ value }) => value === null ? "" : value)  // If description is null, set it to ""
+    description: string = "";       // Default value for description is "" if description is not provided
 
     @IsOptional()
-    @IsBoolean()   
-    completed?: boolean = false;    // Default value for completed is false when ToDoList is created
+    @IsBoolean()
+    @Transform(({ value }) => value === null ? false : value)  // If completed is null, set it to false 
+    completed: boolean = false;    // Default value for completed is false if completed is not provided
 }
