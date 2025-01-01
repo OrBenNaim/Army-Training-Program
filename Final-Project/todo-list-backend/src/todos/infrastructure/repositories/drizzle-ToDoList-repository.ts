@@ -1,8 +1,8 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
 import { ToDoListRepository } from './ToDoList-repository-interface';
 import { ToDoItemEntity } from '../../domain/entities/ToDoItem.entity';
-import * as schema from 'src/infrastructure/database/schema';
-import { ToDoItemSchema } from 'src/infrastructure/database/schema';
+import * as schema from 'src/todos/infrastructure/database/schema';
+import { ToDoItemSchema } from 'src/todos/infrastructure/database/schema';
 import { DATABASE_CONNECTION } from '../database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, not, and } from 'drizzle-orm';

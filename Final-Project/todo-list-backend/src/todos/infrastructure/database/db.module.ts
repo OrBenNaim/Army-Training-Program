@@ -3,7 +3,7 @@ import { DATABASE_CONNECTION } from './db-connection';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import * as schema from 'src/infrastructure/database/schema'
+import * as schema from 'src/todos/infrastructure/database/schema'
 
 
 @Module({

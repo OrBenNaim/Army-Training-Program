@@ -1,14 +1,14 @@
 import { Controller, Post, Body, Get, Delete, Param, Put, ValidationPipe } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateToDoItemCommand } from '../application/commands/create-ToDo-item.command';
-import { GetAllToDoItemsQuery } from 'src/application/queries/get-all-ToDo-items.query';
-import { GetToDoItemByIdQuery } from 'src/application/queries/get-ToDo-item-by-id.query';
-import { UpdateToDoItemByIdCommand } from 'src/application/commands/update-ToDo-item-by-id.command';
-import { DeleteAllToDoItemsCommand } from 'src/application/commands/delete-all-ToDo-items.command';
-import { DeleteToDoItemByIdCommand } from 'src/application/commands/delete-ToDo-item-by-id.command';
-import { CreateToDoItemDto } from 'src/application/dto/create-ToDo-item.dto';
-import { UpdateToDoItemDto } from 'src/application/dto/update-ToDo-item.dto';
-import { ToDoItemEntity } from 'src/domain/entities/ToDoItem.entity';
+import { GetAllToDoItemsQuery } from 'src/todos/application/queries/get-all-ToDo-items.query';
+import { GetToDoItemByIdQuery } from 'src/todos/application/queries/get-ToDo-item-by-id.query';
+import { UpdateToDoItemByIdCommand } from 'src/todos/application/commands/update-ToDo-item-by-id.command';
+import { DeleteAllToDoItemsCommand } from 'src/todos/application/commands/delete-all-ToDo-items.command';
+import { DeleteToDoItemByIdCommand } from 'src/todos/application/commands/delete-ToDo-item-by-id.command';
+import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
+import { UpdateToDoItemDto } from 'src/todos/application/dto/update-ToDo-item.dto';
+import { ToDoItemEntity } from 'src/todos/domain/entities/ToDoItem.entity';
 
 
 @Controller('todos')

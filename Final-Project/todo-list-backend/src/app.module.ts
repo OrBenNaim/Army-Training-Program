@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { ToDoListController } from './api/ToDoList.controller';
-import { CommandHandlers, QueryHandlers } from 'src/application/handlers/all.handlers';
-import { DrizzleToDoListRepository } from 'src/infrastructure/repositories/drizzle-ToDoList-repository';
-import { DatabaseModule } from 'src/infrastructure/database/db.module';
-import { TODOLIST_REPOSITORY } from 'src/infrastructure/repositories/ToDoList-repository-interface';
+import { ToDoListController } from './todos/api/ToDoList.controller';
+import { CommandHandlers, QueryHandlers } from 'src/todos/application/handlers/all.handlers';
+import { DrizzleToDoListRepository } from 'src/todos/infrastructure/repositories/drizzle-ToDoList-repository';
+import { DatabaseModule } from 'src/todos/infrastructure/database/db.module';
+import { TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/ToDoList-repository-interface';
 
 
 @Module({

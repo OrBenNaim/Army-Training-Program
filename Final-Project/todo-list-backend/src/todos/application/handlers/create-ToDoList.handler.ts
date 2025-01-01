@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { ToDoListRepository, TODOLIST_REPOSITORY } from 'src/infrastructure/repositories/ToDoList-repository-interface';
+import { ToDoListRepository, TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/ToDoList-repository-interface';
 import { CreateToDoItemCommand } from '../commands/create-ToDo-item.command';
 
 
