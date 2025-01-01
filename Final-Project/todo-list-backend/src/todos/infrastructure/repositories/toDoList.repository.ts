@@ -1,17 +1,18 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
-import { ToDoListRepository } from './ToDoList-repository-interface';
+import { ToDoListRepositoryInterface } from './toDoList.repository-interface';
 import { ToDoItemEntity } from '../../domain/entity/ToDoItem.entity';
-import * as schema from 'src/todos/infrastructure/database/schema';
-import { ToDoItemSchema } from 'src/todos/infrastructure/database/schema';
-import { DATABASE_CONNECTION } from '../database/db-connection';
+import * as schema from 'src/database/schema';
+import { ToDoItemSchema } from 'src/database/schema';
+import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, not, and } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
+import { ToDoDbType } from 'src/todos/domain/entity/ToDoDb.type';
 
 
 
 @Injectable()
-export class DrizzleToDoListRepository implements ToDoListRepository {
+export class ToDoListRepository implements ToDoListRepositoryInterface {
   constructor(
     @Inject(DATABASE_CONNECTION) private readonly database: NodePgDatabase<typeof schema>,
         private readonly configService: ConfigService
@@ -19,7 +20,7 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
 
 
   // Method to create a new ToDoItem
-  async createToDoItem(toDoItem: ToDoItemEntity): Promise<string> {
+  async createToDoItem(toDoItem: ToDoItemEntity): Promise<ToDoDbType> {
 
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
@@ -28,30 +29,32 @@ export class DrizzleToDoListRepository implements ToDoListRepository {
     .where(eq(ToDoItemSchema.title, toDoItem.title)).execute();
 
     if (result.length) {
+      
       throw new ConflictException(`ToDo Item with title '${toDoItem.title}' is already exists.`);
     }
       
-
-    await this.database.insert(ToDoItemSchema)
+    
+    const data = await this.database.insert(ToDoItemSchema)
     .values({ 
       title: toDoItem.title, 
       description: toDoItem.description, 
       completed: toDoItem.completed 
     })
-    .execute();
-
-    return "ToDo Item created successfully.";
+    .returning({
+      id: ToDoItemSchema.id,
+      title: ToDoItemSchema.title,
+      description: ToDoItemSchema.description,
+      completed: ToDoItemSchema.completed
+    })
+   
+    
+    return data[0];
   }
 
 
   // Method to retrieve all ToDoItems
   async getAllToDoItems(): Promise<ToDoItemEntity[]> {
       const results = await this.database.select().from(ToDoItemSchema).execute();
-      
-      if(!results.length) {
-        throw new NotFoundException("There are no existing ToDo Items yet.");
-      }
-      
       return results.map(row => new ToDoItemEntity(row.id, row.title, row.description, row.completed));
   }
 

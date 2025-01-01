@@ -8,7 +8,7 @@ export class CreateToDoItemDto {
 
     @IsOptional()
     @IsString()
-    description?: string;
+      description: string = "";     // Default value for description is "" when ToDoList is created
 
     @IsOptional()
     @IsBoolean()   

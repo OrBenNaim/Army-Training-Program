@@ -1,9 +1,10 @@
+import { ToDoDbType } from 'src/todos/domain/entity/ToDoDb.type';
 import { ToDoItemEntity } from '../../domain/entity/ToDoItem.entity';
 
 export const TODOLIST_REPOSITORY = 'TODOLIST_REPOSITORY';
 
-export interface ToDoListRepository {
-  createToDoItem(toDoList: ToDoItemEntity): Promise<string>;
+export interface ToDoListRepositoryInterface {
+  createToDoItem(toDoList: ToDoItemEntity): Promise<ToDoDbType>;
   
   getAllToDoItems(): Promise<ToDoItemEntity[]>;
 

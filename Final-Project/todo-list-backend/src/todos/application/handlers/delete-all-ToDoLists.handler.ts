@@ -1,13 +1,13 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { DeleteAllToDoItemsCommand } from '../commands/delete-all-ToDo-items.command';
-import { ToDoListRepository, TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/ToDoList-repository-interface';
+import { ToDoListRepositoryInterface, TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
 import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
 
 
 @CommandHandler(DeleteAllToDoItemsCommand)
 export class DeleteAllToDoItemsHandler implements ICommandHandler<DeleteAllToDoItemsCommand> {
-  constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepository) {}
+  constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepositoryInterface) {}
 
   async execute(command: DeleteAllToDoItemsCommand): Promise<string> {
     return await this.toDoListRepository.deleteAllToDoItems();

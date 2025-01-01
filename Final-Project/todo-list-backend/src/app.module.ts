@@ -3,9 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { ToDoListController } from './todos/api/ToDoList.controller';
 import { CommandHandlers, QueryHandlers } from 'src/todos/application/handlers/all.handlers';
-import { DrizzleToDoListRepository } from 'src/todos/infrastructure/repositories/drizzle-ToDoList-repository';
-import { DatabaseModule } from 'src/todos/infrastructure/database/db.module';
-import { TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/ToDoList-repository-interface';
+import { ToDoListRepository } from 'src/todos/infrastructure/repositories/toDoList.repository';
+import { DatabaseModule } from 'src/database/db.module';
+import { TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
 
 
 @Module({
@@ -16,9 +16,9 @@ import { TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/ToDoL
     }),
     DatabaseModule,         // Imports the DatabaseModule which sets up the database connection
   ],
-  controllers: [ToDoListController],  // Registers the ToDoListController to handle incoming HTTP requests
+  controllers: [ ToDoListController,  ],  // Registers the ToDoListController to handle incoming HTTP requests
   providers: [
-    { provide: TODOLIST_REPOSITORY, useClass: DrizzleToDoListRepository },
+    { provide: TODOLIST_REPOSITORY, useClass: ToDoListRepository },
     ...CommandHandlers,         // Registers all command handlers
     ...QueryHandlers,          // Registers all query handlers
   ],
