@@ -9,7 +9,7 @@ import { DeleteToDoItemByIdCommand } from 'src/todos/application/commands/delete
 import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
 import { UpdateToDoItemDto } from 'src/todos/application/dto/update-ToDo-item.dto';
 import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.entity';
-import { ToDoDbType } from '../domain/entity/ToDoDb.type';
+
 
 
 @Controller('todos')
@@ -17,12 +17,10 @@ export class ToDoListController {
   constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
   @Post()
-  async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoDbType> {
+  async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
   
-    const toDoList = new ToDoItemEntity(null, createToDoItemDto.title, createToDoItemDto.description, createToDoItemDto.completed);    // Assuming id is generated later in the database
-    
     try {
-      return  await this.commandBus.execute(new CreateToDoItemCommand(toDoList));
+      return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto));
       
     } 
     catch (error) {
@@ -43,22 +41,22 @@ export class ToDoListController {
   }
 
 
-  @Put(':id')
-  async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<string> {
-    const { title, description, completed } = updateToDoItemDto;
-    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));
-  }
+  // @Put(':id')
+  // async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<string> {
+  //   const { title, description, completed } = updateToDoItemDto;
+  //   return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));
+  // }
 
 
-  @Delete()
-  async deleteAllToDoLists(): Promise<string> {
-    return await this.commandBus.execute(new DeleteAllToDoItemsCommand());
-  }
+  // @Delete()
+  // async deleteAllToDoLists(): Promise<ToDoDbType[]> {
+  //   return await this.commandBus.execute(new DeleteAllToDoItemsCommand());
+  // }
 
 
-  @Delete(':id')
-  async deleteToDoList(@Param('id') id: number): Promise<string> {
-    return await this.commandBus.execute(new DeleteToDoItemByIdCommand(Number(id)));
-  }
+  // @Delete(':id')
+  // async deleteToDoList(@Param('id') id: number): Promise<string> {
+  //   return await this.commandBus.execute(new DeleteToDoItemByIdCommand(Number(id)));
+  // }
 
 }
