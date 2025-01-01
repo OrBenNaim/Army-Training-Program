@@ -4,7 +4,7 @@ import { GetAllToDoItemsHandler } from 'src/todos/application/handlers/get-all-T
 
 import { GetToDoItemByIdHandler } from 'src/todos/application/handlers/get-ToDo-item-by-id.handler';
 
-// import { UpdateToDoListByIdHandler } from 'src/todos/application/handlers/update-ToDo-item-by-id.handler';
+import { UpdateToDoListByIdHandler } from 'src/todos/application/handlers/update-ToDo-item-by-id.handler';
 
 // import { DeleteToDoItemByIdHandler } from 'src/todos/application/handlers/delete-ToDo-item-by-id.handler';
 
@@ -13,7 +13,7 @@ import { GetToDoItemByIdHandler } from 'src/todos/application/handlers/get-ToDo-
 
 export const CommandHandlers = [
     CreateToDoItemHandler,
-    // UpdateToDoListByIdHandler,
+    UpdateToDoListByIdHandler,
     // DeleteToDoItemByIdHandler,
     // DeleteAllToDoItemsHandler,
   ];

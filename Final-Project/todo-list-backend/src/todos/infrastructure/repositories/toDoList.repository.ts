@@ -48,69 +48,64 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
     })
 
     return data[0];   // Return the newly created ToDoItem
-    
   }
 
 
   // Method to retrieve all ToDoItems
   async getAllToDoItems(): Promise<ToDoItemEntity[]> {
-      const results = await this.database.select().from(ToDoItemSchema).execute();
-      return results;
-      //return results.map(row => { row[0].id, row[0].title, row[0].description, row[0].completed });//new ToDoItemEntity(row.id, row.title, row.description, row.completed));
+      const list_of_ToDoItems = await this.database.select().from(ToDoItemSchema).execute();
+      return list_of_ToDoItems;
   }
 
 
   // Method to retrieve specific ToDoItem by ID
   async getToDoItemById(id: number): Promise<ToDoItemEntity> {
-    const result = await this.database.select().from(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
+    const list_of_ToDoItems = await this.database.select().from(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
     
-    //const todoItem = result.length ? new ToDoItemEntity(result[0].id, result[0].title, result[0].description, result[0].completed) : null;
+    /* list_of_ToDoItems[0] is the first element of the array, 
+    which is the ToDoItem and should be the only element in the array. */
 
-    if (!result[0]) {
+    if (!list_of_ToDoItems[0])  
+    {
       throw new NotFoundException(`ToDo Item with ID ${id} not found.`);
     }
-    return result[0];
-
-    // if(!todoItem) {
-    //   throw new NotFoundException(`ToDo Item with ID ${id} not found.`);
-    // }
-
-    // return todoItem;
+    return list_of_ToDoItems[0];
   }
 
 
-  // // Method to update a ToDoItem by ID
-  // async updateToDoItemById(id: number, title: string | null, description: string | null, completed: boolean | null): Promise<string> {
+  // Method to update a ToDoItem by ID
+  async updateToDoItemById(id: number, title: string, description: string, completed: boolean): Promise<ToDoItemEntity> {
+  
+    const todoItem = await this.getToDoItemById(id);
+
+    // Check if the new title already exists in the database in another ToDoItem
+    const result = await this.database
+    .select()
+    .from(ToDoItemSchema)
+    .where(and(eq(ToDoItemSchema.title, title), not(eq(ToDoItemSchema.id, id)))).execute();
+
+    if (result.length) {
+      throw new ConflictException(`ToDo Item with title '${title}' is already exists.`);
+    }
+
+    // Update only if the new value is not null
+    const updatedTitle = title !== undefined ? title : todoItem.title;
+    const updatedDescription = description !== undefined ? description : todoItem.description;
+    const updatedCompleted = completed !== undefined ? completed : todoItem.completed;
+
+
+    const updatedToDoItem = await this.database.update(ToDoItemSchema)
+    .set({ title: updatedTitle, description: updatedDescription, completed: updatedCompleted })
+    .where(eq(ToDoItemSchema.id, id))
+    .returning({
+      id: ToDoItemSchema.id,
+      title: ToDoItemSchema.title,
+      description: ToDoItemSchema.description,
+      completed: ToDoItemSchema.completed
+    })
     
-  //   const todoItem = await this.getToDoItemById(id);
-    
-  //   if (!todoItem) {
-  //     throw new NotFoundException(`ToDo Item with ID ${id} not found.`);
-  //   }
-
-  //   // Check if the new title already exists in the database in another ToDoItem
-  //   const result = await this.database
-  //   .select()
-  //   .from(ToDoItemSchema)
-  //   .where(and(eq(ToDoItemSchema.title, title), not(eq(ToDoItemSchema.id, id)))).execute();
-
-  //   if (result.length) {
-  //     throw new ConflictException(`ToDo Item with title '${title}' is already exists.`);
-  //   }
-
-  //   // Update only if the new value is not null
-  //   const updatedTitle = title !== undefined ? title : todoItem.title;
-  //   const updatedDescription = description !== undefined ? description : todoItem.description;
-  //   const updatedCompleted = completed !== undefined ? completed : todoItem.completed;
-
-
-  //   await this.database.update(ToDoItemSchema)
-  //   .set({ title: updatedTitle, description: updatedDescription, completed: updatedCompleted })
-  //   .where(eq(ToDoItemSchema.id, id))
-  //   .execute();
-   
-  //   return `ToDo Item with ID ${id} updated successfully.`;
-  // }
+    return updatedToDoItem[0];   // Return the updated ToDoItem
+  }
 
 
   // // Method to delete all ToDoItems

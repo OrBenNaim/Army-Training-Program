@@ -41,11 +41,11 @@ export class ToDoListController {
   }
 
 
-  // @Put(':id')
-  // async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<string> {
-  //   const { title, description, completed } = updateToDoItemDto;
-  //   return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));
-  // }
+  @Put(':id')
+  async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoItemEntity> {
+    const { title, description, completed  } = updateToDoItemDto; 
+    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));  
+  }
 
 
   // @Delete()

@@ -11,7 +11,7 @@ export interface ToDoListRepositoryInterface {
 
   getToDoItemById(id: number): Promise<ToDoItemEntity>;
 
-  // updateToDoItemById(id: number, title: string, description: string, completed: boolean | null): Promise<string>;
+  updateToDoItemById(id: number, title: string, description: string, completed: boolean ): Promise<ToDoItemEntity>;
   
   // deleteAllToDoItems(): Promise<ToDoDbType[]>;
 
