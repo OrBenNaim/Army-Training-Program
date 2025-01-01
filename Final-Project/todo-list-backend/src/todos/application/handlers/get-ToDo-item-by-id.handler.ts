@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { ToDoItemEntity } from 'src/todos/domain/entities/ToDoItem.entity';
+import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.entity';
 import { GetToDoItemByIdQuery } from 'src/todos/application/queries/get-ToDo-item-by-id.query';
 import { ToDoListRepository, TODOLIST_REPOSITORY} from 'src/todos/infrastructure/repositories/ToDoList-repository-interface';
 

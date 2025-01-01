@@ -1,6 +1,6 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
 import { ToDoListRepository } from './ToDoList-repository-interface';
-import { ToDoItemEntity } from '../../domain/entities/ToDoItem.entity';
+import { ToDoItemEntity } from '../../domain/entity/ToDoItem.entity';
 import * as schema from 'src/todos/infrastructure/database/schema';
 import { ToDoItemSchema } from 'src/todos/infrastructure/database/schema';
 import { DATABASE_CONNECTION } from '../database/db-connection';

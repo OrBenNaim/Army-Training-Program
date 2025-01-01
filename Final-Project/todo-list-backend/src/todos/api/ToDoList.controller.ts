@@ -8,7 +8,7 @@ import { DeleteAllToDoItemsCommand } from 'src/todos/application/commands/delete
 import { DeleteToDoItemByIdCommand } from 'src/todos/application/commands/delete-ToDo-item-by-id.command';
 import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
 import { UpdateToDoItemDto } from 'src/todos/application/dto/update-ToDo-item.dto';
-import { ToDoItemEntity } from 'src/todos/domain/entities/ToDoItem.entity';
+import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.entity';
 
 
 @Controller('todos')

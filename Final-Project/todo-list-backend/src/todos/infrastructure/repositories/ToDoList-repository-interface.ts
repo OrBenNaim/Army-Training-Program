@@ -1,4 +1,4 @@
-import { ToDoItemEntity } from '../../domain/entities/ToDoItem.entity';
+import { ToDoItemEntity } from '../../domain/entity/ToDoItem.entity';
 
 export const TODOLIST_REPOSITORY = 'TODOLIST_REPOSITORY';
 
