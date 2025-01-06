@@ -1,5 +1,5 @@
 
-import { ToDoItemEntity } from '../../domain/entity/ToDoItem.entity';
+import { ToDoItemEntity } from '../../domain/entity/ToDoItem.interface';
 import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
 
 export const TODOLIST_REPOSITORY = 'TODOLIST_REPOSITORY';

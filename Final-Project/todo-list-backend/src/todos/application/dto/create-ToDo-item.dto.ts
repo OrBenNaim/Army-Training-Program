@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsBoolean, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsNumber } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateToDoItemDto {
@@ -15,4 +15,8 @@ export class CreateToDoItemDto {
     @IsBoolean()
     @Transform(({ value }) => value === null ? false : value)  // If completed is null, set it to false 
     completed: boolean = false;    // Default value for completed is false if completed is not provided
+
+    @IsNumber()
+    @IsNotEmpty()
+    userId: number;     // Include userId for foreign key relation
 }

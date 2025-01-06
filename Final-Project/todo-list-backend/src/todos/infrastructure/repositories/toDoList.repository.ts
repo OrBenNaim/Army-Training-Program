@@ -1,13 +1,14 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
 import { ToDoListRepositoryInterface } from './toDoList.repository-interface';
-import { ToDoItemEntity } from '../../domain/entity/ToDoItem.entity';
-import * as schema from 'src/database/schema';
-import { ToDoItemSchema } from 'src/database/schema';
+import { ToDoItemEntity } from '../../domain/entity/ToDoItem.interface';
+import * as schema from 'src/database/schemas/todos';
+import { todosTable } from 'src/database/schemas/todos';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, not, and } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
+import { create } from 'domain';
 
 
 
@@ -25,24 +26,28 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
     .select()
-    .from(ToDoItemSchema)
-    .where(eq(ToDoItemSchema.title, createToDoItemDto.title)).execute();
+    .from(todosTable)
+    .where(eq(todosTable.title, createToDoItemDto.title)).execute();
 
     if (result.length) {
       throw new ConflictException(`ToDo Item with title '${createToDoItemDto.title}' is already exists.`);
     }
       
-    const data = await this.database.insert(ToDoItemSchema)
+    const data = await this.database.insert(todosTable)
     .values({ 
       title: createToDoItemDto.title, 
       description: createToDoItemDto.description, 
-      completed: createToDoItemDto.completed 
+      completed: createToDoItemDto.completed,
+      userId: createToDoItemDto.userId,  // Add the userId to the new ToDoItem
+      
     })
     .returning({
-      id: ToDoItemSchema.id,
-      title: ToDoItemSchema.title,
-      description: ToDoItemSchema.description,
-      completed: ToDoItemSchema.completed
+      id: todosTable.id,
+      title: todosTable.title,
+      description: todosTable.description,
+      completed: todosTable.completed,
+      userId: todosTable.userId,
+      createdAt: todosTable.createdAt,
     })
 
     return data[0];   // Return the newly created ToDoItem
@@ -51,14 +56,14 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
 
   // Method to retrieve all ToDoItems
   async getAllToDoItems(): Promise<ToDoItemEntity[]> {
-      const list_of_ToDoItems = await this.database.select().from(ToDoItemSchema).execute();
+      const list_of_ToDoItems = await this.database.select().from(todosTable).execute();
       return list_of_ToDoItems;
   }
 
 
   // Method to retrieve specific ToDoItem by ID
   async getToDoItemById(id: number): Promise<ToDoItemEntity> {
-    const list_of_ToDoItems = await this.database.select().from(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
+    const list_of_ToDoItems = await this.database.select().from(todosTable).where(eq(todosTable.id, id)).execute();
     
     /* list_of_ToDoItems[0] is the first element of the array, 
     which is the ToDoItem and should be the only element in the array. */
@@ -79,8 +84,8 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
     .select()
-    .from(ToDoItemSchema)
-    .where(and(eq(ToDoItemSchema.title, title), not(eq(ToDoItemSchema.id, id)))).execute();
+    .from(todosTable)
+    .where(and(eq(todosTable.title, title), not(eq(todosTable.id, id)))).execute();
 
     if (result.length) {
       throw new ConflictException(`ToDo Item with title '${title}' is already exists.`);
@@ -92,14 +97,14 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
     const updatedCompleted = completed !== null ? completed : todoItem.completed;
 
 
-    const updatedToDoItem = await this.database.update(ToDoItemSchema)
+    const updatedToDoItem = await this.database.update(todosTable)
     .set({ title: updatedTitle, description: updatedDescription, completed: updatedCompleted })
-    .where(eq(ToDoItemSchema.id, id))
+    .where(eq(todosTable.id, id))
     .returning({
-      id: ToDoItemSchema.id,
-      title: ToDoItemSchema.title,
-      description: ToDoItemSchema.description,
-      completed: ToDoItemSchema.completed
+      id: todosTable.id,
+      title: todosTable.title,
+      description: todosTable.description,
+      completed: todosTable.completed
     })
     
     return updatedToDoItem[0];   // Return the updated ToDoItem
@@ -108,14 +113,14 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
 
   // Method to delete all ToDoItems
   async deleteAllToDoItems(): Promise<void> {
-    await this.database.delete(ToDoItemSchema).execute();
+    await this.database.delete(todosTable).execute();
   }
 
 
   // Method to delete a ToDoItem by ID
   async deleteToDoItemById(id: number): Promise<void> {
     const todoItem = await this.getToDoItemById(id);
-    await this.database.delete(ToDoItemSchema).where(eq(ToDoItemSchema.id, id)).execute();
+    await this.database.delete(todosTable).where(eq(todosTable.id, id)).execute();
   }
 
 }

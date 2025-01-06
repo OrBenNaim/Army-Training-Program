@@ -1,4 +1,4 @@
-import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.entity';
+import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
 import { ICommand } from '@nestjs/cqrs';
 
 export class UpdateToDoItemByIdCommand implements ICommand {
