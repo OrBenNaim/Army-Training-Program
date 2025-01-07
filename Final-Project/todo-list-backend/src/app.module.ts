@@ -6,6 +6,11 @@ import { CommandHandlers, QueryHandlers } from 'src/todos/application/handlers/a
 import { ToDoListRepository } from 'src/todos/infrastructure/repositories/toDoList.repository';
 import { DatabaseModule } from 'src/database/db.module';
 import { TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
+import { AuthController } from './users/auth.controller';
+import { AuthModuleOptions } from '@nestjs/passport';
+import { AuthModule } from './auth/auth.module';
+import { TodosModule } from './todos/todos.module';
+import { UsersModule } from './users/users.module';
 
 
 @Module({
@@ -15,12 +20,9 @@ import { TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoL
       isGlobal: true,
     }),
     DatabaseModule,         // Imports the DatabaseModule which sets up the database connection
-  ],
-  controllers: [ ToDoListController,  ],  // Registers the ToDoListController to handle incoming HTTP requests
-  providers: [
-    { provide: TODOLIST_REPOSITORY, useClass: ToDoListRepository },
-    ...CommandHandlers,         // Registers all command handlers
-    ...QueryHandlers,          // Registers all query handlers
+    AuthModule,
+    TodosModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

@@ -3,7 +3,6 @@ import { Inject } from '@nestjs/common';
 import { DeleteAllToDoItemsCommand } from '../commands/delete-all-ToDo-items.command';
 import { ToDoListRepositoryInterface, TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
 import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
-import { ToDoDbType } from 'src/todos/domain/entity/ToDoDb.type';
 import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
 
 

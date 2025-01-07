@@ -9,5 +9,16 @@ export class SignInDto {
     @IsString()
     @IsNotEmpty()
     password: string;
-  
+}
+
+
+
+export class SignInResponseDto {
+    @IsNumber()
+    @IsNotEmpty()
+    id: number;
+
+    @IsString()
+    @IsNotEmpty()
+    username: string;
 }

@@ -1,9 +1,8 @@
-import { CreateToDoItemHandler } from 'src/todos/application/handlers/create-ToDoList.handler';
+import { SignInHandler } from 'src/auth/application/handlers/sign-in.handler';
 
 
 export const CommandHandlers = [
-    CreateToDoItemHandler,
-    
+    SignInHandler,
   ];
   
   export const QueryHandlers = [

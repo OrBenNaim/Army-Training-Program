@@ -7,7 +7,7 @@ import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, not, and } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
-import { SignInDto } from 'src/auth/application/dto/sign-in.dto';
+import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
 
 
@@ -19,8 +19,9 @@ export class AuthRepository implements AuthRepositoryInterface {
         private readonly configService: ConfigService
     ) {}
 
-    // Method to create a new ToDoItem
-    async signIn(signInDto: SignInDto): Promise<AuthEntity> {
+
+    // Method to sign in a user.
+    async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
         
         // Check if user is already exists by his username.
         const user = this.findUserByUsername(signInDto.username);
@@ -48,7 +49,7 @@ export class AuthRepository implements AuthRepositoryInterface {
         }
         
         // If user exists, return the user entity.
-        return ;
+        return user;
     }
 
     async findUserByUsername(username: string): Promise<AuthEntity> {

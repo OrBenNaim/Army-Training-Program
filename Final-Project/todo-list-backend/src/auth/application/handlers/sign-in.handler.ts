@@ -1,18 +1,18 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { ToDoListRepositoryInterface, TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
+import { AuthRepositoryInterface, AUTH_REPOSITORY } from 'src/auth/infrastructure/repository/auth.repository-interface';
 import { SignInCommand } from '../commands/sign-in.command';
-import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
+import { SignInResponseDto } from '../dto/sign-in.dto';
 
 
 @CommandHandler(SignInCommand)
 export class SignInHandler implements ICommandHandler<SignInCommand> {
   constructor(
-    @Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepositoryInterface,
+    @Inject(AUTH_REPOSITORY) private readonly authRepository: AuthRepositoryInterface,
   ) {}
 
-  async execute(command: SignInCommand): Promise<ToDoItemEntity> {
+  async execute(command: SignInCommand): Promise<SignInResponseDto> {
     const { signInDto } = command;
-    return await this.toDoListRepository.createToDoItem(signInDto);
+    return await this.authRepository.signIn(signInDto);
   }
 }
