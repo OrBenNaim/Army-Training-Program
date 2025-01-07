@@ -1,15 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
+import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 import { GetToDoItemByIdQuery } from 'src/todos/application/queries/get-ToDo-item-by-id.query';
-import { ToDoListRepositoryInterface, TODOLIST_REPOSITORY} from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
+import { ToDosRepositoryInterface, TODOS_REPOSITORY} from 'src/todos/infrastructure/repositories/toDos.repository-interface';
 
 @QueryHandler(GetToDoItemByIdQuery)
 export class GetToDoItemByIdHandler implements IQueryHandler<GetToDoItemByIdQuery> {
-  constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepositoryInterface) {}
+  constructor(@Inject(TODOS_REPOSITORY) private readonly toDosRepository: ToDosRepositoryInterface) {}
 
-  async execute(query: GetToDoItemByIdQuery): Promise<ToDoItemEntity> {
+  async execute(query: GetToDoItemByIdQuery): Promise<ToDoEntity> {
     const {id} = query;
-    return this.toDoListRepository.getToDoItemById(id);
+    return this.toDosRepository.getToDoItemById(id);
   }
 }

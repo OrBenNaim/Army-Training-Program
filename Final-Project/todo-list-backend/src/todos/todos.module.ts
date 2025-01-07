@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ToDoListController } from './api/ToDoList.controller';
-import { TODOLIST_REPOSITORY } from './infrastructure/repositories/toDoList.repository-interface';
+import { CqrsModule } from '@nestjs/cqrs';
+import { ToDosController } from './api/ToDos.controller';
+import { TODOS_REPOSITORY } from './infrastructure/repositories/toDos.repository-interface';
 import { CommandHandlers, QueryHandlers } from './application/handlers/all.handlers';
-import { ToDoListRepository } from './infrastructure/repositories/toDoList.repository';
+import { ToDosRepository } from './infrastructure/repositories/toDos.repository';
 
 @Module({
-    imports: [],
-    controllers: [ToDoListController],
+    imports: [
+      CqrsModule,      // Enables CQRS (Command Query Responsibility Segregation) pattern
+    ],
+    controllers: [ToDosController],
     providers: [
-        { provide: TODOLIST_REPOSITORY, useClass: ToDoListRepository },
+        { provide: TODOS_REPOSITORY, useClass: ToDosRepository },
         ...CommandHandlers,         // Registers all command handlers
         ...QueryHandlers,          // Registers all query handlers
       ],

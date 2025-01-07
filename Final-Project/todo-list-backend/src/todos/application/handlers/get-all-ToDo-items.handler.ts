@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
+import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 import { GetAllToDoItemsQuery } from 'src/todos/application/queries/get-all-ToDo-items.query';
-import { ToDoListRepositoryInterface, TODOLIST_REPOSITORY} from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
+import { ToDosRepositoryInterface, TODOS_REPOSITORY} from 'src/todos/infrastructure/repositories/toDos.repository-interface';
 
 @QueryHandler(GetAllToDoItemsQuery)
 export class GetAllToDoItemsHandler implements IQueryHandler<GetAllToDoItemsQuery> {
-  constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepositoryInterface) {}
+  constructor(@Inject(TODOS_REPOSITORY) private readonly toDosRepository: ToDosRepositoryInterface) {}
 
-  async execute(): Promise<ToDoItemEntity[]> {
-    return await this.toDoListRepository.getAllToDoItems();
+  async execute(): Promise<ToDoEntity[]> {
+    return await this.toDosRepository.getAllToDoItems();
   }
 }

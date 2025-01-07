@@ -8,7 +8,7 @@ export const todosTable = pgTable("todos", {
 	description: text().notNull(),
 	completed: boolean().notNull(),
 	userId: integer("user_id").notNull().references(() => usersTable.id),	// Proper foreign key reference
-	createdAt: timestamp("created_at").defaultNow(), // Timestamp for creation
+	createdAt: timestamp("created_at").defaultNow(), 						// Timestamp for creation
 }, (table) => [
 	unique("todos_title_unique").on(table.title),
 ]);

@@ -1,16 +1,16 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { DeleteAllToDoItemsCommand } from '../commands/delete-all-ToDo-items.command';
-import { ToDoListRepositoryInterface, TODOLIST_REPOSITORY } from 'src/todos/infrastructure/repositories/toDoList.repository-interface';
+import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/toDos.repository-interface';  // eslint-disable-line
 import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
-import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
+import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 
 
 @CommandHandler(DeleteAllToDoItemsCommand)
 export class DeleteAllToDoItemsHandler implements ICommandHandler<DeleteAllToDoItemsCommand> {
-  constructor(@Inject(TODOLIST_REPOSITORY) private readonly toDoListRepository: ToDoListRepositoryInterface) {}
+  constructor(@Inject(TODOS_REPOSITORY) private readonly toDosRepository: ToDosRepositoryInterface) {}
 
   async execute(command: DeleteAllToDoItemsCommand): Promise<void> {
-    return await this.toDoListRepository.deleteAllToDoItems();
+    return await this.toDosRepository.deleteAllToDoItems();
   }
 }

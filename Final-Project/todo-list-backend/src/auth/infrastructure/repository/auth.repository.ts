@@ -5,10 +5,11 @@ import * as schema from 'src/database/schemas/todos';
 import { usersTable } from 'src/database/schemas/users';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { eq, not, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
+import { create } from 'domain';
 
 
 
@@ -23,7 +24,8 @@ export class AuthRepository implements AuthRepositoryInterface {
     // Method to sign in a user.
     async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
         
-        // Check if user is already exists by his username.
+        // Find the user by his username
+        // And check if user is already exist
         const user = this.findUserByUsername(signInDto.username);
 
         // If user does not exist, add him to the users table. 
@@ -32,6 +34,7 @@ export class AuthRepository implements AuthRepositoryInterface {
             const new_user = {
                 username: signInDto.username,
                 password: hashedPassword,
+                createdAt: new Date(),
             };
 
             // Save the user in the db
@@ -39,8 +42,9 @@ export class AuthRepository implements AuthRepositoryInterface {
             .insert(usersTable)
             .values(new_user)
             .returning({
-                id: usersTable.id,
+                userId: usersTable.id,
                 username: usersTable.username,
+                createdAt: usersTable.createdAt,
             })
             .execute()
             .then(users => users[0]);
@@ -49,9 +53,15 @@ export class AuthRepository implements AuthRepositoryInterface {
         }
         
         // If user exists, return the user entity.
-        return user;
+        return {
+            userId: usersTable.id,
+            username: usersTable.username,
+            createdAt: usersTable.createdAt,
+        }
     }
 
+    
+    // Method to find a user by his username.
     async findUserByUsername(username: string): Promise<AuthEntity> {
         const user = await this.database
         .select()
@@ -60,6 +70,17 @@ export class AuthRepository implements AuthRepositoryInterface {
         .execute()
         .then(users => users[0]);
 
-        return user;
+        if (!user) {
+            return null;    // Return null if user does not exist.
+        }
+        
+        // Else, return the user entity.
+        return {
+            userId: user.id,
+            username: user.username,
+            password: user.password,
+            createdAt: user.createdAt,
+        };
+        
     }
 }

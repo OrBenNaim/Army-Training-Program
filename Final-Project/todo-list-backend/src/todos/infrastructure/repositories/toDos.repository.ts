@@ -1,6 +1,6 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
-import { ToDoListRepositoryInterface } from './toDoList.repository-interface';
-import { ToDoItemEntity } from '../../domain/entity/ToDoItem.interface';
+import { ToDosRepositoryInterface } from './toDos.repository-interface';
+import { ToDoEntity } from '../../domain/entity/ToDo.interface';
 import * as schema from 'src/database/schemas/todos';
 import { todosTable } from 'src/database/schemas/todos';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
@@ -13,7 +13,7 @@ import { create } from 'domain';
 
 
 @Injectable()
-export class ToDoListRepository implements ToDoListRepositoryInterface {
+export class ToDosRepository implements ToDosRepositoryInterface {
   constructor(
     @Inject(DATABASE_CONNECTION) private readonly database: NodePgDatabase<typeof schema>,
         private readonly configService: ConfigService
@@ -21,7 +21,7 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
 
 
   // Method to create a new ToDoItem
-  async createToDoItem(createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
+  async createToDoItem(createToDoItemDto: CreateToDoItemDto, userID: number): Promise<ToDoEntity> {
 
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
@@ -38,7 +38,7 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
       title: createToDoItemDto.title, 
       description: createToDoItemDto.description, 
       completed: createToDoItemDto.completed,
-      userId: createToDoItemDto.userId,  // Add the userId to the new ToDoItem
+      userId: userID,  // Add the userId to the new ToDoItem
       
     })
     .returning({
@@ -55,14 +55,14 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
 
 
   // Method to retrieve all ToDoItems
-  async getAllToDoItems(): Promise<ToDoItemEntity[]> {
+  async getAllToDoItems(): Promise<ToDoEntity[]> {
       const list_of_ToDoItems = await this.database.select().from(todosTable).execute();
       return list_of_ToDoItems;
   }
 
 
   // Method to retrieve specific ToDoItem by ID
-  async getToDoItemById(id: number): Promise<ToDoItemEntity> {
+  async getToDoItemById(id: number): Promise<ToDoEntity> {
     const list_of_ToDoItems = await this.database.select().from(todosTable).where(eq(todosTable.id, id)).execute();
     
     /* list_of_ToDoItems[0] is the first element of the array, 
@@ -77,7 +77,7 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
 
 
   // Method to update a ToDoItem by ID
-  async updateToDoItemById(id: number, title: string, description: string, completed: boolean): Promise<ToDoItemEntity> {
+  async updateToDoItemById(id: number, title: string, description: string, completed: boolean): Promise<ToDoEntity> {
   
     const todoItem = await this.getToDoItemById(id);
 
@@ -104,7 +104,9 @@ export class ToDoListRepository implements ToDoListRepositoryInterface {
       id: todosTable.id,
       title: todosTable.title,
       description: todosTable.description,
-      completed: todosTable.completed
+      completed: todosTable.completed,
+      userId: todosTable.userId,
+      createdAt: todosTable.createdAt,
     })
     
     return updatedToDoItem[0];   // Return the updated ToDoItem

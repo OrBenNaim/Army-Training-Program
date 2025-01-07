@@ -8,40 +8,40 @@ import { DeleteAllToDoItemsCommand } from 'src/todos/application/commands/delete
 import { DeleteToDoItemByIdCommand } from 'src/todos/application/commands/delete-ToDo-item-by-id.command';
 import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
 import { UpdateToDoItemDto } from 'src/todos/application/dto/update-ToDo-item.dto';
-import { ToDoItemEntity } from 'src/todos/domain/entity/ToDoItem.interface';
+import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 
 
 
 @Controller('todos')
-export class ToDoListController {
+export class ToDosController {
   constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
-  @Post()
-  async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
+  // @Post()
+  // async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
     
-    try {
-      return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto));
-    } 
-    catch (error) {
-      console.log(error);
-      return error;
-    }
-  }
+  //   try {
+  //     return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto, userID));
+  //   } 
+  //   catch (error) {
+  //     console.log(error);
+  //     return error;
+  //   }
+  // }
 
   @Get()
-  async getAllToDoLists(): Promise<ToDoItemEntity[]> {
+  async getAllToDoLists(): Promise<ToDoEntity[]> {
     return await this.queryBus.execute(new GetAllToDoItemsQuery());
   }
 
 
   @Get(':id')
-  async getToDoListById(@Param('id') id: number): Promise<ToDoItemEntity> {
+  async getToDoListById(@Param('id') id: number): Promise<ToDoEntity> {
     return await this.queryBus.execute(new GetToDoItemByIdQuery(id));
   }
 
 
   @Put(':id')
-  async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoItemEntity> {
+  async updateToDoListById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
     const { title, description, completed  } = updateToDoItemDto; 
     return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, title, description, completed));  
   }

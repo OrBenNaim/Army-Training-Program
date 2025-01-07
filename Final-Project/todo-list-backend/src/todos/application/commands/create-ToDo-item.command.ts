@@ -2,6 +2,9 @@ import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dt
 import { ICommand } from '@nestjs/cqrs';
 
 export class CreateToDoItemCommand implements ICommand {    
-    constructor(public readonly createToDoItemDto: CreateToDoItemDto) {}
+    constructor(
+        public readonly createToDoItemDto: CreateToDoItemDto,
+        public readonly userID: number
+    ) {}
 } 
   

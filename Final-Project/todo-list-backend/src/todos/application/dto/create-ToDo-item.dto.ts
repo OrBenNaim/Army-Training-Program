@@ -15,8 +15,4 @@ export class CreateToDoItemDto {
     @IsBoolean()
     @Transform(({ value }) => value === null ? false : value)  // If completed is null, set it to false 
     completed: boolean = false;    // Default value for completed is false if completed is not provided
-
-    @IsNumber()
-    @IsNotEmpty()
-    userId: number;     // Include userId for foreign key relation
 }

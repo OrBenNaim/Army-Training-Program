@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsBoolean, IsOptional, IsNumber, IsDate } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class SignInDto {
@@ -12,13 +12,18 @@ export class SignInDto {
 }
 
 
-
 export class SignInResponseDto {
     @IsNumber()
     @IsNotEmpty()
-    id: number;
+    userId: number;
 
     @IsString()
     @IsNotEmpty()
     username: string;
+
+    @IsDate()
+    @IsNotEmpty()
+    createdAt: Date;
+
+    // Don't expose the password hash
 }
