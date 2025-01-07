@@ -6,4 +6,6 @@ export const AUTH_REPOSITORY = 'AUTH_REPOSITORY';
 
 export interface AuthRepositoryInterface {
   signIn(signInDto: SignInDto): Promise<AuthEntity>;
+
+  findUserByUsername(username: string): Promise<AuthEntity>;
 }
