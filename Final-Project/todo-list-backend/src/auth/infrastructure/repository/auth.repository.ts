@@ -5,11 +5,10 @@ import * as schema from 'src/database/schemas/todos';
 import { usersTable } from 'src/database/schemas/users';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
-import { create } from 'domain';
 
 
 
@@ -24,13 +23,14 @@ export class AuthRepository implements AuthRepositoryInterface {
     // Method to sign in a user.
     async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
         
-        // Find the user by his username
-        // And check if user is already exist
-        const user = this.findUserByUsername(signInDto.username);
+        // Hash the password.
+        const hashedPassword = await argon.hash(signInDto.password);
+        
+        // Find the user (if exists) by his username and password.
+        const user = this.findUser(signInDto.username, hashedPassword);
 
-        // If user does not exist, add him to the users table. 
+        // If the user does not exist, add him to the users table. 
         if (!user){
-            const hashedPassword = await argon.hash(signInDto.password);
             const new_user = {
                 username: signInDto.username,
                 password: hashedPassword,
@@ -49,38 +49,27 @@ export class AuthRepository implements AuthRepositoryInterface {
             .execute()
             .then(users => users[0]);
 
-            return insertedUser;
+            return insertedUser; 
         }
         
         // If user exists, return the user entity.
-        return {
+        return user[0].returning({
             userId: usersTable.id,
             username: usersTable.username,
             createdAt: usersTable.createdAt,
-        }
+        });
     }
 
     
-    // Method to find a user by his username.
-    async findUserByUsername(username: string): Promise<AuthEntity> {
+    // Method to find a user by his username and password.
+    async findUser(username: string, hashedPassword: string): Promise<AuthEntity> {
         const user = await this.database
         .select()
         .from(usersTable)
-        .where(eq(usersTable.username, username))
+        .where(and(eq(usersTable.username, username), eq(usersTable.password, hashedPassword)))
         .execute()
         .then(users => users[0]);
-
-        if (!user) {
-            return null;    // Return null if user does not exist.
-        }
         
-        // Else, return the user entity.
-        return {
-            userId: user.id,
-            username: user.username,
-            password: user.password,
-            createdAt: user.createdAt,
-        };
-        
+        return user; 
     }
 }

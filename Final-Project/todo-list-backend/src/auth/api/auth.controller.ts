@@ -10,7 +10,14 @@ export class AuthController {
 
     @Post(':signin')
     async signIn(@Body() signInDto: SignInDto): Promise<SignInResponseDto> {
-        return await this.commandBus.execute(new SignInCommand(signInDto));
+        
+        try {
+            return await this.commandBus.execute(new SignInCommand(signInDto));
+        }
+        catch (error) {
+            console.log(error);
+            return error;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param, Put, ValidationPipe, UseInterceptors, ClassSerializerInterceptor, UsePipes } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param, Put, ValidationPipe, UseInterceptors, ClassSerializerInterceptor, UsePipes, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateToDoItemCommand } from '../application/commands/create-ToDo-item.command';
 import { GetAllToDoItemsQuery } from 'src/todos/application/queries/get-all-ToDo-items.query';
@@ -16,17 +16,17 @@ import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 export class ToDosController {
   constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
-  // @Post()
-  // async createToDoList(@Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoItemEntity> {
+  @Post(":userId")
+  async createToDoList(@Param('userId') userID: number, @Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoEntity> {
     
-  //   try {
-  //     return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto, userID));
-  //   } 
-  //   catch (error) {
-  //     console.log(error);
-  //     return error;
-  //   }
-  // }
+    try {
+      return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto, userID));
+    } 
+    catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Failed to create ToDo item');
+    }
+  }
 
   @Get()
   async getAllToDoLists(): Promise<ToDoEntity[]> {
