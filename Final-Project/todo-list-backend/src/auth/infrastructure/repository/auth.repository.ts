@@ -1,6 +1,5 @@
-import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { AuthRepositoryInterface } from './Auth.repository-interface';
-import { AuthEntity } from 'src/auth/domain/entity/Auth.interface';
 import * as schema from 'src/database/schemas/todos';
 import { usersTable } from 'src/database/schemas/users';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
@@ -9,7 +8,6 @@ import { and, eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
-
 
 
 @Injectable()
@@ -23,17 +21,29 @@ export class AuthRepository implements AuthRepositoryInterface {
     // Method to sign in a user.
     async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
         
-        // Find the user (if exists) by his username and password.
+        // Find user (if exists) by his username.
         const existingUser = await this.database
         .select()
         .from(usersTable)
         .where(eq(usersTable.username, signInDto.username))
         .execute()
-        .then(users => users[0])
+        .then(users => users[0]);
+        
+        // In case the given username does not exists inside the db -> Add him
+        if (!existingUser) {
+            console.log(`\nusername '${signInDto.username}' does not exist yet. Adding to database.`);
 
-        if (existingUser && await argon.verify(existingUser.password, signInDto.password)) {
-            // Authentication successful
-            console.log("\nuser is already exists\n");
+            return this.insertUser(signInDto);  // insertUser() returns SignInResponseDto object
+        }
+        
+        // Otherwise, The given username already exists.
+        // Check if the given password already exists too.
+        // If so, just return the user.
+        // If Not, throw an error.
+        const pwMatches = await argon.verify(existingUser.password, signInDto.password);
+
+        if(pwMatches) {
+            // Password matches, return the user data
             return {
                 userId: existingUser.id,
                 username: existingUser.username,
@@ -41,19 +51,18 @@ export class AuthRepository implements AuthRepositoryInterface {
             }
         }  
 
-        if (existingUser)
-        
-        console.log("\nuser is not inside DB yet\n");
-        // The given user is not in db yet, add him.
-        
-        // Hash the password.
-        const hashedPassword = await argon.hash(signInDto.password);
+        // The given username already exists but the given password not.
+        // Throw an error.
+        console.error(`Invalid password for username '${signInDto.username}'.`);
+        throw new UnauthorizedException('Invalid username or password');
+    }
 
-        const new_user = {
-            username: signInDto.username,
-            password: hashedPassword,
-            createdAt: new Date(),
-        };
+    
+    // Insert User to DB and return object from type SignInResponseDto
+    async insertUser(new_user: SignInDto): Promise<SignInResponseDto>{
+        // Hash the password.
+        const hashedPassword = await argon.hash(new_user.password);
+        new_user.password = hashedPassword
 
         // Save the user in the db
         const insertedUser = await this.database
@@ -63,13 +72,10 @@ export class AuthRepository implements AuthRepositoryInterface {
             userId: usersTable.id,
             username: usersTable.username,
             createdAt: usersTable.createdAt,
-            
         })
         .execute()
         .then(users => users[0]);
         
-        return insertedUser; 
+        return insertedUser;
     }
-
-    
 }

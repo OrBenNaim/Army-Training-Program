@@ -7,7 +7,7 @@ export class UpdateToDoItemDto {
 
     @IsOptional()
     @IsString()
-    description: string;
+    description: string=null;
 
     @IsOptional()
     @IsBoolean()
