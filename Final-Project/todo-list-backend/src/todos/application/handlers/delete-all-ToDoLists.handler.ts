@@ -1,9 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { DeleteAllToDoItemsCommand } from '../commands/delete-all-ToDo-items.command';
-import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/toDos.repository-interface';  // eslint-disable-line
-import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
-import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
+import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/toDos.repository-interface';  
 
 
 @CommandHandler(DeleteAllToDoItemsCommand)

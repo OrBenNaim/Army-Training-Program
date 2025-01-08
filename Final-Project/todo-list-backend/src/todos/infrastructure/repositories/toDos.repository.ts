@@ -120,7 +120,6 @@ export class ToDosRepository implements ToDosRepositoryInterface {
 
   // Method to delete a ToDoItem by ID
   async deleteToDoItemById(id: number): Promise<void> {
-    const todoItem = await this.getToDoItemById(id);
     await this.database.delete(todosTable).where(eq(todosTable.id, id)).execute();
   }
 

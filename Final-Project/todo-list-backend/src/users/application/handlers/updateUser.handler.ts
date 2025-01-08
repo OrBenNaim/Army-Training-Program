@@ -1,16 +1,16 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { UpdateUserCommand } from 'src/users/application/commands/updateUser.command';
-import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/toDos.repository-interface';
-import { NotFoundException } from 'src/common/exceptions/not-found-.exception';
-import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
+import { UsersRepositoryInterface, USERS_REPOSITORY } from 'src/users/infrastructure/repository/users.repository-interface';
+import { UserResponseDto } from '../dto/user.dto';
 
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
-  constructor(@Inject(TODOS_REPOSITORY) private readonly toDosRepository: ToDosRepositoryInterface) {}
+  constructor(@Inject(USERS_REPOSITORY) private readonly usersRepository: UsersRepositoryInterface) {}
 
-  async execute(command: UpdateUserCommand): Promise<ToDoEntity> {
-    return await this.toDosRepository.updateUser(command.id, command.title, command.description, command.completed);
+  async execute(command: UpdateUserCommand): Promise<UserResponseDto> {
+    const { updateUserDto } = command;
+    return await this.usersRepository.updateUser(updateUserDto);
   }
 }

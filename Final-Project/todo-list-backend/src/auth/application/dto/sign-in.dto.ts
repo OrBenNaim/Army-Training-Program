@@ -20,7 +20,6 @@ export class SignInResponseDto {
     @IsString()
     @IsNotEmpty()
     username: string;
-
     @IsDate()
     @IsNotEmpty()
     createdAt: Date;
