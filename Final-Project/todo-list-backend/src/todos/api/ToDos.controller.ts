@@ -16,7 +16,7 @@ import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 export class ToDosController {
   constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
-  @Post(":userId")
+  @Post(':userId')
   async createToDoList(@Param('userId') userID: number, @Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoEntity> {
     
     try {

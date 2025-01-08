@@ -6,11 +6,12 @@ import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.d
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
-
+    constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
+    
     @Post(':signin')
     async signIn(@Body() signInDto: SignInDto): Promise<SignInResponseDto> {
         
+        console.log("\nInside signIn controller\n")
         try {
             return await this.commandBus.execute(new SignInCommand(signInDto));
         }

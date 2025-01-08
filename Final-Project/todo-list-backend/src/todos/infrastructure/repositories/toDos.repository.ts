@@ -39,7 +39,6 @@ export class ToDosRepository implements ToDosRepositoryInterface {
       description: createToDoItemDto.description, 
       completed: createToDoItemDto.completed,
       userId: userID,  // Add the userId to the new ToDoItem
-      
     })
     .returning({
       id: todosTable.id,

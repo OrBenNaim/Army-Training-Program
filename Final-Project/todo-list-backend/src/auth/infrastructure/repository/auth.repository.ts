@@ -23,53 +23,53 @@ export class AuthRepository implements AuthRepositoryInterface {
     // Method to sign in a user.
     async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
         
+        // Find the user (if exists) by his username and password.
+        const existingUser = await this.database
+        .select()
+        .from(usersTable)
+        .where(eq(usersTable.username, signInDto.username))
+        .execute()
+        .then(users => users[0])
+
+        if (existingUser && await argon.verify(existingUser.password, signInDto.password)) {
+            // Authentication successful
+            console.log("\nuser is already exists\n");
+            return {
+                userId: existingUser.id,
+                username: existingUser.username,
+                createdAt: existingUser.createdAt,
+            }
+        }  
+
+        if (existingUser)
+        
+        console.log("\nuser is not inside DB yet\n");
+        // The given user is not in db yet, add him.
+        
         // Hash the password.
         const hashedPassword = await argon.hash(signInDto.password);
-        
-        // Find the user (if exists) by his username and password.
-        const user = this.findUser(signInDto.username, hashedPassword);
 
-        // If the user does not exist, add him to the users table. 
-        if (!user){
-            const new_user = {
-                username: signInDto.username,
-                password: hashedPassword,
-                createdAt: new Date(),
-            };
+        const new_user = {
+            username: signInDto.username,
+            password: hashedPassword,
+            createdAt: new Date(),
+        };
 
-            // Save the user in the db
-            const insertedUser = await this.database
-            .insert(usersTable)
-            .values(new_user)
-            .returning({
-                userId: usersTable.id,
-                username: usersTable.username,
-                createdAt: usersTable.createdAt,
-            })
-            .execute()
-            .then(users => users[0]);
-
-            return insertedUser; 
-        }
-        
-        // If user exists, return the user entity.
-        return user[0].returning({
+        // Save the user in the db
+        const insertedUser = await this.database
+        .insert(usersTable)
+        .values(new_user)
+        .returning({
             userId: usersTable.id,
             username: usersTable.username,
             createdAt: usersTable.createdAt,
-        });
-    }
-
-    
-    // Method to find a user by his username and password.
-    async findUser(username: string, hashedPassword: string): Promise<AuthEntity> {
-        const user = await this.database
-        .select()
-        .from(usersTable)
-        .where(and(eq(usersTable.username, username), eq(usersTable.password, hashedPassword)))
+            
+        })
         .execute()
         .then(users => users[0]);
         
-        return user; 
+        return insertedUser; 
     }
+
+    
 }
