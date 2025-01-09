@@ -10,7 +10,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(@Inject(USERS_REPOSITORY) private readonly usersRepository: UsersRepositoryInterface) {}
 
   async execute(command: UpdateUserCommand): Promise<UserResponseDto> {
-    const { updateUserDto } = command;
-    return await this.usersRepository.updateUser(updateUserDto);
+    const { userId, updateUserDto } = command;
+    return await this.usersRepository.updateUser(userId, updateUserDto);
   }
 }

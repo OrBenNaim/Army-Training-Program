@@ -34,14 +34,7 @@ export class UserResponseDto {
  * Data Transfer Object (DTO) for updating a user.
  * Used in `UpdateUser` requests to modify user details.
  */
-export class UpdateUserDto {
-    /**
-     * The unique identifier of the user to be updated.
-     * Must be a number and cannot be empty.
-     */
-    @IsNotEmpty()
-    @IsNumber()
-    userId: number;     
+export class UpdateUserDto {   
 
     /**
      * The new username for the user (optional).
