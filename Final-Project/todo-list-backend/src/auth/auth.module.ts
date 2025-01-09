@@ -4,10 +4,13 @@ import { AuthController } from './api/auth.controller';
 import { AUTH_REPOSITORY } from './infrastructure/repository/auth.repository-interface';
 import { AuthRepository } from './infrastructure/repository/auth.repository';
 import { CommandHandlers, QueryHandlers } from './application/handlers/all.handlers';
+import { JwtModule } from '@nestjs/jwt';
+
 
 @Module({
     imports: [
       CqrsModule,      // Enables CQRS (Command Query Responsibility Segregation) pattern
+      JwtModule.register({})
     ],
     controllers: [AuthController],
     providers: [

@@ -4,17 +4,19 @@ import * as schema from 'src/database/schemas/todos';
 import { usersTable } from 'src/database/schemas/users';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
 import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
 export class AuthRepository implements AuthRepositoryInterface {
     constructor(
     @Inject(DATABASE_CONNECTION) private readonly database: NodePgDatabase<typeof schema>,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly jwt: JwtService
     ) {}
 
 
@@ -77,5 +79,15 @@ export class AuthRepository implements AuthRepositoryInterface {
         .then(users => users[0]);
         
         return insertedUser;
+    }
+
+
+    async signToken(userId, username: string, password: string): Promise<{ access_token: string }> {
+        const payload = {
+            sub: userId,
+            username,
+            password
+        };
+        return this.jwt.signAsync(payload,)
     }
 }
