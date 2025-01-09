@@ -62,10 +62,14 @@ export class ToDosRepository implements ToDosRepositoryInterface {
 
   // Method to retrieve specific ToDoItem by ID
   async getToDoItemById(id: number): Promise<ToDoEntity> {
-    const list_of_ToDoItems = await this.database.select().from(todosTable).where(eq(todosTable.id, id)).execute();
+    const list_of_ToDoItems = await this.database
+    .select()
+    .from(todosTable)
+    .where(eq(todosTable.id, id))
+    .execute();
     
     /* list_of_ToDoItems[0] is the first element of the array, 
-    which is the ToDoItem and should be the only element in the array. */
+    which is the ToDoItem and should be the only element in the array with the passwd id.*/
 
     if (!list_of_ToDoItems[0])  
     {
@@ -84,7 +88,8 @@ export class ToDosRepository implements ToDosRepositoryInterface {
     const result = await this.database
     .select()
     .from(todosTable)
-    .where(and(eq(todosTable.title, title), not(eq(todosTable.id, id)))).execute();
+    .where(and(eq(todosTable.title, title), not(eq(todosTable.id, id))))
+    .execute();
 
     if (result.length) {
       throw new ConflictException(`ToDo Item with title '${title}' is already exists.`);
