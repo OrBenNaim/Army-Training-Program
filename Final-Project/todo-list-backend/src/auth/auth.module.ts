@@ -6,12 +6,18 @@ import { AuthRepository } from './infrastructure/repository/auth.repository';
 import { CommandHandlers, QueryHandlers } from './application/handlers/all.handlers';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy';
+import { PassportModule } from '@nestjs/passport';
 
 
 @Module({
     imports: [
       CqrsModule,      // Enables CQRS (Command Query Responsibility Segregation) pattern
-      JwtModule.register({})
+      JwtModule.register({
+        global: true,
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: '10m' },
+      }),
+      PassportModule,
     ],
     controllers: [AuthController],
     providers: [

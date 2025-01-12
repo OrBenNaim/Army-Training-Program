@@ -8,6 +8,7 @@ import { DeleteUserCommand } from '../application/commands/deleteUser.command';
 import { UpdateUserCommand } from '../application/commands/updateUser.command';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
+import { UserEntity } from '../domain/entity/user.interface';
 
 
 @UseGuards(JwtGuard)
@@ -16,15 +17,17 @@ export class UsersController {
     constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
     
     @Get(':userId')
-    async getUser(@GetUser('userId') userId: number) {
-    
-        try {
-            return await this.queryBus.execute(new GetUserQuery(userId));
-        }
-        catch (error) {
-            console.log(error);
-            return error;
-        }
+    async getUser(@GetUser() user: UserEntity) {
+        
+        return user;
+        
+        // try {
+        //     return await this.queryBus.execute(new GetUserQuery(userId));
+        // }
+        // catch (error) {
+        //     console.log(error);
+        //     return error;
+        // }
     }
 
 

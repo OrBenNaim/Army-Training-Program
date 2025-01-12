@@ -81,7 +81,8 @@ export class AuthRepository implements AuthRepositoryInterface {
     async signToken(userId: number, username: string, createdAt: Date): Promise<{ access_token: string }> { 
         const payload = {
             sub: userId,
-            username
+            username,
+            createdAt,
         };
 
         const secret = this.configService.get('JWT_SECRET');
