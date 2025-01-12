@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
+import { access } from 'fs';
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class AuthRepository implements AuthRepositoryInterface {
 
 
     // Method to sign in a user.
-    async signIn(signInDto: SignInDto): Promise<SignInResponseDto> {
+    async signIn(signInDto: SignInDto) {
         
         // Find user (if exists) by his username.
         const existingUser = await this.database
@@ -34,8 +35,8 @@ export class AuthRepository implements AuthRepositoryInterface {
         // In case the given username does not exists inside the db -> Add him
         if (!existingUser) {
             console.log(`\nusername '${signInDto.username}' does not exist yet. Adding to database.`);
-
-            return this.insertUser(signInDto);  // insertUser() returns SignInResponseDto object
+            const insertedUser = await this.insertUser(signInDto); 
+            return this.signToken(insertedUser.userId, insertedUser.username, insertedUser.createdAt);
         }
         
         // Otherwise, The given username already exists.
@@ -46,11 +47,7 @@ export class AuthRepository implements AuthRepositoryInterface {
 
         if(pwMatches) {
             // Password matches, return the user data
-            return {
-                userId: existingUser.id,
-                username: existingUser.username,
-                createdAt: existingUser.createdAt,
-            }
+            this.signToken(existingUser.id, existingUser.username, existingUser.createdAt)
         }  
 
         // The given username already exists but the given password not.
@@ -61,7 +58,7 @@ export class AuthRepository implements AuthRepositoryInterface {
 
     
     // Insert User to DB and return object from type SignInResponseDto
-    async insertUser(new_user: SignInDto): Promise<SignInResponseDto>{
+    async insertUser(new_user: SignInDto) {
         // Hash the password.
         const hashedPassword = await argon.hash(new_user.password);
         new_user.password = hashedPassword
@@ -82,12 +79,25 @@ export class AuthRepository implements AuthRepositoryInterface {
     }
 
 
-    async signToken(userId, username: string, password: string): Promise<{ access_token: string }> {
+    async signToken(userId: number, username: string, createdAt: Date) { 
         const payload = {
             sub: userId,
-            username,
-            password
+            username
         };
-        return this.jwt.signAsync(payload,)
+
+        const secret = this.configService.get('JWT_SECRET');
+
+       
+        const token = await this.jwt.signAsync(
+            payload, 
+            {
+                expiresIn: '30m',
+                secret: secret, 
+            },
+        );
+
+        return {
+            access_token: token,
+        };
     }
 }

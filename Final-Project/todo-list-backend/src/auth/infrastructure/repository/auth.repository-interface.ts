@@ -5,7 +5,9 @@ import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.d
 export const AUTH_REPOSITORY = 'AUTH_REPOSITORY';
 
 export interface AuthRepositoryInterface {
-  signIn(signInDto: SignInDto): Promise<SignInResponseDto>;
+  signIn(signInDto: SignInDto);
   
-  insertUser(new_user: SignInDto): Promise<SignInResponseDto>;
+  insertUser(new_user: SignInDto);
+
+  signToken(userId: number, username: string, createdAt: Date);
 }
