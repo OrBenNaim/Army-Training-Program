@@ -6,10 +6,9 @@ import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
-import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
+import { SignInDto } from 'src/auth/application/dto/sign-in.dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
-import { access } from 'fs';
 
 
 @Injectable()
@@ -47,13 +46,13 @@ export class AuthRepository implements AuthRepositoryInterface {
 
         if(pwMatches) {
             // Password matches, return the user data
-            this.signToken(existingUser.id, existingUser.username, existingUser.createdAt)
+            return this.signToken(existingUser.id, existingUser.username, existingUser.createdAt)
         }  
 
         // The given username already exists but the given password not.
         // Throw an error.
         console.error(`Invalid password for username '${signInDto.username}'.`);
-        throw new UnauthorizedException('Invalid username or password');
+        throw new UnauthorizedException('Invalid username or password').getResponse();
     }
 
     
@@ -79,14 +78,13 @@ export class AuthRepository implements AuthRepositoryInterface {
     }
 
 
-    async signToken(userId: number, username: string, createdAt: Date) { 
+    async signToken(userId: number, username: string, createdAt: Date): Promise<{ access_token: string }> { 
         const payload = {
             sub: userId,
             username
         };
 
         const secret = this.configService.get('JWT_SECRET');
-
        
         const token = await this.jwt.signAsync(
             payload, 

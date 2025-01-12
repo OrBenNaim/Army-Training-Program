@@ -9,7 +9,7 @@ export class AuthController {
     constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
     
     @Post(':signin')
-    async signIn(@Body() signInDto: SignInDto): Promise<SignInResponseDto> {
+    async signIn(@Body() signInDto: SignInDto) {
     
         try {
             return await this.commandBus.execute(new SignInCommand(signInDto));

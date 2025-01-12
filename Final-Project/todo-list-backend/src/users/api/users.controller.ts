@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param, Put, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param, Put, ValidationPipe, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUserQuery } from '../application/queries/getUser.query';
 import { UpdateUserDto, UserResponseDto } from '../application/dto/user.dto';
@@ -6,14 +6,17 @@ import { GetAllUsersQuery } from '../application/queries/getAllUsers.query';
 import { DeleteAllUsersCommand } from '../application/commands/deleteAllUsers.command';
 import { DeleteUserCommand } from '../application/commands/deleteUser.command';
 import { UpdateUserCommand } from '../application/commands/updateUser.command';
+import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from 'src/auth/decorator';
 
 
+@UseGuards(JwtGuard)
 @Controller('users')
 export class UsersController {
     constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
     
     @Get(':userId')
-    async getUser(@Param('userId') userId: number): Promise<UserResponseDto> {
+    async getUser(@GetUser('userId') userId: number) {
     
         try {
             return await this.queryBus.execute(new GetUserQuery(userId));

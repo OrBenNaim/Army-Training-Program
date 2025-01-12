@@ -11,7 +11,7 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
     @Inject(AUTH_REPOSITORY) private readonly authRepository: AuthRepositoryInterface,
   ) {}
 
-  async execute(command: SignInCommand): Promise<SignInResponseDto> {
+  async execute(command: SignInCommand) {
     const { signInDto } = command;
     return await this.authRepository.signIn(signInDto);
   }

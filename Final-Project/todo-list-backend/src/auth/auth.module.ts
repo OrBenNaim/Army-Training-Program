@@ -5,6 +5,7 @@ import { AUTH_REPOSITORY } from './infrastructure/repository/auth.repository-int
 import { AuthRepository } from './infrastructure/repository/auth.repository';
 import { CommandHandlers, QueryHandlers } from './application/handlers/all.handlers';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './strategy';
 
 
 @Module({
@@ -17,6 +18,7 @@ import { JwtModule } from '@nestjs/jwt';
         { provide: AUTH_REPOSITORY, useClass: AuthRepository },
         ...CommandHandlers,         // Registers all command handlers
         ...QueryHandlers,          // Registers all query handlers
+        JwtStrategy,              //  Register JwtStrategy
       ],
 })
 export class AuthModule {}
