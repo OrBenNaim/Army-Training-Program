@@ -16,18 +16,10 @@ import { UserEntity } from '../domain/entity/user.interface';
 export class UsersController {
     constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
     
-    @Get(':userId')
+    @Get('me')
     async getUser(@GetUser() user: UserEntity) {
-        
+        console.log(user)
         return user;
-        
-        // try {
-        //     return await this.queryBus.execute(new GetUserQuery(userId));
-        // }
-        // catch (error) {
-        //     console.log(error);
-        //     return error;
-        // }
     }
 
 

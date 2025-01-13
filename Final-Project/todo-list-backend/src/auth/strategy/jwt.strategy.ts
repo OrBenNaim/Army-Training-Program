@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from "@nestjs/passport";
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
@@ -33,12 +33,14 @@ export class JwtStrategy extends PassportStrategy(
         .execute()
         .then(users => users[0]);
         
+        if (!user) {
+            throw new UnauthorizedException('Invalid token or user does not exist');
+        }
+
         return {
             userId: user.id,
             username: user.username,
             createdAt: user.createdAt,
         }
-        
-        
     }
 }

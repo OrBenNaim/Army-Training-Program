@@ -8,7 +8,7 @@ import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.d
 export class AuthController {
     constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
     
-    @Post(':signin')
+    @Post('signin')
     async signIn(@Body() signInDto: SignInDto) {
     
         try {
