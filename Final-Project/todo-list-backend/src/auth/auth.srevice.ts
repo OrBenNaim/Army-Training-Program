@@ -1,10 +1,11 @@
-import { Injectable, Inject, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUserByNameQuery } from 'src/users/application/queries/user.queries';
 import * as argon from 'argon2';
+import { CreateNewUserCommand } from 'src/users/application/commands/createNewUser.command';
 
 
 @Injectable()
@@ -18,12 +19,23 @@ export class AuthService {
 
     // Method to sign-up a new user.
     async signUp(signUpDto: AuthDto) {
-        const user = await this.queryBus.execute(new GetUserByNameQuery(signUpDto.username, signUpDto.password));
+        
+        try {
+            const user = await this.queryBus.execute(new GetUserByNameQuery(signUpDto.username));
 
-        // Check if the given username already exists in db
-        if (user.username) {
-            throw new ConflictException('Username already exists');
-        } 
+            // Check if the given username already exists in db
+            if (user.username) {
+                throw new ConflictException('Username already exists');
+            } 
+
+            // The user doesn't exist yet -> Create a new User
+            const newUser = await this.commandBus.execute(new CreateNewUserCommand(signUpDto))
+            return this.signToken(user.id, user.username, user.createdAt);
+        }
+        catch (error){
+            throw error;
+        }
+        
     }
 
 
@@ -31,8 +43,8 @@ export class AuthService {
     async signIn(signInDto: AuthDto) {
         
         // Get user (if exists) by his username.
-        const user = await this.queryBus.execute(new GetUserByNameQuery(signInDto.username, signInDto.password));
-        console.log(`\n${user}\n`)
+        const user = await this.queryBus.execute(new GetUserByNameQuery(signInDto.username));
+
         // Check if user not exists
         if (!user) {
             throw new NotFoundException(`User with username=${signInDto.username} is not found.`).getResponse();

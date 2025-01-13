@@ -10,7 +10,7 @@ export class GetUserByNameHandler implements IQueryHandler<GetUserByNameQuery> {
   constructor(@Inject(USERS_REPOSITORY) private readonly usersRepository: UsersRepositoryInterface) {}
 
   async execute(query: GetUserByNameQuery): Promise<UserEntity> {
-    const {username, password} = query;
-    return this.usersRepository.getUserByName(username, password);
+    const {username} = query;
+    return this.usersRepository.getUserByName(username);
   }
 }

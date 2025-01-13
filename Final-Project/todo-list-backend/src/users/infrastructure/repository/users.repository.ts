@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { UpdateUserDto, UserResponseDto } from 'src/users/application/dto/user.dto';
 import * as argon from 'argon2';
 import { UserEntity } from 'src/users/domain/entity/user.interface';
+import { AuthDto } from 'src/auth/dto/auth.dto';
 
 
 @Injectable()
@@ -18,8 +19,23 @@ export class UsersRepository implements UsersRepositoryInterface {
         private readonly configService: ConfigService
     ) {}
 
+    async createNewUser(new_user: AuthDto): Promise<UserEntity>{
+        // Hash the password.
+        const hashedPassword = await argon.hash(new_user.password);
+        new_user.password = hashedPassword
 
-    async getUserByName(username: string, password: string): Promise<UserEntity>{
+        // Save the user in the db
+        const insertedUser = await this.database
+        .insert(usersTable)
+        .values(new_user)
+        .execute()
+        .then(users => users[0]);
+        
+        return insertedUser;
+    }
+
+
+    async getUserByName(username: string): Promise<UserEntity>{
         try {
             
             // Find user (if exists) by his username.
