@@ -1,4 +1,4 @@
-import { Injectable, Inject, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
@@ -20,7 +20,10 @@ export class AuthService {
     async signUp(signUpDto: AuthDto) {
         const user = await this.queryBus.execute(new GetUserByNameQuery(signUpDto.username, signUpDto.password));
 
-        
+        // Check if the given username already exists in db
+        if (user.username) {
+            throw new ConflictException('Username already exists');
+        } 
     }
 
 
