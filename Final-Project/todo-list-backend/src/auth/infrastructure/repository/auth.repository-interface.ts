@@ -1,13 +1,11 @@
-
-import { AuthEntity } from 'src/auth/domain/entity/auth.interface';
-import { SignInDto, SignInResponseDto } from 'src/auth/application/dto/sign-in.dto';
+import { AuthDto, SignInResponseDto } from 'src/auth/dto/auth.dto';
 
 export const AUTH_REPOSITORY = 'AUTH_REPOSITORY';
 
 export interface AuthRepositoryInterface {
-  signIn(signInDto: SignInDto);
+  signIn(signInDto: AuthDto);
   
-  insertUser(new_user: SignInDto);
+  insertUser(new_user: AuthDto);
 
   signToken(userId: number, username: string, createdAt: Date);
 }

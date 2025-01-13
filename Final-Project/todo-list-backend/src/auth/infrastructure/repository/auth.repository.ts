@@ -6,7 +6,7 @@ import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
-import { SignInDto } from 'src/auth/application/dto/sign-in.dto';
+import { AuthDto } from 'src/auth/dto/auth.dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 
@@ -21,7 +21,7 @@ export class AuthRepository implements AuthRepositoryInterface {
 
 
     // Method to sign in a user.
-    async signIn(signInDto: SignInDto) {
+    async signIn(signInDto: AuthDto) {
         
         // Find user (if exists) by his username.
         const existingUser = await this.database
@@ -57,7 +57,7 @@ export class AuthRepository implements AuthRepositoryInterface {
 
     
     // Insert User to DB and return object from type SignInResponseDto
-    async insertUser(new_user: SignInDto) {
+    async insertUser(new_user: AuthDto) {
         // Hash the password.
         const hashedPassword = await argon.hash(new_user.password);
         new_user.password = hashedPassword

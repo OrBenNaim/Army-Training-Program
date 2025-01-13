@@ -5,12 +5,12 @@ import { UsersRepositoryInterface, USERS_REPOSITORY } from 'src/users/infrastruc
 import { UserResponseDto } from '../dto/user.dto';
 
 
-@CommandHandler(UpdateUserCommand)
-export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
-  constructor(@Inject(USERS_REPOSITORY) private readonly usersRepository: UsersRepositoryInterface) {}
+// @CommandHandler(UpdateUserCommand)
+// export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
+//   constructor(@Inject(USERS_REPOSITORY) private readonly usersRepository: UsersRepositoryInterface) {}
 
-  async execute(command: UpdateUserCommand): Promise<UserResponseDto> {
-    const { userId, updateUserDto } = command;
-    return await this.usersRepository.updateUser(userId, updateUserDto);
-  }
-}
+//   async execute(command: UpdateUserCommand): Promise<UserResponseDto> {
+//     const { userId, updateUserDto } = command;
+//     return await this.usersRepository.updateUser(userId, updateUserDto);
+//   }
+// }

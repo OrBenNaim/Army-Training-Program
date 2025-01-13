@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AuthController } from 'src/auth/api/auth.controller';
+import { AuthController } from 'src/auth/auth.controller';
 import { USERS_REPOSITORY } from './infrastructure/repository/users.repository-interface';
 import { UsersRepository } from './infrastructure/repository/users.repository';
 import { CommandHandlers, QueryHandlers } from './application/handlers/all.handlers';

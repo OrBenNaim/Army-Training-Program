@@ -1,9 +1,10 @@
 import { UpdateUserDto, UserResponseDto } from "src/users/application/dto/user.dto";
+import { UserEntity } from "src/users/domain/entity/user.interface";
 
 export const USERS_REPOSITORY = 'USERS_REPOSITORY';
 
 export interface UsersRepositoryInterface {
-  getUser(userId: number): Promise<UserResponseDto>;
+  getUserByName(username: string, password: string): Promise<UserEntity>;
   
   getAllUsers(): Promise<UserResponseDto[]>;
 
@@ -11,5 +12,5 @@ export interface UsersRepositoryInterface {
 
   deleteAllUsers(): Promise<void>;
 
-  updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<UserResponseDto>;
+  //updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<UserResponseDto>;
 }
