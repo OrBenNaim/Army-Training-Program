@@ -6,12 +6,11 @@ import { AuthService } from './auth.srevice';
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}    
-    
-    @Post('signin')
-    async signIn(@Body() signInDto: AuthDto) {
-    
+
+    @Post('signup')
+    async signup(@Body() signUpDto: AuthDto) {
         try {
-            return await this.authService.signIn(signInDto);
+            return await this.authService.signUp(signUpDto);
         }
         catch (error) {
             console.log(error);
@@ -19,10 +18,12 @@ export class AuthController {
         }
     }
 
-    @Post('signup')
-    async signup(@Body() signUpDto: AuthDto) {
+
+    @Post('signin')
+    async signIn(@Body() signInDto: AuthDto) {
+    
         try {
-            return await this.authService.signUp(signUpDto);
+            return await this.authService.signIn(signInDto);
         }
         catch (error) {
             console.log(error);

@@ -2,18 +2,18 @@ import { GetAllUsersHandler } from 'src/users/application/handlers/getAllUsers.h
 
 import { GetUserByNameHandler } from 'src/users/application/handlers/getUser.handler';
 
-//import { UpdateUserHandler } from 'src/users/application/handlers/updateUser.handler';
+import { UpdateUserHandler } from 'src/users/application/handlers/updateUser.handler';
 
 import { DeleteUserHandler } from 'src/users/application/handlers/deleteUser.handler';
 
 import { DeleteAllUsersHandler } from 'src/users/application/handlers/deleteAllUsers.handler';
 
-import { CreateNewUserCommand } from '../commands/createNewUser.command';
+import { CreateNewUserHandler } from './createNewUser.handler';
 
 
 export const CommandHandlers = [
-    CreateNewUserCommand,
-    //UpdateUserHandler,
+    CreateNewUserHandler,
+    UpdateUserHandler,
     DeleteUserHandler,
     DeleteAllUsersHandler,
   ];

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, ConflictException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
@@ -6,6 +6,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetUserByNameQuery } from 'src/users/application/queries/user.queries';
 import * as argon from 'argon2';
 import { CreateNewUserCommand } from 'src/users/application/commands/createNewUser.command';
+import { UserEntity } from 'src/users/domain/entity/user.interface';
+
 
 
 @Injectable()
@@ -14,7 +16,7 @@ export class AuthService {
             private readonly configService: ConfigService,
             private readonly jwt: JwtService,
             private readonly commandBus: CommandBus,
-            private readonly queryBus: QueryBus
+            private readonly queryBus: QueryBus,
     ) {}
 
     // Method to sign-up a new user.
@@ -24,18 +26,18 @@ export class AuthService {
             const user = await this.queryBus.execute(new GetUserByNameQuery(signUpDto.username));
 
             // Check if the given username already exists in db
-            if (user.username) {
+            if (user) {
                 throw new ConflictException('Username already exists');
             } 
 
             // The user doesn't exist yet -> Create a new User
-            const newUser = await this.commandBus.execute(new CreateNewUserCommand(signUpDto))
-            return this.signToken(user.id, user.username, user.createdAt);
+            const newUser: UserEntity = await this.commandBus.execute(new CreateNewUserCommand(signUpDto));
+
+            return await this.signToken(newUser.id, newUser.username, newUser.createdAt);
         }
         catch (error){
             throw error;
         }
-        
     }
 
 
@@ -43,7 +45,7 @@ export class AuthService {
     async signIn(signInDto: AuthDto) {
         
         // Get user (if exists) by his username.
-        const user = await this.queryBus.execute(new GetUserByNameQuery(signInDto.username));
+        const user: UserEntity = await this.queryBus.execute(new GetUserByNameQuery(signInDto.username));
 
         // Check if user not exists
         if (!user) {
@@ -57,7 +59,7 @@ export class AuthService {
 
         if(pwMatches) {
             // Password matches, return the user token
-            return this.signToken(user.id, user.username, user.createdAt)
+            return await this.signToken(user.id, user.username, user.createdAt)
         }  
 
         // If we get here, It means that the given username already exists but the given password incorrect.
@@ -79,7 +81,7 @@ export class AuthService {
         const token = await this.jwt.signAsync(
             payload, 
             {
-                expiresIn: '30m',
+                expiresIn: '1d', // One day
                 secret: secret, 
             },
         );

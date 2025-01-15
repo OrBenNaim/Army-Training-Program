@@ -15,5 +15,5 @@ export interface UsersRepositoryInterface {
 
   deleteAllUsers(): Promise<void>;
 
-  //updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<UserResponseDto>;
+  updateUser(user: UserEntity, updateUserDto: UpdateUserDto): Promise<UserResponseDto>;
 }

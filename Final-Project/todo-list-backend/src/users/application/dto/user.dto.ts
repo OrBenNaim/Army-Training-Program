@@ -11,7 +11,7 @@ export class UserResponseDto {
      */
     @IsNotEmpty()
     @IsNumber()
-    userId: number;     
+    id: number;     
 
     /**
      * The username of the user.

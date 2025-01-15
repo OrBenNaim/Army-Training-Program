@@ -16,9 +16,8 @@ export class UsersController {
     constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}    
     
     @UseGuards(JwtGuard)
-    @Get('me')
+    @Get('myUser')
     async getUser(@GetUser() user: UserEntity) {
-        console.log(user)
         return user;
     }
 
@@ -35,17 +34,19 @@ export class UsersController {
     }
 
 
-    @Delete(':id')
-    async deleteUser(@Param('id') userId: number): Promise<void> {
+    @UseGuards(JwtGuard)
+    @Delete('myUser')
+    async deleteUser(@GetUser('id') userId: number): Promise<void> {
         await this.commandBus.execute(new DeleteUserCommand(userId));
     }
     
 
-    @Put(':id')
+    @UseGuards(JwtGuard)
+    @Put('myUser')
     async updateUser(
-        @Param('id') userId: number, 
+        @GetUser() user: UserEntity, 
         @Body() updateUserDto: UpdateUserDto): Promise<UserResponseDto> { 
-            
-            return await this.commandBus.execute(new UpdateUserCommand(userId, updateUserDto));  
+
+        return await this.commandBus.execute(new UpdateUserCommand(user, updateUserDto));  
     }
 }
