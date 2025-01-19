@@ -7,13 +7,13 @@ export const TODOS_REPOSITORY = 'TODOS_REPOSITORY';
 export interface ToDosRepositoryInterface {
   createToDoItem(createToDoItemDto: CreateToDoItemDto, userId: number): Promise<ToDoEntity>;
   
-  getAllToDoItems(): Promise<ToDoEntity[]>;
+  getAllToDosPerUser(userId: number): Promise<ToDoEntity[]>; // Per userId
 
   getToDoItemById(id: number): Promise<ToDoEntity>;
 
   updateToDoItemById(id: number,  updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity>;
   
-  deleteAllToDoItems(): Promise<void>;
+  deleteAllToDosPerUser(userId: number): Promise<void>; // Per userId
 
   deleteToDoItemById(id: number): Promise<void>;
 }

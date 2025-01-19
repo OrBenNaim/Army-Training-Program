@@ -1,1 +1,4 @@
-export class DeleteAllToDoItemsCommand {}
+export class DeleteAllToDosPerUserCommand {
+    constructor(
+        public readonly userId: number) {}
+}

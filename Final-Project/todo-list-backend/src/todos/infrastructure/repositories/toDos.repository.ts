@@ -53,13 +53,15 @@ export class ToDosRepository implements ToDosRepositoryInterface {
   }
 
 
-  // Method to retrieve all ToDoItems
-  async getAllToDoItems(): Promise<ToDoEntity[]> {
-    const list_of_ToDoItems = await this.database.select()
+  // Method to retrieve all ToDoItems per userId
+  async getAllToDosPerUser(userId: number): Promise<ToDoEntity[]> {
+    const all_todos_per_user = await this.database
+    .select()
     .from(todosTable)
+    .where(eq(todosTable.userId, userId))
     .execute();
     
-    return list_of_ToDoItems;
+    return all_todos_per_user;
   }
 
 
@@ -100,9 +102,9 @@ export class ToDosRepository implements ToDosRepositoryInterface {
     }
 
     // Update only if the new value is not null
-    const updatedTitle = updateToDoItemDto.title !== null ? updateToDoItemDto.title : todoItem.title;
-    const updatedDescription = updateToDoItemDto.description !== null ? updateToDoItemDto.description : todoItem.description;
-    const updatedCompleted = updateToDoItemDto.completed !== null ? updateToDoItemDto.completed : todoItem.completed;
+    const updatedTitle = updateToDoItemDto.title ?? todoItem.title;
+    const updatedDescription = updateToDoItemDto.description ?? todoItem.description;
+    const updatedCompleted = updateToDoItemDto.completed ?? todoItem.completed;
 
 
     const updatedToDoItem = await this.database.update(todosTable)
@@ -123,15 +125,19 @@ export class ToDosRepository implements ToDosRepositoryInterface {
   }
 
 
-  // Method to delete all ToDoItems
-  async deleteAllToDoItems(): Promise<void> {
-    await this.database.delete(todosTable).execute();
+  // Method to delete all ToDoItems per userId
+  async deleteAllToDosPerUser(userId: number): Promise<void> {
+    await this.database.
+    delete(todosTable)
+    .execute();
   }
 
 
   // Method to delete a ToDoItem by ID
   async deleteToDoItemById(id: number): Promise<void> {
-    await this.database.delete(todosTable).where(eq(todosTable.id, id)).execute();
+    await this.database.delete(todosTable)
+    .where(eq(todosTable.id, id))
+    .execute();
   }
 
 }
