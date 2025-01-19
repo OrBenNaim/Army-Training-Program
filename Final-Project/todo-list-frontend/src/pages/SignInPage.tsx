@@ -10,9 +10,16 @@ function SignInPage(): JSX.Element {
 
   const handleSignIn = async () => {
     try {
-      const { accessToken } = await loginUser(username, password);
-      localStorage.setItem('accessToken', accessToken);
-      navigate('/app');
+        const backend_response =  await loginUser(username, password);
+
+        if (backend_response.status === 404){   // 404 Not Found: Indicates that the requested endpoint or resource (e.g., /auth/signin) does not exist.
+            alert('Unable to find the requested resource. Please check your credentials or try again later.');
+        }
+        else{
+            const { accessToken } = backend_response;
+            localStorage.setItem('accessToken', accessToken);
+            navigate('/app');
+        }
     } 
     catch (error) {
       console.error('Sign-in error:', error);

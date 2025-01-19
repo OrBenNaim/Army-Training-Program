@@ -12,8 +12,8 @@ const axiosInstance = axios.create({
 export async function loginUser(username: string, password: string) {
   try {
     const response = await axiosInstance.post('/auth/signin', { username, password });
-    console.log(response)
-    return response.data; // { accessToken }
+    console.log(response.data)
+    return response.data;   // { accessToken }
   } 
   catch (error) {
     handleAxiosError(error);

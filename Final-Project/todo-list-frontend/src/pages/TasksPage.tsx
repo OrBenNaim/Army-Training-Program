@@ -20,6 +20,10 @@ interface Task {
   completed: boolean;
 }
 
+interface DecodedToken {
+  username: string;
+}
+
 function TaskItem({
   task,
   onToggle,
@@ -108,9 +112,21 @@ function TaskListApp(): JSX.Element {
   );
   
   const [newTask, setNewTask] = useState('');
-  const [username] = useState<string>(
-    () => loadFromLocalStorage<string>('username') || ''
-  );
+  const [username, setUsername] = useState<string>('');
+
+  // Retrieve username from the access token
+  useEffect(() => {
+  const accessToken = loadFromLocalStorage<string>('accessToken');
+  if (accessToken) {
+    try {
+      const decoded: DecodedToken = jwtDecode(accessToken);
+      setUsername(decoded.username);
+    } 
+    catch (error) {
+      console.error('Failed to decode access token:', error);
+    }
+  }
+}, []);
 
   useEffect(() => {
     saveToLocalStorage('tasks', tasks);
@@ -211,4 +227,8 @@ function TaskListApp(): JSX.Element {
 }
 
 export default TaskListApp;
+
+function jwtDecode(accessToken: string): DecodedToken {
+  throw new Error('Function not implemented.');
+}
 

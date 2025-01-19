@@ -49,7 +49,7 @@ export class AuthService {
 
         // Check if user not exists
         if (!user) {
-            throw new NotFoundException(`User with username=${signInDto.username} is not found.`).getResponse();
+            throw new NotFoundException(`User with username=${signInDto.username} is not found.`);
         }
         
         console.log(user.password);
