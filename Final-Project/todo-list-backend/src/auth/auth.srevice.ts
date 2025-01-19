@@ -52,6 +52,8 @@ export class AuthService {
             throw new NotFoundException(`User with username=${signInDto.username} is not found.`).getResponse();
         }
         
+        console.log(user.password);
+
         // Otherwise, check if the given password matches to the username.
         // If so, just return the user's token.
         // If Not, throw an error.

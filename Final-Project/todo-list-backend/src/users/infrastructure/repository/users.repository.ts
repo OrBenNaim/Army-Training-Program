@@ -35,8 +35,6 @@ export class UsersRepository implements UsersRepositoryInterface {
         })
         .execute()
         .then(users => users[0]);
-
-        console.log(insertedUser);
         
         return insertedUser;
     }
@@ -44,7 +42,6 @@ export class UsersRepository implements UsersRepositoryInterface {
 
     async getUserByName(username: string): Promise<UserEntity>{
         try {
-            
             // Find user (if exists) by his username.
             const matchedUser = await this.database
             .select()
@@ -57,7 +54,7 @@ export class UsersRepository implements UsersRepositoryInterface {
             {
                 return null;
             }
-            
+
             return matchedUser;
         }
         catch(error) {
@@ -153,12 +150,14 @@ export class UsersRepository implements UsersRepositoryInterface {
         .set({ username: updatedUsername, password: updatedPassword })
         .where(eq(usersTable.id, user.id))
         .returning({
-            userId: usersTable.id,
+            id: usersTable.id,
             username: usersTable.username,
             createdAt: usersTable.createdAt,
         })
+        .execute()
+        .then(users => users[0])
 
         // Step 4: Return the updated user
-        return updatedUser as any;
+        return updatedUser;
     }
 }

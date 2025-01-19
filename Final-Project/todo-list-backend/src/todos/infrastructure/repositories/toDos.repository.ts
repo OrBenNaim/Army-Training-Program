@@ -1,5 +1,5 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
-import { ToDosRepositoryInterface } from './toDos.repository-interface';
+import { ToDosRepositoryInterface } from './todos.repository-interface';
 import { ToDoEntity } from '../../domain/entity/ToDo.interface';
 import * as schema from 'src/database/schemas/todos';
 import { todosTable } from 'src/database/schemas/todos';
@@ -7,8 +7,7 @@ import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, not, and } from 'drizzle-orm';
 import { ConfigService } from '@nestjs/config';
-import { CreateToDoItemDto } from 'src/todos/application/dto/create-ToDo-item.dto';
-import { create } from 'domain';
+import { CreateToDoItemDto, UpdateToDoItemDto } from 'src/todos/application/dto/todo.dto';
 
 
 
@@ -16,29 +15,28 @@ import { create } from 'domain';
 export class ToDosRepository implements ToDosRepositoryInterface {
   constructor(
     @Inject(DATABASE_CONNECTION) private readonly database: NodePgDatabase<typeof schema>,
-        private readonly configService: ConfigService
   ) {}
 
 
   // Method to create a new ToDoItem
-  async createToDoItem(createToDoItemDto: CreateToDoItemDto, userID: number): Promise<ToDoEntity> {
+  async createToDoItem(createToDoItemDto: CreateToDoItemDto, userId: number): Promise<ToDoEntity> {
 
-    // Check if the new title already exists in the database in another ToDoItem
+    // Check if the given userId already has a todo item with the same title
     const result = await this.database
     .select()
     .from(todosTable)
-    .where(eq(todosTable.title, createToDoItemDto.title)).execute();
+    .where(and(eq(todosTable.title, createToDoItemDto.title), eq(todosTable.userId, userId))).execute();
 
     if (result.length) {
-      throw new ConflictException(`ToDo Item with title '${createToDoItemDto.title}' is already exists.`);
+      throw new ConflictException(`ToDo Item with title '${createToDoItemDto.title}' is already exists for userId=${userId}.`);
     }
       
-    const data = await this.database.insert(todosTable)
+    const todoItem = await this.database.insert(todosTable)
     .values({ 
       title: createToDoItemDto.title, 
       description: createToDoItemDto.description, 
       completed: createToDoItemDto.completed,
-      userId: userID,  // Add the userId to the new ToDoItem
+      userId: userId,  // Add the userId to the new ToDoItem
     })
     .returning({
       id: todosTable.id,
@@ -48,39 +46,45 @@ export class ToDosRepository implements ToDosRepositoryInterface {
       userId: todosTable.userId,
       createdAt: todosTable.createdAt,
     })
+    .execute()
+    .then(todos => todos[0]);
 
-    return data[0];   // Return the newly created ToDoItem
+    return todoItem;   // Return the newly created ToDoItem
   }
 
 
   // Method to retrieve all ToDoItems
   async getAllToDoItems(): Promise<ToDoEntity[]> {
-      const list_of_ToDoItems = await this.database.select().from(todosTable).execute();
-      return list_of_ToDoItems;
+    const list_of_ToDoItems = await this.database.select()
+    .from(todosTable)
+    .execute();
+    
+    return list_of_ToDoItems;
   }
 
 
   // Method to retrieve specific ToDoItem by ID
   async getToDoItemById(id: number): Promise<ToDoEntity> {
-    const list_of_ToDoItems = await this.database
+    const todoItem = await this.database
     .select()
     .from(todosTable)
     .where(eq(todosTable.id, id))
-    .execute();
+    .execute()
+    .then(todos => todos[0]);
     
     /* list_of_ToDoItems[0] is the first element of the array, 
     which is the ToDoItem and should be the only element in the array with the passwd id.*/
 
-    if (!list_of_ToDoItems[0])  
+    if (!todoItem)  
     {
       throw new NotFoundException(`ToDo Item with ID ${id} not found.`);
     }
-    return list_of_ToDoItems[0];
+    return todoItem;
   }
 
 
   // Method to update a ToDoItem by ID
-  async updateToDoItemById(id: number, title: string, description: string, completed: boolean): Promise<ToDoEntity> {
+  async updateToDoItemById(id: number, updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
   
     const todoItem = await this.getToDoItemById(id);
 
@@ -88,17 +92,17 @@ export class ToDosRepository implements ToDosRepositoryInterface {
     const result = await this.database
     .select()
     .from(todosTable)
-    .where(and(eq(todosTable.title, title), not(eq(todosTable.id, id))))
+    .where(and(eq(todosTable.title, updateToDoItemDto.title), not(eq(todosTable.id, id))))
     .execute();
 
     if (result.length) {
-      throw new ConflictException(`ToDo Item with title '${title}' is already exists.`);
+      throw new ConflictException(`ToDo Item with title '${updateToDoItemDto.title}' is already exists.`);
     }
 
     // Update only if the new value is not null
-    const updatedTitle = title !== null ? title : todoItem.title;
-    const updatedDescription = description !== null ? description : todoItem.description;
-    const updatedCompleted = completed !== null ? completed : todoItem.completed;
+    const updatedTitle = updateToDoItemDto.title !== null ? updateToDoItemDto.title : todoItem.title;
+    const updatedDescription = updateToDoItemDto.description !== null ? updateToDoItemDto.description : todoItem.description;
+    const updatedCompleted = updateToDoItemDto.completed !== null ? updateToDoItemDto.completed : todoItem.completed;
 
 
     const updatedToDoItem = await this.database.update(todosTable)
@@ -112,8 +116,10 @@ export class ToDosRepository implements ToDosRepositoryInterface {
       userId: todosTable.userId,
       createdAt: todosTable.createdAt,
     })
+    .execute()
+    .then(todos => todos[0]);
     
-    return updatedToDoItem[0];   // Return the updated ToDoItem
+    return updatedToDoItem;   // Return the updated ToDoItem
   }
 
 

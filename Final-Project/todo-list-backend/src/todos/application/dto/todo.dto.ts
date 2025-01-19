@@ -16,3 +16,19 @@ export class CreateToDoItemDto {
     @Transform(({ value }) => value === null ? false : value)  // If completed is null, set it to false 
     completed: boolean = false;    // Default value for completed is false if completed is not provided
 }
+
+
+export class UpdateToDoItemDto {
+    @IsOptional()
+    @IsString()
+    title: string=null;     // Default value for title is null when ToDoList is updated
+
+    @IsOptional()
+    @IsString()
+    description: string=null;
+
+    @IsOptional()
+    @IsBoolean()
+    completed: boolean=null;
+}
+

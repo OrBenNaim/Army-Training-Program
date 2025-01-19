@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Delete, Param, Put, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Body, Get, Delete, Put, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UpdateUserDto, UserResponseDto } from '../application/dto/user.dto';
 import { GetAllUsersQuery, GetUserByNameQuery } from '../application/queries/user.queries';

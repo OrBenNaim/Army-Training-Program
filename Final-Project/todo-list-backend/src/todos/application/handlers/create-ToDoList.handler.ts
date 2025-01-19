@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/toDos.repository-interface';  // eslint-disable-line
+import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/todos.repository-interface';  // eslint-disable-line
 import { CreateToDoItemCommand } from '../commands/create-ToDo-item.command';
 import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 
@@ -12,7 +12,7 @@ export class CreateToDoItemHandler implements ICommandHandler<CreateToDoItemComm
   ) {}
 
   async execute(command: CreateToDoItemCommand): Promise<ToDoEntity> {
-    const { createToDoItemDto, userID } = command;
-    return await this.toDosRepository.createToDoItem(createToDoItemDto, userID);
+    const { createToDoItemDto, userId } = command;
+    return await this.toDosRepository.createToDoItem(createToDoItemDto, userId);
   }
 }
