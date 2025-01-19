@@ -18,7 +18,7 @@ function HomePage(): JSX.Element {
 
   // Check authentication state on page load
   useEffect(() => {
-    const token = loadFromLocalStorage('accessToken'); // Replace with your actual token storage logic
+    const token = loadFromLocalStorage<string>('accessToken'); // Replace with your actual token storage logic
     const savedUsername = loadFromLocalStorage<string>('username');
     
     if (token) {
@@ -28,14 +28,7 @@ function HomePage(): JSX.Element {
     }
   }, []);
 
-  const handleGetStarted = () => {
-    if (username.trim() === '') {
-      alert('Please enter your name to continue.');
-      return;
-    }
-    saveToLocalStorage('username', username.trim());
-    navigate('/app'); // Navigate to the main app
-  };
+  
 
   const handleSignOut = () => {
     removeFromLocalStorage('accessToken');
@@ -77,41 +70,6 @@ function HomePage(): JSX.Element {
                   >
                     Welcome to your To-Do List App!
                   </Typography>
-                </Grid2>
-
-                {/* Name Input */}
-                <Grid2 size={{ xs: 12 }}>
-                  <TextField
-                    label="Enter your name"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUserName(e.target.value)}
-                    sx={{
-                      '& .MuiInputLabel-root': { color: '#1976d2' },
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': { borderColor: '#1976d2' },
-                        '&:hover fieldset': { borderColor: '#115293' },
-                      },
-                    }}
-                  />
-                </Grid2>
-
-                {/* Get Started Button */}
-                <Grid2 size={{ xs: 12 }} display="flex" justifyContent="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleGetStarted}
-                    size="large"
-                    sx={{
-                      fontWeight: 'bold',
-                      textTransform: 'capitalize',
-                      padding: '10px 30px',
-                    }}
-                  >
-                    Get Started
-                  </Button>
                 </Grid2>
 
                 {/* Sign In & Sign Up Buttons */}

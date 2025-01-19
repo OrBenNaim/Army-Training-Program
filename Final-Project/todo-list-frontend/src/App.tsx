@@ -1,9 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import { DarkModeProvider, useDarkMode } from './utils/darkModeContext';
 import HomePage from './pages/HomePage';
 import ToDoListApp from './pages/TasksPage';
 import Layout from './utils/Layout';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 
 
 function App() {
@@ -17,6 +19,7 @@ function App() {
 
 function MainApp() {
   const { isDarkMode } = useDarkMode();
+  const isAuthenticated = !!localStorage.getItem('accessToken');
 
   // Create MUI theme based on the current mode
   const theme = createTheme({
@@ -33,7 +36,12 @@ function MainApp() {
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/app" element={<ToDoListApp />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route 
+              path="/app" 
+              element={isAuthenticated ? <ToDoListApp /> : <Navigate to="/signin" />}
+            />
           </Routes>
         </Layout>
       </Router>
