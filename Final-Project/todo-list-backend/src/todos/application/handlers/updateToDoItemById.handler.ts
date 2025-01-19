@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { UpdateToDoItemByIdCommand } from '../commands/update-ToDo-item-by-id.command';
+import { UpdateToDoItemByIdCommand } from '../commands/updateToDoItemById.command';
 import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/todos.repository-interface';
 import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 

@@ -1,9 +1,9 @@
 import { Controller, Post, Body, Get, Delete, Param, Put, InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateToDoItemCommand } from '../application/commands/create-ToDo-item.command';
-import { GetAllToDosPerUserQuery } from 'src/todos/application/queries/get-all-ToDo-items.query';
-import { GetToDoItemByIdQuery } from 'src/todos/application/queries/get-ToDo-item-by-id.query';
-import { UpdateToDoItemByIdCommand } from 'src/todos/application/commands/update-ToDo-item-by-id.command';
+import { GetAllToDosPerUserQuery } from 'src/todos/application/queries/getAllToDosPerUser.query';
+import { GetToDoItemByIdQuery } from 'src/todos/application/queries/getToDoItemById.query';
+import { UpdateToDoItemByIdCommand } from 'src/todos/application/commands/updateToDoItemById.command';
 import { DeleteAllToDosPerUserCommand } from 'src/todos/application/commands/delete-all-ToDo-items.command';
 import { DeleteToDoItemByIdCommand } from 'src/todos/application/commands/delete-ToDo-item-by-id.command';
 import { CreateToDoItemDto, UpdateToDoItemDto } from 'src/todos/application/dto/todo.dto';
