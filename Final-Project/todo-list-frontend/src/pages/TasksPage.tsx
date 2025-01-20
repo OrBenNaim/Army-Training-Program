@@ -12,10 +12,10 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Grid2 from '@mui/material/Grid2';
-import { loadFromLocalStorage } from '../utils/localStorageUtils';
-import { fetchTasks, createTask, updateTask, deleteTask } from '../utils/apiUtils';
-import { Task, DecodedToken } from '../types'
-import { jwtDecode } from 'jwt-decode';
+import { fetchTasks, createTask, updateTask, deleteTask, getUser } from '../utils/apiUtils';
+import { Task } from '../types'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { queryClient } from '../App';
 
 
 function TaskItem({
@@ -99,33 +99,34 @@ function TaskList({
 
 
 function TaskListApp(): JSX.Element {
-  const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
-  const [username, setUsername] = useState<string>('');
-  const [accessToken] = useState<string>(
-    () => loadFromLocalStorage<string>('accessToken') || ''
-  );
+  //this are for Get requests
+  const {data:tasks, isLoading:IsLoadingTasks} = useQuery({ queryKey: ['tasks'], queryFn: fetchTasks });
+  const {data:user, isLoading:isLoadingUser} = useQuery({ queryKey: ['myUser'], queryFn: getUser });
 
-  useEffect(() => {
-    if (accessToken) {
-      
-      const decoded: DecodedToken = jwtDecode(accessToken);
-      setUsername(decoded.username);
+  //this is for POST/DELETE/PUT
+  const {mutateAsync: postTask} = useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
+    },
+  })
+  if(IsLoadingTasks || isLoadingUser){
+    return <h1>IsLoading</h1>
+  }
+  
 
-      // Fetch user tasks from the server
-      fetchTasks(accessToken)
-        .then((data) => setTasks(data))
-        .catch((error) => console.error(error));
-    }
-  }, [accessToken]);
+  
+
+  
   
 
   const handleAddTask = async () => {
     if (newTask.trim() === '') return alert('Task cannot be empty.');
 
     try {
-      const addedTask = await createTask(accessToken, { title: newTask, completed: false });
-      setTasks((prev) => [...prev, addedTask]);
+      await postTask( { title: newTask, completed: false });
       setNewTask('');
     } catch (error) {
       console.error(error);
@@ -135,8 +136,8 @@ function TaskListApp(): JSX.Element {
 
   const handleToggleTask = async (task: Task) => {
     try {
-      const updatedTask = await updateTask(accessToken, task.id, { ...task, completed: !task.completed });
-      setTasks((prev) => prev.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
+      const updatedTask = await updateTask('accessToken', task.id, { ...task, completed: !task.completed });
+      // setTasks((prev) => prev.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
     } catch (error) {
       console.error(error);
     }
@@ -145,8 +146,8 @@ function TaskListApp(): JSX.Element {
 
   const handleDeleteTask = async (task: Task) => {
     try {
-      await deleteTask(accessToken, task.id); // Use task.id
-      setTasks((prev) => prev.filter((t) => t.id !== task.id));
+      await deleteTask('accessToken', task.id); // Use task.id
+      // setTasks((prev) => prev.filter((t) => t.id !== task.id));
     } catch (error) {
       console.error(error);
     }
@@ -157,7 +158,7 @@ function TaskListApp(): JSX.Element {
       <Grid2 container spacing={4} justifyContent="center">
         <Grid2 size={{ xs: 12 }} display="flex" justifyContent="center">
           <Typography variant="h4" component="h1">
-            Hello, {username || 'User'}! Let's manage your tasks.
+            Hello, {user.username}! Let's manage your tasks.
           </Typography>
         </Grid2>
 
@@ -167,7 +168,7 @@ function TaskListApp(): JSX.Element {
           </Typography>
           <Typography sx={{ ml: 2 }}>
             <strong>
-              Completed tasks: {tasks.filter((task) => task.completed).length}
+              {/* Completed tasks: {tasks.filter((task) => task.completed).length} */}
             </strong>
           </Typography>
         </Grid2>

@@ -18,6 +18,8 @@ function SignInPage(): JSX.Element {
         else{
             const { accessToken } = backend_response;
             localStorage.setItem('accessToken', accessToken);
+            console.log(backend_response);
+            
             navigate('/app');
         }
     } 

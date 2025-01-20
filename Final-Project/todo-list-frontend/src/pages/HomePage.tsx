@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  TextField,
   Button,
   Typography,
   Card,
   CardContent,
 } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
-import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from '../utils/localStorageUtils';
+import { loadFromLocalStorage, removeFromLocalStorage } from '../utils/localStorageUtils';
 
 function HomePage(): JSX.Element {
   const [username, setUserName] = useState('');

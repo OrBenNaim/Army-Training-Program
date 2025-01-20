@@ -6,13 +6,19 @@ import ToDoListApp from './pages/TasksPage';
 import Layout from './utils/Layout';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+export const queryClient = new QueryClient()
 
 function App() {
+
   return (
+    <QueryClientProvider client={queryClient}>
     <DarkModeProvider>
       <MainApp />
     </DarkModeProvider>
+    </QueryClientProvider>
+
   );
 }
 

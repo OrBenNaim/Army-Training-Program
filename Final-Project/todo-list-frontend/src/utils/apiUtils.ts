@@ -11,53 +11,52 @@ const axiosInstance = axios.create({
 });
 
 export async function loginUser(username: string, password: string) {
-  try {
+  
     const response = await axiosInstance.post('/auth/signin', { username, password });
     console.log(response.data)
     return response.data;   // { accessToken }
-  } 
-  catch (error) {
-    handleAxiosError(error);
-    throw new Error('Failed to log in');
-  }
+  
+
 }
 
-export async function registerUser(username: string, password: string) {
-  try {
-    const response = await axiosInstance.post('/auth/signup', { username, password });
-    console.log(response.data)
+export async function registerUser(user:{username: string, password: string}) {
+    const response = await axiosInstance.post('/auth/signup', {username:user.username, password: user.password});
     return response.data;
-  } 
-  catch (error) {
-    handleAxiosError(error);
-    throw new Error('Failed to register');
-  }
+
 }
-
-
-// Task APIs
-export async function fetchTasks(accessToken: string) {
-  try {
-    const response = await axiosInstance.get('/todos', {
+export async function getUser() {
+    const accessToken = localStorage.getItem('accessToken'); 
+    const response = await axiosInstance.get('/users/myUser', {
+      
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     return response.data; // Array of tasks
-  } catch (error) {
-    handleAxiosError(error);
-    throw new Error('Failed to fetch tasks');
-  }
 }
 
-export async function createTask(accessToken: string, task: { title: string; completed: boolean }): Promise<Task> {
-  try {
+// Task APIs
+export async function fetchTasks() {
+  const accessToken = localStorage.getItem('accessToken'); 
+
+    const response = await axiosInstance.get('/todos', {
+      
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return response.data; // Array of tasks
+ 
+  
+}
+
+export async function createTask(task: { title: string; completed: boolean }): Promise<Task> {
+
+    const accessToken = localStorage.getItem('accessToken'); 
+
     const response = await axiosInstance.post('/todos', task, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
+
     return response.data as Task;   // Newly created task
-  } catch (error) {
-    handleAxiosError(error);
-    throw new Error('Failed to create task');
-  }
+  
+
 }
 
 export async function updateTask(

@@ -8,6 +8,8 @@ export function saveToLocalStorage<T>(key: string, value: T): void {
 
 export function loadFromLocalStorage<T>(key: string): T | null {
   try {
+    console.log(key);
+    
     const savedValue = localStorage.getItem(key);
     return savedValue ? JSON.parse(savedValue) : null;
   } catch (error) {
