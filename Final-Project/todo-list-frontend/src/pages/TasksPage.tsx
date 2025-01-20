@@ -12,17 +12,11 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Grid2 from '@mui/material/Grid2';
-import { loadFromLocalStorage, saveToLocalStorage } from '../utils/localStorageUtils';
+import { loadFromLocalStorage } from '../utils/localStorageUtils';
+import { fetchTasks, createTask, updateTask, deleteTask } from '../utils/apiUtils';
+import { Task, DecodedToken } from '../types'
+import { jwtDecode } from 'jwt-decode';
 
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-interface DecodedToken {
-  username: string;
-}
 
 function TaskItem({
   task,
@@ -104,93 +98,78 @@ function TaskList({
 }
 
 
-
 function TaskListApp(): JSX.Element {
-  
-  const [tasks, setTasks] = useState<Task[]>(
-    () => loadFromLocalStorage<Task[]>('tasks') || []
-  );
-  
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
   const [username, setUsername] = useState<string>('');
+  const [accessToken] = useState<string>(
+    () => loadFromLocalStorage<string>('accessToken') || ''
+  );
 
-  // Retrieve username from the access token
   useEffect(() => {
-  const accessToken = loadFromLocalStorage<string>('accessToken');
-  if (accessToken) {
-    try {
+    if (accessToken) {
+      
       const decoded: DecodedToken = jwtDecode(accessToken);
       setUsername(decoded.username);
-    } 
-    catch (error) {
-      console.error('Failed to decode access token:', error);
+
+      // Fetch user tasks from the server
+      fetchTasks(accessToken)
+        .then((data) => setTasks(data))
+        .catch((error) => console.error(error));
     }
-  }
-}, []);
+  }, [accessToken]);
+  
 
-  useEffect(() => {
-    saveToLocalStorage('tasks', tasks);
-  }, [tasks]);
+  const handleAddTask = async () => {
+    if (newTask.trim() === '') return alert('Task cannot be empty.');
 
-  const handleAddTask = () => {
-    if (newTask.trim() === '') {
-      alert('Task title cannot be empty.');
-      return;
+    try {
+      const addedTask = await createTask(accessToken, { title: newTask, completed: false });
+      setTasks((prev) => [...prev, addedTask]);
+      setNewTask('');
+    } catch (error) {
+      console.error(error);
     }
-
-    if (tasks.some((task) => task.title === newTask.trim())) {
-      alert('A task with this title already exists.');
-      return;
-    }
-
-    const task: Task = {
-      id: Date.now(),
-      title: newTask.trim(),
-      completed: false,
-    };
-
-    setTasks([...tasks, task]);
-    setNewTask('');
   };
 
-  const handleRemoveTask = (taskToRemove: Task) => {
-    setTasks(tasks.filter((task) => task.id !== taskToRemove.id));
+
+  const handleToggleTask = async (task: Task) => {
+    try {
+      const updatedTask = await updateTask(accessToken, task.id, { ...task, completed: !task.completed });
+      setTasks((prev) => prev.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleToggleCompleted = (taskToToggle: Task) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskToToggle.id
-          ? { ...task, completed: !task.completed }
-          : task
-      )
-    );
+
+  const handleDeleteTask = async (task: Task) => {
+    try {
+      await deleteTask(accessToken, task.id); // Use task.id
+      setTasks((prev) => prev.filter((t) => t.id !== task.id));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <Box sx={{ p: 4 }}>
-
       <Grid2 container spacing={4} justifyContent="center">
         <Grid2 size={{ xs: 12 }} display="flex" justifyContent="center">
-
           <Typography variant="h4" component="h1">
-            Hello, {username}! Let's manage your tasks.
+            Hello, {username || 'User'}! Let's manage your tasks.
           </Typography>
-
         </Grid2>
 
         <Grid2 size={{ xs: 12 }} display="flex" justifyContent="center">
-
           <Typography>
             <strong>Total tasks: {tasks.length}</strong>
           </Typography>
-
           <Typography sx={{ ml: 2 }}>
             <strong>
               Completed tasks: {tasks.filter((task) => task.completed).length}
             </strong>
           </Typography>
-
         </Grid2>
 
         <Grid2 size={{ xs: 12, sm: 8, md: 6 }} display="flex" gap={2}>
@@ -217,8 +196,8 @@ function TaskListApp(): JSX.Element {
         <Grid2 size={{ xs: 12 }} display="flex" justifyContent="center">
           <TaskList
             tasks={tasks}
-            onToggle={handleToggleCompleted}
-            onDelete={handleRemoveTask}
+            onToggle={handleToggleTask}
+            onDelete={handleDeleteTask}
           />
         </Grid2>
       </Grid2>
@@ -228,7 +207,4 @@ function TaskListApp(): JSX.Element {
 
 export default TaskListApp;
 
-function jwtDecode(accessToken: string): DecodedToken {
-  throw new Error('Function not implemented.');
-}
 
