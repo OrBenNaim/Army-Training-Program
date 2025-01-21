@@ -10,6 +10,6 @@ export class UpdateToDoListByIdHandler implements ICommandHandler<UpdateToDoItem
   constructor(@Inject(TODOS_REPOSITORY) private readonly toDosRepository: ToDosRepositoryInterface) {}
 
   async execute(command: UpdateToDoItemByIdCommand): Promise<ToDoEntity> {
-    return await this.toDosRepository.updateToDoItemById(command.id, command.updateToDoItemDto);
+    return await this.toDosRepository.updateToDoItemById(command.updateToDoItemDto);
   }
 }

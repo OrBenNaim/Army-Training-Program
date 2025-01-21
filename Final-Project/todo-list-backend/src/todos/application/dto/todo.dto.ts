@@ -19,8 +19,12 @@ export class CreateToDoItemDto {
 
 
 export class UpdateToDoItemDto {
-    @IsOptional()
+    @IsNumber()
+    @IsNotEmpty()
+    id: number;     // Task id
+    
     @IsString()
+    @IsNotEmpty()
     title: string=null;     // Default value for title is null when ToDoList is updated
 
     @IsOptional()

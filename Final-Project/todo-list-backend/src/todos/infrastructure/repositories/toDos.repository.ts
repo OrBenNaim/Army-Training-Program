@@ -86,15 +86,15 @@ export class ToDosRepository implements ToDosRepositoryInterface {
 
 
   // Method to update a ToDoItem by ID
-  async updateToDoItemById(id: number, updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
+  async updateToDoItemById(updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
   
-    const todoItem = await this.getToDoItemById(id);
+    const todoItem = await this.getToDoItemById(updateToDoItemDto.id);
 
     // Check if the new title already exists in the database in another ToDoItem
     const result = await this.database
     .select()
     .from(todosTable)
-    .where(and(eq(todosTable.title, updateToDoItemDto.title), not(eq(todosTable.id, id))))
+    .where(and(eq(todosTable.title, updateToDoItemDto.title), not(eq(todosTable.id, updateToDoItemDto.id))))
     .execute();
 
     if (result.length) {
@@ -109,7 +109,7 @@ export class ToDosRepository implements ToDosRepositoryInterface {
 
     const updatedToDoItem = await this.database.update(todosTable)
     .set({ title: updatedTitle, description: updatedDescription, completed: updatedCompleted })
-    .where(eq(todosTable.id, id))
+    .where(eq(todosTable.id, updateToDoItemDto.id))
     .returning({
       id: todosTable.id,
       title: todosTable.title,

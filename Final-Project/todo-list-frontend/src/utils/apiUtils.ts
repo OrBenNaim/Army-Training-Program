@@ -10,16 +10,19 @@ const axiosInstance = axios.create({
   },
 });
 
-export async function loginUser(username: string, password: string) {
-  const response = await axiosInstance.post('/auth/signin', { username, password });
+export async function loginUser(userCredentials: { username: string, password: string }) {
+  const response = await axiosInstance.post('/auth/signin', userCredentials);
   console.log(response.data)
   return response.data;   // { accessToken }
 }
 
-export async function registerUser(user: {username: string, password: string}) {
-  const response = await axiosInstance.post('/auth/signup', {username:user.username, password: user.password});
+
+export async function registerUser(userCredentials: {username: string, password: string}) {
+  const response = await axiosInstance.post('/auth/signup', userCredentials);
   return response.data;
 }
+
+
 export async function getUser() {
   const accessToken = localStorage.getItem('accessToken'); 
   const response = await axiosInstance.get('/users/myUser', 
@@ -30,16 +33,18 @@ export async function getUser() {
   return response.data; // Array of tasks
 }
 
+
 // Task APIs
-export async function fetchTasks() {
+export async function fetchTasks(): Promise<Task[]> {
   const accessToken = localStorage.getItem('accessToken'); 
   const response = await axiosInstance.get('/todos',
     {
       headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
-  return response.data; // Array of tasks
+  return response.data as Task[]; // Array of tasks
 }
+
 
 export async function createTask(task: { title: string; completed: boolean }): Promise<Task> {
   const accessToken = localStorage.getItem('accessToken'); 
@@ -51,15 +56,19 @@ export async function createTask(task: { title: string; completed: boolean }): P
   return response.data as Task;   // Newly created task
 }
 
-export async function updateTask(updatedTask: { title: string; completed: boolean }}): Promise<Task> {
+
+export async function updateTask(updatedTask: Task): Promise<Task> {
+  updatedTask.completed = !updatedTask.completed;   // Toggle boolean value
+  
   const accessToken = localStorage.getItem('accessToken'); 
-  const response = await axiosInstance.put(`/todos/${updatedTask.taskId}`, props.updatedTask, 
+  const response = await axiosInstance.put('/todos/', updatedTask, 
     {
       headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
   return response.data as Task; // Updated task
 }
+
 
 export async function deleteTask(taskId: number): Promise<void> {
   const accessToken = localStorage.getItem('accessToken');

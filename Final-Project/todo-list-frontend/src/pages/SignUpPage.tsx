@@ -14,9 +14,9 @@ function SignUpPage(): JSX.Element {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
-    const result = await createUser(data);
+    const server_response = await createUser(data);
         
-    if (result.status === 409){     // Error conflict -> Username already exists
+    if (server_response.status === 409){     // Error conflict -> Username already exists
       alert('The username is already taken. Please choose a different username.')
     }
     else {

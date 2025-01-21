@@ -41,9 +41,9 @@ export class ToDosController {
   }
 
 
-  @Put(':id')
-  async updateToDoItemById(@Param('id') id: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
-    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(id, updateToDoItemDto));  
+  @Put()
+  async updateToDoItemById(@Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
+    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(updateToDoItemDto));  
   }
 
 

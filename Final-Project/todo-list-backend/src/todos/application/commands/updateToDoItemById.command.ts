@@ -4,7 +4,6 @@ import { UpdateToDoItemDto } from '../dto/todo.dto';
 
 export class UpdateToDoItemByIdCommand implements ICommand {
     constructor(
-        public id: number,
         public updateToDoItemDto: UpdateToDoItemDto,
     ) {}
 }

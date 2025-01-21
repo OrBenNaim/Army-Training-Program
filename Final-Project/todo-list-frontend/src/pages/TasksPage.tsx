@@ -94,7 +94,7 @@ function TaskListApp(): JSX.Element {
   const [newTask, setNewTask] = useState('');
   
   // This is for Get requests
-  const { data: tasks, isLoading: IsLoadingTasks } = useQuery({ queryKey: ['tasks'], queryFn: fetchTasks });
+  const { data: tasks = [], isLoading: IsLoadingTasks } = useQuery({ queryKey: ['tasks'], queryFn: fetchTasks });
   const { data: user, isLoading: isLoadingUser } = useQuery({ queryKey: ['myUser'], queryFn: getUser });
 
   // This is for POST/DELETE/PUT
@@ -121,7 +121,7 @@ function TaskListApp(): JSX.Element {
 
   const handleToggleTask = async (task: Task) => {
     try {
-      const updatedTask = await updateTask({ ...task, completed: !task.completed });
+      await editTask(task);
     } 
     catch (error) {
       console.error(error);
