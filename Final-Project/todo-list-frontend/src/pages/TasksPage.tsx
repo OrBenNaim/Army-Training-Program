@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -18,11 +18,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { queryClient } from '../App';
 
 
-function TaskItem({
-  task,
-  onToggle,
-  onDelete,
-}: {
+function TaskItem({ task, onToggle, onDelete }: {
   task: Task;
   onToggle: (task: Task) => void;
   onDelete: (task: Task) => void;
@@ -56,11 +52,7 @@ function TaskItem({
 }
 
 
-function TaskList({
-  tasks,
-  onToggle,
-  onDelete,
-}: {
+function TaskList({ tasks, onToggle, onDelete }: {
   tasks: Task[];
   onToggle: (task: Task) => void;
   onDelete: (task: Task) => void;
@@ -100,27 +92,19 @@ function TaskList({
 
 function TaskListApp(): JSX.Element {
   const [newTask, setNewTask] = useState('');
-  //this are for Get requests
-  const {data:tasks, isLoading:IsLoadingTasks} = useQuery({ queryKey: ['tasks'], queryFn: fetchTasks });
-  const {data:user, isLoading:isLoadingUser} = useQuery({ queryKey: ['myUser'], queryFn: getUser });
+  
+  // This is for Get requests
+  const { data: tasks, isLoading: IsLoadingTasks } = useQuery({ queryKey: ['tasks'], queryFn: fetchTasks });
+  const { data: user, isLoading: isLoadingUser } = useQuery({ queryKey: ['myUser'], queryFn: getUser });
 
-  //this is for POST/DELETE/PUT
-  const {mutateAsync: postTask} = useMutation({
-    mutationFn: createTask,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['tasks'] })
-    },
-  })
-  if(IsLoadingTasks || isLoadingUser){
-    return <h1>IsLoading</h1>
+  // This is for POST/DELETE/PUT
+  const { mutateAsync: postTask } = useMutation({ mutationFn: createTask, onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] })});
+  const { mutateAsync: removeTask } = useMutation({ mutationFn: deleteTask, onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] })});
+  const { mutateAsync: editTask } = useMutation({ mutationFn: updateTask, onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] })});
+
+  if (IsLoadingTasks || isLoadingUser){
+    return <h1>IsLoading...</h1>
   }
-  
-
-  
-
-  
-  
 
   const handleAddTask = async () => {
     if (newTask.trim() === '') return alert('Task cannot be empty.');
@@ -128,7 +112,8 @@ function TaskListApp(): JSX.Element {
     try {
       await postTask( { title: newTask, completed: false });
       setNewTask('');
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(error);
     }
   };
@@ -136,9 +121,9 @@ function TaskListApp(): JSX.Element {
 
   const handleToggleTask = async (task: Task) => {
     try {
-      const updatedTask = await updateTask('accessToken', task.id, { ...task, completed: !task.completed });
-      // setTasks((prev) => prev.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
-    } catch (error) {
+      const updatedTask = await updateTask({ ...task, completed: !task.completed });
+    } 
+    catch (error) {
       console.error(error);
     }
   };
@@ -146,9 +131,9 @@ function TaskListApp(): JSX.Element {
 
   const handleDeleteTask = async (task: Task) => {
     try {
-      await deleteTask('accessToken', task.id); // Use task.id
-      // setTasks((prev) => prev.filter((t) => t.id !== task.id));
-    } catch (error) {
+      await removeTask(task.id); // Use task.id
+    } 
+    catch (error) {
       console.error(error);
     }
   };
@@ -168,7 +153,7 @@ function TaskListApp(): JSX.Element {
           </Typography>
           <Typography sx={{ ml: 2 }}>
             <strong>
-              {/* Completed tasks: {tasks.filter((task) => task.completed).length} */}
+              Completed tasks: {tasks.filter((task: Task) => task.completed).length} 
             </strong>
           </Typography>
         </Grid2>

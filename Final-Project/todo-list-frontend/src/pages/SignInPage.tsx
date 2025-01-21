@@ -12,15 +12,14 @@ function SignInPage(): JSX.Element {
     try {
         const backend_response =  await loginUser(username, password);
 
-        if (backend_response.status === 404){   // 404 Not Found: Indicates that the requested endpoint or resource (e.g., /auth/signin) does not exist.
-            alert('Unable to find the requested resource. Please check your credentials or try again later.');
+        if (backend_response.status === 404) {   // 404 Not Found: Indicates that the requested endpoint or resource (e.g., /auth/signin) does not exist.
+          alert('Unable to find the requested resource. Please check your credentials or try again later.');
         }
-        else{
-            const { accessToken } = backend_response;
-            localStorage.setItem('accessToken', accessToken);
-            console.log(backend_response);
-            
-            navigate('/app');
+        else {
+          const { accessToken } = backend_response;
+          localStorage.setItem('accessToken', accessToken);
+          console.log(backend_response);
+          navigate('/app');
         }
     } 
     catch (error) {

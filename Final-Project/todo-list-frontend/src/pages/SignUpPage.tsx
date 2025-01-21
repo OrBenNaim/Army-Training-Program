@@ -1,28 +1,19 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, TextField, Button, Typography, Card, CardContent } from '@mui/material';
 import { registerUser } from '../utils/apiUtils';
 import { useForm,SubmitHandler  } from "react-hook-form"
 import { useMutation } from '@tanstack/react-query';
+import { FormType } from '../types';
 
-type FormType ={
-  username: string;
-  password: string;
-}
+
 function SignUpPage(): JSX.Element {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
+  const { register, handleSubmit, formState: { errors }, } = useForm<FormType>();
 
-  } = useForm<FormType>();
-  const {mutateAsync: createUser} = useMutation({
-    mutationFn: registerUser,
- 
-  })
+  const { mutateAsync: createUser } = useMutation({ mutationFn: registerUser })
+
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FormType> =async (data) => {
+  const onSubmit: SubmitHandler<FormType> = async (data) => {
     const result = await createUser(data);
         
     if (result.status === 409){     // Error conflict -> Username already exists
@@ -54,13 +45,18 @@ function SignUpPage(): JSX.Element {
             label="Username"
             variant="outlined"
             fullWidth
-            {...register("username", {required:{
-              message:"username required",
-              value: true
-            },minLength:{
-              value:3,
-              message: "3 letters at least "
-            },})}
+            {...register("username", 
+              {
+                required: {
+                  message:"username required",
+                  value: true
+                },
+                minLength: {
+                  value: 2,
+                  message: "Username must be 2 characters at least."
+                },
+              })
+            }
             sx={{ marginBottom: 2 }}
           />
           {errors.username && <p style={{ color: "red" }}>{errors.username.message}</p>}
@@ -70,13 +66,18 @@ function SignUpPage(): JSX.Element {
             type="password"
             variant="outlined"
             fullWidth
-            {...register("password", {required:{
-              message:"password required",
-              value: true
-            },minLength:{
-              value:3,
-              message: "3 letters at least "
-            },})}       
+            {...register("password", 
+              {
+                required: {
+                  message:"password required",
+                  value: true
+                },
+                minLength: {
+                  value: 3,
+                  message: "Password must be 3 characters at least."
+                },
+              })
+            }       
             sx={{ marginBottom: 2 }}
           />
           {errors.password && <p style={{ color: "red" }}>{errors.password.message}</p>}
