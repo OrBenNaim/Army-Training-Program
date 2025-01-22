@@ -5,7 +5,7 @@ Blog-API-App-v3 is a backend application built with NestJS, implementing CQRS an
 
 ## Features
 - **CQRS Implementation**: Separates read and write operations with Commands, Queries, and their respective Handlers.
-- ***DDD Principles***: Implements domain-driven design with clear domain logic, repository patterns, and separation of concerns.
+- **DDD Principles**: Implements domain-driven design with clear domain logic, repository patterns, and separation of concerns.
 - **Database Integration**: Utilizes PostgreSQL for persistent data storage.
 - **Drizzle ORM**: Simplifies database queries and operations with a lightweight and type-safe ORM.
 - **Create Blog Post**: Add new blog entries with a title and content.
