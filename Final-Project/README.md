@@ -151,7 +151,27 @@ Follow these steps to set up the project locally:
 - Add unit tests for commands, queries, and handlers.
 
 ## Screenshots
-### 
+### Home Page
+![Home Page](/Final-Project/ScreenShots/HomePage.png)
+
+### Sign-Up Page
+![Sign-Up Page](/Final-Project/ScreenShots/SignUpPage.png)
+
+### Sign-Up Error Credentials
+![Sign-Up Error Credentials](/Final-Project/ScreenShots/SignUpPage-ErrorCredentials.png)
+
+### Sign-Up Username Error
+![Sign-Up Username Error](/Final-Project/ScreenShots/SignUpPage-usernameError.png)
+
+### Sign-In Page
+![Sign-In Page](/Final-Project/ScreenShots/SignInPage.png)
+
+### Tasks Page
+![Tasks Page](/Final-Project/ScreenShots/TasksPage.png)
+
+### Tasks Page Error
+![Tasks Page Error](/Final-Project/ScreenShots/TasksError.png)
+
 
 ## Contact Information
 - GitHub: OrBenNaim

@@ -46,14 +46,21 @@ export async function fetchTasks(): Promise<Task[]> {
 }
 
 
-export async function createTask(task: { title: string; completed: boolean }): Promise<Task> {
-  const accessToken = localStorage.getItem('accessToken'); 
-  const response = await axiosInstance.post('/todos', task,
-    {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }
-  );
-  return response.data as Task;   // Newly created task
+export async function createTask(task: { title: string; completed: boolean }): Promise<Task | undefined> {
+  try {
+    const accessToken = localStorage.getItem('accessToken'); 
+    const response = await axiosInstance.post('/todos', task,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );  
+    return response.data as Task;   // Newly created task
+  }
+  catch (error){
+    console.error(error);
+    alert('Task already exists')
+    return undefined;
+  } 
 }
 
 

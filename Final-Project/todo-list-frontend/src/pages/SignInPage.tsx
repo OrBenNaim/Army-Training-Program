@@ -1,10 +1,10 @@
-// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, TextField, Button, Typography, Card, CardContent } from '@mui/material';
 import { loginUser } from '../utils/apiUtils';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { FormType } from '../types';
+
 
 function SignInPage(): JSX.Element {
   const { register, handleSubmit, formState: { errors } } = useForm<FormType>();
@@ -15,18 +15,18 @@ function SignInPage(): JSX.Element {
   });
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
-    const server_response = await authenticateUser(data);  
+    const serverResponse = await authenticateUser(data);  
+    console.log(serverResponse);
 
-    if (!server_response.accessToken)   // Means that there are errors with the user credentials
+    if (!serverResponse.accessToken)   // Means that there are errors with the user credentials
     {
       alert('Unable to find the requested resource. Please check your credentials or try again later.');
     }
     else {
-      const { accessToken } = server_response;
+      const { accessToken } = serverResponse;
       localStorage.setItem('accessToken', accessToken);
       navigate('/app');
     }
-    
   }
 
 

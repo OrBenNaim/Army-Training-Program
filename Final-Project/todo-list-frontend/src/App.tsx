@@ -41,7 +41,7 @@ function MainApp() {
         {/* Wrap all routes in Layout */}
         <Layout>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<HomePage />} />
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route 
