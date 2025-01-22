@@ -16,20 +16,18 @@ function SignInPage(): JSX.Element {
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     const server_response = await authenticateUser(data);  
-    
-    if (server_response.status === undefined) // Means that there are no errors with the user credentials
+
+    if (!server_response.accessToken)   // Means that there are errors with the user credentials
     {
+      alert('Unable to find the requested resource. Please check your credentials or try again later.');
+    }
+    else {
       const { accessToken } = server_response;
       localStorage.setItem('accessToken', accessToken);
-      console.log(server_response);
       navigate('/app');
     }
-
-    else {   // Error occurred -> user credentials not exists
-      alert('Unable to find the requested resource. Please check your credentials or try again later.');
-    } 
-
-  };
+    
+  }
 
 
   return (
