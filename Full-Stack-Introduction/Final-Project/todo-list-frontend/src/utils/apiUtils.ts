@@ -72,6 +72,7 @@ export async function updateTask(updatedTask: Task): Promise<Task> {
     completed: updatedTask.completed,
   };
 
+
   const accessToken = localStorage.getItem('accessToken'); 
   const response = await axiosInstance.put('/todos/', putRouteProps, 
     {
@@ -81,7 +82,6 @@ export async function updateTask(updatedTask: Task): Promise<Task> {
   
   return response.data as Task;   // Updated task
 }
-
 
 export async function deleteTask(taskId: number): Promise<void> {
   const accessToken = localStorage.getItem('accessToken');
