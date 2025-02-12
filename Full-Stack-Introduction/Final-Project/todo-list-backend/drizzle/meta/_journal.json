@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1736322520218,
-      "tag": "0000_lush_giant_girl",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1736334942024,
-      "tag": "0001_bent_sentinels",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1737268663663,
-      "tag": "0002_vengeful_aqueduct",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1737275039299,
-      "tag": "0003_square_pete_wisdom",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1737275648533,
-      "tag": "0004_perfect_jackpot",
+      "when": 1739357089431,
+      "tag": "0000_slim_korg",
       "breakpoints": true
     }
   ]

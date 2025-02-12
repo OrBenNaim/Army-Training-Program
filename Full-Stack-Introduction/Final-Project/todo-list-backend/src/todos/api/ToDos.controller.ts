@@ -21,6 +21,7 @@ export class ToDosController {
   async createToDoList(@GetUser('id') userId: number, @Body() createToDoItemDto: CreateToDoItemDto): Promise<ToDoEntity> {
     
     try {
+      console.log("\nCreating item for user with id: ", userId);
       return await this.commandBus.execute(new CreateToDoItemCommand(createToDoItemDto, userId));
     } 
     catch (error) {
@@ -43,18 +44,21 @@ export class ToDosController {
 
   @Put()
   async updateToDoItemById(@Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
+    console.log("\nUpdating item with id: ", updateToDoItemDto.id); 
     return await this.commandBus.execute(new UpdateToDoItemByIdCommand(updateToDoItemDto));  
   }
 
 
   @Delete()
   async deleteAllToDosPerUser(@GetUser('id') userId: number): Promise<void> {
+    console.log("\nDeleting all items for user with id: ", userId);
     await this.commandBus.execute(new DeleteAllToDosPerUserCommand(userId));
   }
 
 
   @Delete(':id')
   async deleteToDoItem(@Param('id') id: number): Promise<void> {
+    console.log("\nDeleting item with id: ", id);
     await this.commandBus.execute(new DeleteToDoItemByIdCommand(id));
   }
 }

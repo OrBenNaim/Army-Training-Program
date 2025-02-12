@@ -3,7 +3,6 @@ import { DATABASE_CONNECTION } from './db-connection';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import * as schema from 'src/database/schemas/todos'
 
 
 @Global() // Mark this module as global

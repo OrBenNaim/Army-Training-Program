@@ -34,5 +34,6 @@ export class UpdateToDoItemDto {
     @IsOptional()
     @IsBoolean()
     completed: boolean=null;
+    
 }
 

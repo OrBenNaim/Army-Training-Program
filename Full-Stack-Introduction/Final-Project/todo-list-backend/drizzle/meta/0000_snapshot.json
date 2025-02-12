@@ -1,5 +1,5 @@
 {
-  "id": "389add92-d1f3-4abe-a677-576c6f4eedb9",
+  "id": "5b92a0f0-4109-4e1e-9822-aaa86b45570d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -58,17 +58,18 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "todos_title_unique": {
-          "name": "todos_title_unique",
+        "todos_title_user_unique": {
+          "name": "todos_title_user_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "title"
+            "title",
+            "user_id"
           ]
         }
       },
@@ -92,8 +93,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "password": {
-          "name": "password",
+        "hashed_password": {
+          "name": "hashed_password",
           "type": "text",
           "primaryKey": false,
           "notNull": true

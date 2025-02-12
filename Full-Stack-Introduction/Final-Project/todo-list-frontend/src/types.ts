@@ -1,7 +1,10 @@
 export interface Task {
     id: number;
     title: string;
+    description: string;
     completed: boolean;
+    userId: number;
+    createdAt: Date
 }
 
 export interface DecodedToken {

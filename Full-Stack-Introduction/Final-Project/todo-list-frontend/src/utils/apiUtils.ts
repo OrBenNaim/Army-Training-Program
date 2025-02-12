@@ -65,15 +65,21 @@ export async function createTask(task: { title: string; completed: boolean }): P
 
 
 export async function updateTask(updatedTask: Task): Promise<Task> {
-  updatedTask.completed = !updatedTask.completed;   // Toggle boolean value
-  
+  const putRouteProps = {
+    id: updatedTask.id,
+    title: updatedTask.title,
+    description: updatedTask.description,
+    completed: updatedTask.completed,
+  };
+
   const accessToken = localStorage.getItem('accessToken'); 
-  const response = await axiosInstance.put('/todos/', updatedTask, 
+  const response = await axiosInstance.put('/todos/', putRouteProps, 
     {
       headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
-  return response.data as Task; // Updated task
+  
+  return response.data as Task;   // Updated task
 }
 
 

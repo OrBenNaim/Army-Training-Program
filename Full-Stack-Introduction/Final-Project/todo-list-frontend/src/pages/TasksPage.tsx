@@ -23,6 +23,8 @@ function TaskItem({ task, onToggle, onDelete }: {
   onToggle: (task: Task) => void;
   onDelete: (task: Task) => void;
 }) {
+  //const {userId, createdAt, ...taskData} = (task as any);
+
   return (
     <ListItem
       sx={{
@@ -57,6 +59,7 @@ function TaskList({ tasks, onToggle, onDelete }: {
   onToggle: (task: Task) => void;
   onDelete: (task: Task) => void;
 }) {
+  
   return (
     <List>
       {tasks.length === 0 ? (
@@ -121,6 +124,7 @@ function TaskListApp(): JSX.Element {
 
   const handleToggleTask = async (task: Task) => {
     try {
+      task.completed = !task.completed;   // Toggle boolean value
       await editTask(task);
     } 
     catch (error) {
