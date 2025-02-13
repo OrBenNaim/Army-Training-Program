@@ -16,7 +16,6 @@ function SignInPage(): JSX.Element {
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     const serverResponse = await authenticateUser(data);  
-    console.log(serverResponse);
 
     if (!serverResponse.accessToken)   // Means that there are errors with the user credentials
     {

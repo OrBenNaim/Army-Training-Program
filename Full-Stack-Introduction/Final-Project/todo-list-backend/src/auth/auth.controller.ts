@@ -21,13 +21,12 @@ export class AuthController {
 
     @Post('signin')
     async signIn(@Body() signInDto: AuthDto) {
-    
         try {
             return await this.authService.signIn(signInDto);
         }
         catch (error) {
             console.log(error);
-            throw error;
+            return error;
         }
     }
 }

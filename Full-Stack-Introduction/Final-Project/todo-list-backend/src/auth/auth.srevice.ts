@@ -44,30 +44,35 @@ export class AuthService {
     // Method to sign-in a user.
     async signIn(signInDto: AuthDto) {
         
-        // Get user (if exists) by his username.
-        const user: UserEntity = await this.queryBus.execute(new GetUserByNameQuery(signInDto.username));
+        try {
+            // Get user (if exists) by his username.
+            const user: UserEntity = await this.queryBus.execute(new GetUserByNameQuery(signInDto.username));
 
-        // Check if user not exists
-        if (!user) {
-            throw new NotFoundException(`User with username=${signInDto.username} is not found.`);
+            // Check if user not exists
+            if (!user) {
+                throw new NotFoundException(`User with username=${signInDto.username} is not found.`);
+            }
+            
+            console.log(user.password);
+
+            // Otherwise, check if the given password matches to the username.
+            // If so, just return the user's token.
+            // If Not, throw an error.
+            const pwMatches = await argon.verify(user.password, signInDto.password);
+
+            if(pwMatches) {
+                // Password matches, return the user token
+                return await this.signToken(user.id, user.username, user.createdAt)
+            }  
+
+            // If we get here, It means that the given username already exists but the given password incorrect.
+            // Throw an error.
+            console.error(`Invalid password for username '${signInDto.username}'.`);
+            throw new UnauthorizedException('Invalid username or password').getResponse();
         }
-        
-        console.log(user.password);
-
-        // Otherwise, check if the given password matches to the username.
-        // If so, just return the user's token.
-        // If Not, throw an error.
-        const pwMatches = await argon.verify(user.password, signInDto.password);
-
-        if(pwMatches) {
-            // Password matches, return the user token
-            return await this.signToken(user.id, user.username, user.createdAt)
-        }  
-
-        // If we get here, It means that the given username already exists but the given password incorrect.
-        // Throw an error.
-        console.error(`Invalid password for username '${signInDto.username}'.`);
-        throw new UnauthorizedException('Invalid username or password').getResponse();
+        catch (error){
+            throw error;
+        }   
     }
 
 
