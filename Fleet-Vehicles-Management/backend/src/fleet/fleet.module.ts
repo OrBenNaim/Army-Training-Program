@@ -12,4 +12,4 @@ import { FleetService } from './fleet.srevice';
     providers: [ FleetService ],
   
 })
-export class AuthModule {}
+export class FleetModule {}

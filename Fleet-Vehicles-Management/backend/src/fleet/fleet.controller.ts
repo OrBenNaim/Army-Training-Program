@@ -1,5 +1,5 @@
 import { Controller, Post, Body, } from '@nestjs/common';
-import { FleetDto } from 'src/fleet/dto/fleet.dto'; 
+import { CreateFleetDto } from 'src/fleet/dto/fleet.dto'; 
 import { FleetService } from './fleet.srevice';
 
 
@@ -8,9 +8,9 @@ export class FleetController {
     constructor(private fleetService: FleetService) {}    
 
     @Post()
-    async createFleet(@Body() fleetDto: FleetDto) {
+    async createFleet(@Body() createFleetDto: CreateFleetDto) {
         try {
-            return await this.fleetService.createFleet(fleetDto);
+            return await this.fleetService.createFleet(createFleetDto);
         }
         catch (error) {
             console.log(error);

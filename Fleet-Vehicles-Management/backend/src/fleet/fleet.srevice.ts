@@ -1,9 +1,10 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException, Inject } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import * as schema from 'src/database/schemas/vehicles';
+import * as schema from 'src/database/schemas/fleets';
+import { fleetsTable } from 'src/database/schemas/fleets';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { FleetDto } from './dto/fleet.dto';
+import { eq } from 'drizzle-orm';
+import { CreateFleetDto } from './dto/fleet.dto';
 import { FleetEntity } from 'src/interfaces/interfaces';
 
 
@@ -14,35 +15,33 @@ export class FleetService {
     ) {}
 
     // Method to create a new fleet.
-    async createFleet(fleetDto: FleetDto):  Promise<FleetEntity> {
+    async createFleet(createFleetDto: CreateFleetDto):  Promise<FleetEntity> {
         
         // Check if the given fleet name already exists in db
         const result = await this.database
         .select()
-        .from(schema.fleetTable)
-        .where(fleetDto.name)
+        .from(fleetsTable)
+        .where(eq(fleetsTable.name , createFleetDto.name))
         .execute();
         
         if (result.length) {
-            throw new ConflictException(`\nFleet with name '${fleetDto.name}' is already exists.\n`);
+            throw new ConflictException(`\nFleet with name '${createFleetDto.name}' is already exists.\n`);
         }
         
         // Otherwise, create a new fleet
         const fleet = await this.database
-        .insert(schema.fleetTable)
+        .insert(fleetsTable)
         .values({
-            name: fleetDto.name,
+            name: createFleetDto.name,
         })
         .returning({
-            id: schema.fleetTable.id,
-            name: schema.fleetTable.name,
-            createdAt: schema.fleetTable.createdAt,
+            id: fleetsTable.id,
+            name: fleetsTable.name,
+            createdAt: fleetsTable.createdAt,
         })
         .execute()
-        .then(todos => todos[0]);
+        .then(fleets => fleets[0]);
 
         return fleet;  // Return the newly created fleet
-    }
-
-    
+    }    
 }
