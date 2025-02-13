@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Delete, Param, Put, InternalServerErrorException, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param, Put, InternalServerErrorException, UseGuards, ConflictException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateToDoItemCommand } from '../application/commands/create-ToDo-item.command';
 import { GetAllToDosPerUserQuery } from 'src/todos/application/queries/getAllToDosPerUser.query';
@@ -43,9 +43,16 @@ export class ToDosController {
 
 
   @Put()
-  async updateToDoItemById(@Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
-    console.log("\nUpdating item with id: ", updateToDoItemDto.id); 
-    return await this.commandBus.execute(new UpdateToDoItemByIdCommand(updateToDoItemDto));  
+  async updateToDoItemById(@GetUser('id') userId: number, @Body() updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity> {
+    try {
+      console.log("\nUpdating item with id: ", updateToDoItemDto.id); 
+      return await this.commandBus.execute(new UpdateToDoItemByIdCommand(userId, updateToDoItemDto));
+    }
+    catch (error) {
+      console.log(error);
+      throw error;
+    }
+      
   }
 
 

@@ -11,7 +11,7 @@ export interface ToDosRepositoryInterface {
 
   getToDoItemById(id: number): Promise<ToDoEntity>;
 
-  updateToDoItemById(updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity>;
+  updateToDoItemById(userId: number, updateToDoItemDto: UpdateToDoItemDto): Promise<ToDoEntity>;
   
   deleteAllToDosPerUser(userId: number): Promise<void>; // Per userId
 

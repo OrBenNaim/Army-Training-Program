@@ -71,7 +71,7 @@ export async function updateTask(updatedTask: Task): Promise<Task> {
     description: updatedTask.description,
     completed: updatedTask.completed,
   };
-
+  
   const accessToken = localStorage.getItem('accessToken'); 
   const response = await axiosInstance.put('/todos/', putRouteProps, 
     {
