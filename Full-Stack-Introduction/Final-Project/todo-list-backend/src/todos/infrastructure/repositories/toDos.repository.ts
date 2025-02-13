@@ -6,7 +6,6 @@ import { todosTable } from 'src/database/schemas/todos';
 import { DATABASE_CONNECTION } from 'src/database/db-connection';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, not, and } from 'drizzle-orm';
-import { ConfigService } from '@nestjs/config';
 import { CreateToDoItemDto, UpdateToDoItemDto } from 'src/todos/application/dto/todo.dto';
 
 
@@ -25,13 +24,15 @@ export class ToDosRepository implements ToDosRepositoryInterface {
     const result = await this.database
     .select()
     .from(todosTable)
-    .where(and(eq(todosTable.title, createToDoItemDto.title), eq(todosTable.userId, userId))).execute();
+    .where(and(eq(todosTable.title, createToDoItemDto.title), eq(todosTable.userId, userId)))
+    .execute();
 
     if (result.length) {
       throw new ConflictException(`ToDo Item with title '${createToDoItemDto.title}' is already exists for userId=${userId}.`);
     }
       
-    const todoItem = await this.database.insert(todosTable)
+    const todoItem = await this.database
+    .insert(todosTable)
     .values({ 
       title: createToDoItemDto.title, 
       description: createToDoItemDto.description, 

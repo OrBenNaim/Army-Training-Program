@@ -15,10 +15,6 @@ import { AuthService } from './auth.srevice';
     ],
     controllers: [AuthController],
     providers: [ JwtStrategy, AuthService ],
-        
-    // { provide: AUTH_REPOSITORY, useClass: AuthRepository },
-        // ...CommandHandlers,         // Registers all command handlers
-        // ...QueryHandlers,          // Registers all query handlers
   
 })
 export class AuthModule {}
