@@ -6,14 +6,16 @@ services:
     environment:
       POSTGRES_PASSWORD: 12345
       POSTGRES_DB: ToDoListApp
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistent storage for DB
     restart: always
 
   backend:
     build:
-      context: ./todo-list-backend  # Ensure this folder exists and contains a Dockerfile
+      context: ./todo-list-backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"  # Change if your backend uses a different port
+      - "3000:3000"
     depends_on:
       - postgres
     environment:
@@ -22,10 +24,13 @@ services:
 
   frontend:
     build:
-      context: ./todo-list-frontend  # Ensure this folder exists and contains a Dockerfile
+      context: ./todo-list-frontend
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"  # Change if your frontend uses a different port
+      - "5173:5173"
     depends_on:
       - backend
     restart: always
+
+volumes:
+  postgres_data:  # Defines the persistent volume
