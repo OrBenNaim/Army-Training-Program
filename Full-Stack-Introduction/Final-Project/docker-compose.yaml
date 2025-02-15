@@ -1,53 +1,31 @@
 services:
   postgres:
     image: postgres
-    container_name: todo_postgres
     ports:
-      - 5433:5432
+      - "5433:5432"
     environment:
-      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
       POSTGRES_DB: ToDoListApp
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      retries: 5
-      timeout: 3s
+    restart: always
 
   backend:
-    build: ./todo-list-backend
-    container_name: todo_backend
+    build:
+      context: ./todo-list-backend  # Ensure this folder exists and contains a Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - "3000:3000"  # Change if your backend uses a different port
     depends_on:
-      postgres:
-        condition: service_healthy  # Ensures database is fully ready
+      - postgres
     environment:
       DATABASE_URL: postgres://postgres:12345@postgres:5432/ToDoListApp
-    command: sh -c "sleep 5 && npm run start:dev"  # Extra delay to ensure DB is fully ready
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    restart: unless-stopped
+    restart: always
 
   frontend:
-    build: ./todo-list-frontend
-    container_name: todo_frontend
+    build:
+      context: ./todo-list-frontend  # Ensure this folder exists and contains a Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - 5173:5173
+      - "5173:5173"  # Change if your frontend uses a different port
     depends_on:
-      backend:
-        condition: service_started  # Ensures backend is up before frontend starts
-    command: npm run dev
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      REACT_APP_API_URL: http://localhost:5173
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
+      - backend
+    restart: always

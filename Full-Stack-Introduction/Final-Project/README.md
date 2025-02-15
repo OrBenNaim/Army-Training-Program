@@ -74,8 +74,20 @@ Follow these steps to set up the project locally:
 2. Navigate to the Final-Project directory:
     cd Army-Training-Program/Final-Project
 
-3. Install the dependencies:
-    npm install
+3. Run Docker Compose
+    Start the entire project using 'docker-compose up' command.
+    This will build and run the frontend, backend, and PostgreSQL database containers.
+
+    Docker Compose will handle:
+
+    Starting the PostgreSQL container on port 5433.
+    Starting the Backend (NestJS) service on port 3000.
+    Starting the Frontend (React) service on port 5173.
+    Once the services are up, you can access:
+
+    Frontend: http://localhost:5173
+    Backend: http://localhost:3000
+
 
 4. Set up the PostgreSQL database:
     - Ensure PostgreSQL is installed and running.
