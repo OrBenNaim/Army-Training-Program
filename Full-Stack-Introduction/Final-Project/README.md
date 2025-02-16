@@ -95,12 +95,9 @@ Follow these steps to set up the project locally:
     Starting the Frontend (React) service on port 5173.
     Once the services are up, you can access:
 
-    Frontend: http://localhost:5173
-    Backend: http://localhost:3000
-
 
 5. Once the containers are up and running, access the frontend at:
-    ```sh
+    ```
     http://localhost:5173
     ```
 
