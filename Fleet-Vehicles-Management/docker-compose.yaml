@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres
 
-    # Maps port 5432 inside the container to port 5433 on your host machine:
+    # Maps port 5432 inside the container to port 5432 on your host machine:
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
     # Loads environment variables from the .env file:
     env_file:
@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
 
     ports:
-      - "3000:3000"
+      - "5000:5000"
 
     # Ensures that the postgres service starts before backend
     depends_on:
@@ -38,22 +38,24 @@ services:
 
     env_file:
       - .env
+    
+    command: sh -c "npm install && npx drizzle-kit push && npm run start:dev"
 
     restart: always
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
 
-    # Exposes port 5173 (default for Vite/React development servers).
-    ports:
-      - "5173:5173"
+#     # Exposes port 5173 (default for Vite/React development servers).
+#     ports:
+#       - "5173:5173"
 
-    depends_on:
-      - backend
+#     depends_on:
+#       - backend
 
-    restart: always
+#     restart: always
 
 volumes:
   postgres_data:

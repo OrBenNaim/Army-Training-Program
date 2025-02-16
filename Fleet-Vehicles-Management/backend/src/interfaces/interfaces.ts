@@ -1,5 +1,5 @@
 export interface FleetEntity {
-    id: number;
+    id: string;
     name: string;
     createdAt: Date;
 }

@@ -15,8 +15,8 @@ COPY . .
 # Build the Application:
 RUN npm run build 
 
-# Expose the Backend Port - Opens port 3000 inside the container so it can accept incoming requests.
-EXPOSE 3000
+# Expose the Backend Port - Opens port 5000 inside the container so it can accept incoming requests.
+EXPOSE 5000
 
 # Start the NestJS application:
 CMD ["npm", "run", "start:dev"]
