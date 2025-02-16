@@ -1,10 +1,12 @@
-import { pgTable, unique, serial, text, timestamp  } from "drizzle-orm/pg-core"
+import { pgTable, unique, uuid, varchar, timestamp } from "drizzle-orm/pg-core";
 
 export const fleetsTable = pgTable("fleets", {
-	id: serial().primaryKey().notNull(),
-	name: text().notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(), 	// Timestamp for creation
+    id: uuid("id").defaultRandom().primaryKey().notNull(), // Unique identifier for the fleet
+
+    name: varchar("name", { length: 255 }).notNull(), // Name of the fleet
+
+    createdAt: timestamp("createdAt").defaultNow().notNull(), // Date and time when the fleet was created
 
 }, (table) => [
-	unique("fleets_name_unique").on(table.name),
+    unique("fleets_name_unique").on(table.name),
 ]);

@@ -1,16 +1,25 @@
-import { pgTable, serial, text, integer, boolean, unique, timestamp, } from "drizzle-orm/pg-core";
+import { pgTable, uuid, varchar, boolean, unique, timestamp, } from "drizzle-orm/pg-core";
 import { fleetsTable } from "./fleets";
 
 // Vehicles Table
 export const vehiclesTable = pgTable("vehicles", {
-	id: serial().primaryKey().notNull(),
-	licensePlate: text().notNull(),
-	manufacturer: text().notNull(),
-	model: text().notNull(),
-	status: boolean().notNull(),
-	createdAt: timestamp("createdAt").defaultNow(),
-	updatedAt: timestamp("updatedAt").defaultNow(),
-	fleetId: integer().notNull().references(() => fleetsTable.id), // Foreign Key to Fleets Table
+    id: uuid("id").defaultRandom().primaryKey().notNull(),
+
+    licensePlate: varchar("licensePlate", { length: 20 }).notNull(),
+
+    manufacturer: varchar("manufacturer", { length: 255 }).notNull(),
+
+    model: varchar("model", { length: 255 }).notNull(),
+
+    status: boolean().notNull(),
+
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+
+    fleetId: uuid("fleetId").notNull().references(() => fleetsTable.id),
+	
 }, (table) => [
-	unique("vehicles_id_licensePlate_unique").on(table.id, table.licensePlate),
+    unique("vehicles_licensePlate_unique").on(table.licensePlate) // Enforce unique license plates
 ]);
+
