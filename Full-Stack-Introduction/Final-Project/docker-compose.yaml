@@ -18,8 +18,6 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
-    environment:
-      DATABASE_URL: postgres://postgres:12345@postgres:5432/ToDoListApp
     restart: always
 
   frontend:
