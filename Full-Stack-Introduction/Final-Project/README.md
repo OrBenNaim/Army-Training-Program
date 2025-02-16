@@ -69,12 +69,22 @@ The Final-Project is a web-based To-Do List application built with NestJS. It im
 ## Setup and Installation
 Follow these steps to set up the project locally:
 1. Clone the repository: 
+    ```sh
     git clone https://github.com/OrBenNaim/Army-Training-Program.git
+    ```
 
 2. Navigate to the Final-Project directory:
+    ```sh
     cd Army-Training-Program/Final-Project
+    ```
 
-3. Run Docker Compose
+3. Set up your .env file in the Final-Project directory:
+    - Use the .env.example file
+
+4. Start the application using Docker Compose:
+    ```sh
+    docker-compose up
+    ```
     Start the entire project using 'docker-compose up' command.
     This will build and run the frontend, backend, and PostgreSQL database containers.
 
@@ -89,25 +99,10 @@ Follow these steps to set up the project locally:
     Backend: http://localhost:3000
 
 
-4. Set up the PostgreSQL database:
-    - Ensure PostgreSQL is installed and running.
-    - Create a database for the application.
-    - Update the .env file with your database
-        connection details:
-            DATABASE_URL=postgres://your_username:your_password@localhost:your_chosen_port/Your_DB_name
-            JWT_SECRET='your_jwt_secret'
-
-5. Run database migrations:
-    - npm run generate
-    - npm run migrate
-
-6. Start the development server:
-    - npm run start:dev
-
-7. Start the frontend app:
-    - cd Final-Project/todo-frontend
-    - npm run dev
-    - go to http://localhost:5173
+5. Once the containers are up and running, access the frontend at:
+    ```sh
+    http://localhost:5173
+    ```
 
 ## Usage
 ### Endpoints
