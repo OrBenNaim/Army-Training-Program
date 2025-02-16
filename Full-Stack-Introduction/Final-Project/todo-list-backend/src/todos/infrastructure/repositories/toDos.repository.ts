@@ -1,5 +1,5 @@
 import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
-import { ToDosRepositoryInterface } from './todods.repository-interface';
+import { ToDosRepositoryInterface } from './todos.repository-interface';
 import { ToDoEntity } from '../../domain/entity/ToDo.interface';
 import * as schema from 'src/database/schemas/todos';
 import { todosTable } from 'src/database/schemas/todos';
