@@ -69,12 +69,12 @@ The Final-Project is a web-based To-Do List application built with NestJS. It im
 ## Setup and Installation
 Follow these steps to set up the project locally:
 1. Clone the repository: 
-    ```sh
+    ```
     git clone https://github.com/OrBenNaim/Army-Training-Program.git
     ```
 
 2. Navigate to the Final-Project directory:
-    ```sh
+    ```
     cd Army-Training-Program/Final-Project
     ```
 
@@ -82,7 +82,7 @@ Follow these steps to set up the project locally:
     - Use the .env.example file
 
 4. Start the application using Docker Compose:
-    ```sh
+    ```
     docker-compose up
     ```
     Start the entire project using 'docker-compose up' command.
