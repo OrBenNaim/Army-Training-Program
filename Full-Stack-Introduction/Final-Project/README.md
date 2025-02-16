@@ -93,8 +93,6 @@ Follow these steps to set up the project locally:
     Starting the PostgreSQL container on port 5433.
     Starting the Backend (NestJS) service on port 3000.
     Starting the Frontend (React) service on port 5173.
-    Once the services are up, you can access:
-
 
 5. Once the containers are up and running, access the frontend at:
     ```
