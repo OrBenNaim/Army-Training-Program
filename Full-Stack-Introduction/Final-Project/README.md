@@ -154,25 +154,25 @@ Follow these steps to set up the project locally:
 
 ## Screenshots
 ### Home Page
-![Home Page](/Final-Project/ScreenShots/HomePage.png)
+![Home Page](./screenShots/HomePage.png)
 
 ### Sign-Up Page
-![Sign-Up Page](/Final-Project/ScreenShots/SignUpPage.png)
+![Sign-Up Page](./screenShots/SignUpPage.png)
 
 ### Sign-Up Error Credentials
-![Sign-Up Error Credentials](/Final-Project/ScreenShots/SignUpPage-ErrorCredentials.png)
+![Sign-Up Error Credentials](./screenShots/SignUpPage-ErrorCredentials.png)
 
 ### Sign-Up Username Error
-![Sign-Up Username Error](/Final-Project/ScreenShots/SignUpPage-usernameError.png)
+![Sign-Up Username Error](./screenShots/SignUpPage-usernameError.png)
 
 ### Sign-In Page
-![Sign-In Page](/Final-Project/ScreenShots/SignInPage.png)
+![Sign-In Page](./screenShots/SignInPage.png)
 
 ### Tasks Page
-![Tasks Page](/Final-Project/ScreenShots/TasksPage.png)
+![Tasks Page](./screenShots/TasksPage.png)
 
 ### Tasks Page Error
-![Tasks Page Error](/Final-Project/ScreenShots/TasksError.png)
+![Tasks Page Error](./screenShots/TasksError.png)
 
 
 ## Contact Information
