@@ -178,6 +178,6 @@ Follow these steps to set up the project locally:
 ## Contact Information
 - GitHub: OrBenNaim
 - Email: orbennaim123@gmail.com
-- LinkedIn: linkedin.com/in/or-ben-naim-eee
+- LinkedIn: www.linkedin.com/in/or-ben-naim-eee
 
 
