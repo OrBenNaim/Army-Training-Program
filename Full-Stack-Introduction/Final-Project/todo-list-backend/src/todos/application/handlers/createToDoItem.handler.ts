@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/todos.repository-interface';  // eslint-disable-line
+import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/todods.repository-interface';  // eslint-disable-line
 import { CreateToDoItemCommand } from '../commands/create-ToDo-item.command';
 import { ToDoEntity } from 'src/todos/domain/entity/ToDo.interface';
 

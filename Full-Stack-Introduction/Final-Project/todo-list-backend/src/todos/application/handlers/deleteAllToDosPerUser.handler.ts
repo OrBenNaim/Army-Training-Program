@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { DeleteAllToDosPerUserCommand } from '../commands/delete-all-ToDo-items.command';
-import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/todos.repository-interface';  // eslint-disable-line
+import { ToDosRepositoryInterface, TODOS_REPOSITORY } from 'src/todos/infrastructure/repositories/todods.repository-interface';  // eslint-disable-line
 
 
 @CommandHandler(DeleteAllToDosPerUserCommand)
