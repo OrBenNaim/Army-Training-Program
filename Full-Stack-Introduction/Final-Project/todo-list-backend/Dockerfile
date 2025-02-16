@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:dev"]
+# Wait for database to be ready, then run migrations
+CMD npx drizzle-kit migrate && npm run start
