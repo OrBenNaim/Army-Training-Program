@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ToDosController } from './api/todos.controller';
 import { TODOS_REPOSITORY } from './infrastructure/repositories/todos.repository-interface';
 import { CommandHandlers, QueryHandlers } from './application/handlers/all.handlers';
-import { ToDosRepository } from './infrastructure/repositories/todos.repository';
+import { ToDosRepository } from './infrastructure/repositories/toeddos.repository';
 
 @Module({
     imports: [
