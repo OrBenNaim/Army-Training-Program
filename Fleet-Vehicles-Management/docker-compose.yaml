@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres
 
-    # Maps port 5433 inside the container to port 5434 on your host machine:
+    # Maps port 5432 inside the container to port 5434 on your host machine:
     ports:
-      - "5434:5433"
+      - "5434:5432"
 
     # Loads environment variables from the .env file:
     env_file:
